@@ -99,7 +99,7 @@ function useHotkeys(): void {
             useSettings.getState().set({ fullLayout: fullscreenAction.layout })
             break
           case 'flip-side':
-            useUi.getState().toggleLyricSide()
+            if (!e.repeat) useUi.getState().toggleLyricSide()
             break
         }
         return

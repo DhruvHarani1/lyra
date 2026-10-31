@@ -941,3 +941,15 @@
     grid-column: 1;
   }
 }
+
+/* Keep the cinema footer clear of the dock when the lyric side is flipped. */
+:root:not([data-platform='android']) .full.is-cinema.is-side-flipped .lyrics--full .lyrics__footer {
+  left: clamp(24px, 3vw, 56px);
+  right: auto;
+}
+
+/* In flipped split mode, keep lyrics on the left and the dock on the right. */
+:root:not([data-platform='android']) .full.is-cinema.layout-split.is-side-flipped .full__lyrics {
+  left: 5%;
+  right: 52%;
+}

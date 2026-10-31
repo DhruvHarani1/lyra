@@ -19,7 +19,7 @@ export const LOCAL_SHORTCUTS = [
   { keys: 'F', label: 'Fullscreen' },
   { keys: 'Esc', label: 'Exit fullscreen / collapse' },
   { keys: 'D', label: 'Distraction-free (fullscreen)' },
-  { keys: '[ / ]', label: 'Lyrics later / earlier (fullscreen)' },
+  { keys: '[ / ]', label: 'Lyrics later / earlier' },
   { keys: '1 / 2 / 3', label: 'Cinema / Split / Poster layout (fullscreen)' },
   { keys: 'L', label: 'Flip lyric side (fullscreen)' }
 ] as const
