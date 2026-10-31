@@ -84,7 +84,7 @@ function useHotkeys(): void {
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
       const t = e.target instanceof Element ? e.target : document.body
-      const editable = !!t.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')
+      const editable = !!t.closest('input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="button"]), textarea, select, [contenteditable="true"], [role="textbox"]')
       if (e.ctrlKey || e.metaKey || e.altKey) return
       const p = usePlayer.getState()
       const ui = useUi.getState()
