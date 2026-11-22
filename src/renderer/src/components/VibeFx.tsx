@@ -22,6 +22,20 @@ function SceneWindow({ children }: { children?: ReactNode }) {
   )
 }
 
+/** Artwork: a gallery wall. The wall is the cover's colours, the video hangs as a framed print under a brass picture light. */
+function NoneFx() {
+  return (
+    <div className="nonefx">
+      <div className="nonefx__wall" />
+      <div className="nonefx__lamp" />
+      <SceneWindow />
+      <div className="nonefx__frame" />
+      <div className="nonefx__bar" />
+      <div className="nonefx__floor" />
+    </div>
+  )
+}
+
 /** Chrome: liquid-metal blobs drift in the dark blue, a highlight runs around the screen edge, the video sits in a chrome bezel. */
 function ChromeFx({ sparkles }: { sparkles: { x: number; y: number; s: number; d: number }[] }) {
   return (
@@ -278,6 +292,13 @@ function TermFx() {
       <SceneWindow />
       <div className="termfx__pane termfx__pane--video" data-title="video.mp4" />
       <div className="termfx__pane termfx__pane--log" data-title="lyrics.log" />
+      <div className="termfx__pane termfx__pane--eq" data-title="spectrum">
+        <div className="termfx__bars">
+          {Array.from({ length: 28 }, (_, i) => (
+            <i key={i} style={{ ['--d' as string]: `${-((i * 0.37) % 1.4).toFixed(2)}s` }} />
+          ))}
+        </div>
+      </div>
       <div className="termfx__cursor" />
       <div className="termfx__roll" />
       <div className="termfx__scan" />
@@ -645,7 +666,7 @@ export function VibeFx() {
       })),
     []
   )
-  if (vibe === 'none') return null
+  if (vibe === 'none') return <NoneFx />
   return (
     <div className={`vibefx vibefx--${vibe}`} aria-hidden="true">
       <i className="vibeflash" key={vibe} />

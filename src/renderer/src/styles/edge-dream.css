@@ -1,0 +1,36 @@
+/* EDGE: Dream. No line at all: ribbons of pastel aurora drift slowly along the top and bottom of the window and spill a little
+   down the sides. They breathe with the singing (brighter while a line is sung, a soft dim in the gaps) and slowly change hue.
+   Everything is gradients on the compositor, no blur filters. */
+@property --edge-dream-h { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+:root[data-vibe='dream'] .edge { animation: edge-dream-hue 40s linear infinite; }
+@keyframes edge-dream-hue { to { --edge-dream-h: 360deg; } }
+:root[data-vibe='dream'] .edge > i { opacity: calc(0.5 + 0.5 * var(--lv, 0)); transition: opacity 1.4s ease; filter: hue-rotate(var(--edge-dream-h)); }
+:root[data-vibe='dream'] .edge__a, :root[data-vibe='dream'] .edge__c {
+  left: -10vw;
+  right: -10vw;
+  height: 26vh;
+  background-size: 200% 100%;
+  animation: edge-dream-drift 26s ease-in-out infinite alternate;
+}
+:root[data-vibe='dream'] .edge__a {
+  top: -4vh;
+  background-image:
+    radial-gradient(40% 70% at 12% 0%, rgba(255, 150, 226, 0.85), transparent 70%),
+    radial-gradient(36% 64% at 40% 0%, rgba(150, 160, 255, 0.8), transparent 70%),
+    radial-gradient(42% 70% at 70% 0%, rgba(160, 255, 236, 0.4), transparent 70%),
+    radial-gradient(36% 60% at 94% 0%, rgba(255, 190, 240, 0.55), transparent 70%);
+}
+:root[data-vibe='dream'] .edge__c {
+  bottom: -4vh;
+  animation-direction: alternate-reverse;
+  background-image:
+    radial-gradient(40% 70% at 20% 100%, rgba(150, 160, 255, 0.8), transparent 70%),
+    radial-gradient(36% 64% at 48% 100%, rgba(255, 150, 226, 0.85), transparent 70%),
+    radial-gradient(40% 70% at 78% 100%, rgba(160, 255, 236, 0.38), transparent 70%);
+}
+:root[data-vibe='dream'] .edge__b, :root[data-vibe='dream'] .edge__d { top: 0; bottom: 0; width: 9vw; }
+:root[data-vibe='dream'] .edge__b { right: 0; background: linear-gradient(270deg, rgba(255, 170, 236, 0.3), transparent); }
+:root[data-vibe='dream'] .edge__d { left: 0; background: linear-gradient(90deg, rgba(150, 165, 255, 0.3), transparent); }
+@keyframes edge-dream-drift { from { background-position: 0% 0; transform: translateX(0); } to { background-position: 60% 0; transform: translateX(4vw); } }
+/* the old inset glow is replaced */
+:root[data-vibe='dream'] .dreamfx__aurora { display: none; }

@@ -1,0 +1,25 @@
+/* EDGE: Terminal. The screen bezel is an instrument scale: tick marks run along the left and right edges and the scan head, a
+   bright phosphor bar with a fading trail, travels DOWN both rails as the line is sung (top = start, bottom = end), then jumps back to
+   the top for the next line. Along the top and bottom the bezel is a thin rule with a blinking corner mark. Phosphor flicker. */
+:root[data-vibe='crt'] .edge { --tg: #35ff7a; animation: edge-crt-flick 0.14s steps(2) infinite; }
+@keyframes edge-crt-flick { 50% { opacity: 0.93; } }
+:root[data-vibe='crt'] .edge__b, :root[data-vibe='crt'] .edge__d {
+  top: 0;
+  bottom: 0;
+  width: 2.2vh;
+  background:
+    linear-gradient(180deg, transparent calc(var(--lp, 0) * 100% - 16%), rgba(53, 255, 122, 0.5) calc(var(--lp, 0) * 100%), transparent calc(var(--lp, 0) * 100% + 0.4%)) 0 0 / 100% 100% no-repeat,
+    repeating-linear-gradient(180deg, rgba(53, 255, 122, 0.55) 0 1px, transparent 1px 2.7vh) 0 0 / 55% 100% no-repeat,
+    repeating-linear-gradient(180deg, rgba(53, 255, 122, 0.9) 0 1px, transparent 1px 13.5vh) 0 0 / 100% 100% no-repeat;
+  filter: drop-shadow(0 0 0.5vh var(--tg));
+}
+:root[data-vibe='crt'] .edge__b { right: 0; background-position: 0 0, 100% 0, 0 0; }
+:root[data-vibe='crt'] .edge__d { left: 0; }
+/* the scan head: a short bright bar on each rail */
+:root[data-vibe='crt'] .edge__b::after, :root[data-vibe='crt'] .edge__d::after { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--lp, 0) * 100%); height: 0.5vh; margin-top: -0.25vh; background: #eafff0; box-shadow: 0 0 1.2vh 0.3vh var(--tg); transition: top 0.08s linear; opacity: calc(0.35 + 0.65 * var(--lv, 0)); }
+:root[data-vibe='crt'] .edge__a, :root[data-vibe='crt'] .edge__c { left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(53, 255, 122, 0.6) 12%, rgba(53, 255, 122, 0.6) 88%, transparent); filter: drop-shadow(0 0 0.5vh var(--tg)); }
+:root[data-vibe='crt'] .edge__a { top: 0.9vh; }
+:root[data-vibe='crt'] .edge__c { bottom: 0.9vh; }
+/* the bezel mark in the corner blinks like a cursor */
+:root[data-vibe='crt'] .edge__a::after { content: ''; position: absolute; left: 1.4vh; top: -0.6vh; width: 1.2vh; height: 1.8vh; background: var(--tg); box-shadow: 0 0 1vh var(--tg); animation: edge-crt-blink 1.1s steps(1) infinite; }
+@keyframes edge-crt-blink { 50% { opacity: 0; } }

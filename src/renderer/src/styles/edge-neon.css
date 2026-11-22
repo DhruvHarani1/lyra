@@ -1,0 +1,43 @@
+/* EDGE: Neon. A glass-tube sign runs round the window in short segments. The tubes are dark until the song lights them: the lit
+   length grows clockwise from the top-left corner, a quarter of the way round per quarter of the line (--lp), then goes dark and
+   starts again on the next line. Pink on top and bottom, cyan down the sides; a segment buzzes now and then. */
+:root[data-vibe='neon'] .edge { --nt: 0.62vh; --ni: 1.3vh; --np: #ff4fa3; --nc: #6beaff; }
+:root[data-vibe='neon'] .edge > i { background: none; }
+:root[data-vibe='neon'] .edge > i::before,
+:root[data-vibe='neon'] .edge > i::after { content: ''; position: absolute; border-radius: 1vh; }
+/* dim glass (the unlit tube) */
+:root[data-vibe='neon'] .edge > i::before { inset: 0; background: rgba(255, 255, 255, 0.1); }
+/* the lit tube */
+:root[data-vibe='neon'] .edge > i::after { animation: edge-neon-buzz 7.3s steps(1) infinite; }
+:root[data-vibe='neon'] .edge__a, :root[data-vibe='neon'] .edge__c {
+  left: 2.4vw;
+  right: 2.4vw;
+  height: var(--nt);
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 5.2vw, transparent 5.2vw 5.8vw);
+  mask: repeating-linear-gradient(90deg, #000 0 5.2vw, transparent 5.2vw 5.8vw);
+  filter: drop-shadow(0 0 0.5vh var(--np)) drop-shadow(0 0 1.6vh var(--np));
+}
+:root[data-vibe='neon'] .edge__b, :root[data-vibe='neon'] .edge__d {
+  top: 2.4vh;
+  bottom: 2.4vh;
+  width: var(--nt);
+  -webkit-mask: repeating-linear-gradient(180deg, #000 0 5.2vh, transparent 5.2vh 5.8vh);
+  mask: repeating-linear-gradient(180deg, #000 0 5.2vh, transparent 5.2vh 5.8vh);
+  filter: drop-shadow(0 0 0.5vh var(--nc)) drop-shadow(0 0 1.6vh var(--nc));
+}
+:root[data-vibe='neon'] .edge__a { top: var(--ni); }
+:root[data-vibe='neon'] .edge__c { bottom: var(--ni); }
+:root[data-vibe='neon'] .edge__b { right: var(--ni); }
+:root[data-vibe='neon'] .edge__d { left: var(--ni); }
+:root[data-vibe='neon'] .edge__a::after, :root[data-vibe='neon'] .edge__c::after { top: 0; bottom: 0; background: linear-gradient(180deg, #fff 0 18%, var(--np) 40%); transition: width 0.12s linear; }
+:root[data-vibe='neon'] .edge__b::after, :root[data-vibe='neon'] .edge__d::after { left: 0; right: 0; background: linear-gradient(90deg, #fff 0 18%, var(--nc) 40%); transition: height 0.12s linear; }
+/* clockwise: top left to right, right top to bottom, bottom right to left, left bottom to top */
+:root[data-vibe='neon'] .edge__a::after { left: 0; width: clamp(0%, calc(var(--lp, 0) * 400%), 100%); }
+:root[data-vibe='neon'] .edge__b::after { top: 0; height: clamp(0%, calc((var(--lp, 0) - 0.25) * 400%), 100%); }
+:root[data-vibe='neon'] .edge__c::after { right: 0; width: clamp(0%, calc((var(--lp, 0) - 0.5) * 400%), 100%); }
+:root[data-vibe='neon'] .edge__d::after { bottom: 0; height: clamp(0%, calc((var(--lp, 0) - 0.75) * 400%), 100%); }
+:root[data-vibe='neon'] .edge__c::before, :root[data-vibe='neon'] .edge__c::after { }
+@keyframes edge-neon-buzz { 0%, 61%, 64%, 100% { opacity: 1; } 62% { opacity: 0.55; } 63% { opacity: 0.9; } 87% { opacity: 0.7; } 88% { opacity: 1; } }
+:root[data-vibe='neon'] .edge__b::after { animation-delay: -2s; }
+:root[data-vibe='neon'] .edge__c::after { animation-delay: -4s; }
+:root[data-vibe='neon'] .edge__d::after { animation-delay: -6s; }
