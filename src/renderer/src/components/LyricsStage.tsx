@@ -1,4 +1,5 @@
 import { memo, useMemo, useRef, useState } from 'react'
+import { KindCard, Meta, emojiFor, kindOf, reactionsFor } from './DmKinds'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { LyricLine, LyricStyle } from '@shared/types'
 import { useFrame } from '@/hooks/useLyricsSync'
@@ -354,7 +355,7 @@ function Chat({ lines, active }: { lines: readonly LyricLine[]; active: number }
   const track = usePlayer((s) => s.snapshot?.track ?? null)
   const art = useArtwork(track?.artworkUrl ?? null)
   const shown: number[] = []
-  for (let i = active; i >= 0 && shown.length < 4; i--) if (lines[i] && lines[i]!.text !== '') shown.unshift(i)
+  for (let i = active; i >= 0 && shown.length < 5; i--) if (lines[i] && lines[i]!.text !== '') shown.unshift(i)
   const cur = shown[shown.length - 1]
   return (
     <div className="chat">
@@ -363,8 +364,10 @@ function Chat({ lines, active }: { lines: readonly LyricLine[]; active: number }
         <div>
           <b>{track?.artists[0] ?? 'Lyra'}</b>
           <span>{track?.title ?? ''}</span>
+          <ChatStatus line={cur !== undefined ? lines[cur] : undefined} nextTime={cur !== undefined ? lines[cur + 1]?.timeMs : undefined} />
         </div>
       </header>
+      <div className="chat__day">Today</div>
       <div className="chat__shared">
         {art ? <img src={art} alt="" /> : <i />}
         <div>
@@ -375,7 +378,7 @@ function Chat({ lines, active }: { lines: readonly LyricLine[]; active: number }
       <div className="chat__feed">
         <AnimatePresence initial={false}>
           {shown.map((i, n) => (
-            <Bubble key={i} line={lines[i]!} nextTime={lines[i + 1]?.timeMs} side={i % 2 === 0 ? 'in' : 'out'} age={shown.length - 1 - n} live={i === cur} />
+            <Bubble key={i} index={i} prev={lines[i - 1]?.text ?? ''} line={lines[i]!} nextTime={lines[i + 1]?.timeMs} side={i % 2 === 0 ? 'in' : 'out'} age={shown.length - 1 - n} live={i === cur} />
           ))}
         </AnimatePresence>
       </div>
@@ -383,14 +386,27 @@ function Chat({ lines, active }: { lines: readonly LyricLine[]; active: number }
   )
 }
 
-const Bubble = memo(function Bubble({ line, nextTime, side, age, live }: { line: LyricLine; nextTime: number | undefined; side: 'in' | 'out'; age: number; live: boolean }) {
+/** "typing…" while the line is being sung, "online" in the gaps. */
+function ChatStatus({ line, nextTime }: { line: LyricLine | undefined; nextTime: number | undefined }) {
+  const words = useMemo(() => (line ? stageWords(line, nextTime) : []), [line, nextTime])
+  const revealed = useRevealed(words)
+  const typing = words.length > 0 && revealed < words.length
+  return <em className={`chat__status ${typing ? 'is-typing' : ''}`}>{typing ? 'typing…' : 'online'}</em>
+}
+
+const Bubble = memo(function Bubble({ line, nextTime, side, age, live, index, prev }: { line: LyricLine; nextTime: number | undefined; side: 'in' | 'out'; age: number; live: boolean; index: number; prev: string }) {
   const words = useMemo(() => stageWords(line, nextTime), [line, nextTime])
   const revealed = useRevealed(words, !live)
   const typing = live && revealed === 0
+  const track = usePlayer((s) => s.snapshot?.track ?? null)
+  const art = useArtwork(track?.artworkUrl ?? null)
+  const kind = kindOf(index)
+  const reacts = reactionsFor(kind, index)
+  const done = live ? revealed >= words.length : true
   return (
     <motion.div
       layout="position"
-      className={`bub bub--${side} ${live ? 'is-live' : ''}`}
+      className={`bub bub--${side} bub--k-${kind} ${live ? 'is-live' : ''}`}
       initial={{ opacity: 0, y: 40, scale: 0.7 }}
       animate={{ opacity: live ? 1 : Math.max(0.5, 0.85 - age * 0.14), y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -50, scale: 0.9 }}
@@ -404,15 +420,19 @@ const Bubble = memo(function Bubble({ line, nextTime, side, age, live }: { line:
             <i />
           </span>
         )}
+        <KindCard kind={kind} index={index} words={words.map((w) => w.text)} shown={revealed} title={track?.title ?? ''} artist={track?.artists[0] ?? ''} art={art} prev={prev} />
         <span className="bub__text">
+          {kind === 'emoji' && <em className="bub__emoji">{emojiFor(index)} </em>}
           {words.map((w, i) => (
             <span key={i} className={i < revealed ? 'is-in' : ''}>
               {w.text}{' '}
             </span>
           ))}
         </span>
+        <Meta index={index} out={side === 'out'} read={done} />
+        {reacts.length > 0 && <span className="bub__react">{reacts.join(' ')}</span>}
       </div>
-      {live && revealed >= words.length && <small className="bub__read">Read ✓✓</small>}
+      {live && revealed >= words.length && <small className="bub__read">{side === 'out' ? 'Read ✓✓' : 'Delivered'}</small>}
     </motion.div>
   )
 })
