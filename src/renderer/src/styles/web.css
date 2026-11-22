@@ -1,0 +1,78 @@
+/* ==========================================================================
+   WEB: silk in the dark (fullscreen: one file, layout mechanics are in scene.css).
+   A web spun across the top-right corner, the video a round dewdrop that hangs from a silk thread (a small spider climbs the
+   thread), the lyrics hang in an arch of beads on the left, the player is a glass bead.
+   Edge (edge-web.css): a web fan in every corner of the window; the threads twang and settle on every lyric line.
+   ========================================================================== */
+:root[data-vibe='web'] {
+  --rimc: #d9e3ff;
+  --nv-bg: rgba(22, 26, 48, 0.6);
+  --nv-radius: 6vh;
+  --nv-blur: 20px;
+  --nv-shadow: inset 0 0 0 1px rgba(207, 220, 255, 0.4), inset 0 1.2vh 1.6vh rgba(255, 255, 255, 0.07), 0 2vh 5vh rgba(0, 0, 0, 0.55);
+  --sc-ww: min(30vw, 48vh);
+  --sc-wh: var(--sc-ww);
+  --sc-wl: calc(94vw - var(--sc-ww));
+  --sc-wt: 26vh;
+  --sc-wr: 50%;
+  --sc-cl: 6vw;
+  --sc-cb: 6vh;
+  --sc-ct: auto;
+  --sc-cw: min(44vw, 540px);
+  --sc-ll: 6vw;
+  --sc-lt: 14vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 6vw - 4vw);
+  --sc-lb: 22vh;
+  --sc-lbs: 22vh;
+}
+:root[data-vibe='web'][data-rim='on']::after { display: none; }
+[data-vibe='web'] .backdrop .backdrop__field { background: radial-gradient(70% 80% at 85% 8%, #232a55, transparent 70%), radial-gradient(90% 80% at 20% 90%, #14183a, #070812 80%); }
+[data-vibe='web'] .scenewin { box-shadow: 0 0 0 0.5vh rgba(207, 220, 255, 0.7), 0 0 0 1.4vh rgba(207, 220, 255, 0.12), 0 0 7vh rgba(207, 220, 255, 0.35), inset 0 0 5vh rgba(207, 220, 255, 0.25); }
+
+.wbfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.wbfx__web { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: rgba(207, 220, 255, 0.3); stroke-width: 1.1; vector-effect: non-scaling-stroke; }
+.wbfx__web path { vector-effect: non-scaling-stroke; }
+.wbfx__thread { position: absolute; left: calc(var(--sc-wl) + var(--sc-ww) / 2); top: 0; width: 1px; height: var(--sc-wt); background: linear-gradient(180deg, rgba(207, 220, 255, 0.2), rgba(207, 220, 255, 0.95)); transform-origin: 50% 0; animation: wb-hang 7s ease-in-out infinite alternate; transition: height 0.7s; box-shadow: 0 0 0.8vh rgba(207, 220, 255, 0.6); }
+@keyframes wb-hang { from { transform: rotate(-0.5deg); } to { transform: rotate(0.5deg); } }
+.wbfx__spider { position: absolute; left: -0.9vh; top: 10%; width: 1.8vh; height: 1.8vh; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #aab7e6, #0b0d1a 60%); box-shadow: 0 0 0 1px rgba(207, 220, 255, 0.5); animation: wb-climb 16s ease-in-out infinite alternate; }
+.wbfx__spider::before { content: ''; position: absolute; inset: -0.9vh -1.5vh; background: linear-gradient(0deg, transparent 47%, rgba(207, 220, 255, 0.8) 48% 52%, transparent 53%), linear-gradient(58deg, transparent 47%, rgba(207, 220, 255, 0.8) 48% 52%, transparent 53%), linear-gradient(-58deg, transparent 47%, rgba(207, 220, 255, 0.8) 48% 52%, transparent 53%); }
+@keyframes wb-climb { 0% { top: 8%; } 40% { top: 62%; } 55% { top: 62%; } 100% { top: 78%; } }
+.wbfx__dew { position: absolute; width: 1.6vh; height: 1.6vh; border-radius: 50%; background: radial-gradient(circle at 32% 30%, #fff 0 12%, rgba(207, 220, 255, 0.55) 30%, rgba(207, 220, 255, 0.1) 70%); box-shadow: inset 0 -0.3vh 0.5vh rgba(40, 60, 140, 0.5), 0 0.3vh 0.8vh rgba(0, 0, 0, 0.4); animation: wb-twinkle 5s ease-in-out infinite; }
+.wbfx__dew--0 { left: 58vw; top: 9vh; } .wbfx__dew--1 { left: 72vw; top: 16vh; animation-delay: -1.2s; width: 1.1vh; height: 1.1vh; }
+.wbfx__dew--2 { left: 84vw; top: 6vh; animation-delay: -2.4s; } .wbfx__dew--3 { left: 45vw; top: 4vh; animation-delay: -3.1s; width: 1.2vh; height: 1.2vh; }
+.wbfx__dew--4 { left: 93vw; top: 22vh; animation-delay: -4s; width: 1.2vh; height: 1.2vh; }
+@keyframes wb-twinkle { 0%, 100% { opacity: 0.55; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.12); } }
+:root[data-motion='off'] .wbfx * { animation: none !important; }
+:root[data-calm] .wbfx * { animation-play-state: paused; }
+:root[data-vibe='web']:not(:is([data-mode='full'], [data-mode='mini'])) .wbfx > :not(.scenewin) { display: none; }
+:root[data-platform='android'][data-vibe='web'] .wbfx__thread, :root[data-platform='android'][data-vibe='web'] .wbfx__dew { display: none; }
+@media (max-aspect-ratio: 1/1) { .wbfx__thread, .wbfx__dew { display: none; } }
+
+/* ---------------- the card: a glass bead ---------------- */
+:root[data-vibe='web']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { border-radius: 6vh !important; padding: 1.2vh 3vh 1.2vh 1.2vh !important; }
+:root[data-vibe='web']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { border-radius: 50% !important; box-shadow: 0 0 0 0.3vh rgba(207, 220, 255, 0.6); }
+:root[data-vibe='web']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 700 2.2vh/1.1 'Inter Variable', sans-serif; letter-spacing: -0.02em; }
+:root[data-vibe='web']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #8fa6ff, #fff); height: 0.5vh; border-radius: 1vh; }
+:root[data-vibe='web']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { height: 0.5vh; border-radius: 1vh; }
+:root[data-vibe='web']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: radial-gradient(circle at 35% 30%, #fff, #b8c8ff) !important; color: #14162a !important; box-shadow: 0 0 2vh rgba(207, 220, 255, 0.5) !important; }
+
+/* ---------------- lyrics: a string of beads (stage 'weave', set in looks2.css) ---------------- */
+.sign--weave .sign__word.is-now { color: #fff; text-shadow: 0 0 2.2vh rgba(207, 220, 255, 0.9), 0 0 0.6vh #fff; }
+.sign--weave .sign__word.is-now::after { height: 0.9vh; width: 0.9vh; border-radius: 50%; margin: 0.4em auto 0; background: radial-gradient(circle at 35% 30%, #fff, #8fa6ff); box-shadow: 0 0 1.4vh rgba(207, 220, 255, 0.9); opacity: 1; }
+
+/* ---------------- settings + swatch ---------------- */
+:root[data-vibe='web'] .sidepanel {
+  --panel: #0c0f20; --fg: #eef2ff; --fg-2: rgba(238,242,255,.82); --fg-3: rgba(238,242,255,.62); --line: rgba(207,220,255,.2); --line-2: rgba(207,220,255,.34); --accent: #cfdcff; --glow: #cfdcff; --glow-soft: transparent;
+  background: radial-gradient(120% 60% at 100% 0, #1f2650, #0c0f20 60%); color: #eef2ff; border: 1px solid rgba(207,220,255,.4); border-radius: 30px; box-shadow: 0 0 60px rgba(120,140,255,.18), 0 30px 70px -20px rgba(0,0,0,.8);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+:root[data-vibe='web'] .sidepanel .settings section { background: rgba(207,220,255,.06); box-shadow: 0 0 0 1px rgba(207,220,255,.18); border-radius: 18px; }
+:root[data-vibe='web'] .sidepanel h3, :root[data-vibe='web'] .sidepanel .settings h4 { font-family: 'Inter Variable', sans-serif; letter-spacing: .12em; color: #aab4d8; }
+:root[data-vibe='web'] .sidepanel .stabs button.is-on { background: radial-gradient(circle at 30% 30%, #fff, #b8c8ff); color: #14162a; box-shadow: 0 0 14px rgba(207,220,255,.5); }
+.vibecard--web .vibecard__sw { background: radial-gradient(circle at 80% 60%, #cfdcff 0 12%, transparent 13%), repeating-conic-gradient(from 90deg at 100% 0, rgba(207,220,255,.55) 0 2deg, transparent 2deg 15deg), #0c0f20; }
+
+/* ---------------- Android: a glass bead dock, the web in the corner ---------------- */
+:root[data-platform='android'][data-vibe='web'] .mini--phone .phone__dock { background: rgba(22, 26, 48, 0.62); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border-radius: 34px 34px 0 0; box-shadow: inset 0 1px 0 rgba(207, 220, 255, 0.45), 0 -10px 40px rgba(0, 0, 0, 0.5); }
+
+/* a small window: a rounded window rather than an oval (the portrait layout makes the window wider than tall) */
+@media (max-aspect-ratio: 1/1) { :root[data-vibe="web"] { --sc-wr: 6vh; } }

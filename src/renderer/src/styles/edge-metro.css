@@ -1,0 +1,18 @@
+/* METRO edge: the three line colours run along the top (under the platform sign) and the bottom, stations as dots. A train leaves
+   the left of the top line on every lyric line and eases into the next station as the line ends (position from --lp, ease-out);
+   a smaller train runs the bottom line the other way. */
+:root[data-vibe='metro'] .edge__a { top: 11vh; height: 2.4vh; background:
+    radial-gradient(circle, #fff 0 0.5vh, #0a0a0f 0.5vh 0.85vh, transparent 0.9vh) 0 -0.24vh / 10vw 2.4vh repeat-x,
+    linear-gradient(#ff3b6b 0 0.55vh, transparent 0.55vh 0.95vh, #35c6ff 0.95vh 1.5vh, transparent 1.5vh 1.85vh, #ffd23f 1.85vh 2.4vh); }
+:root[data-vibe='metro'] .edge__a::after { content: ''; position: absolute; top: -0.5vh; width: 11vh; height: 3.4vh; border-radius: 1.4vh 2.2vh 2.2vh 1.4vh; background: repeating-linear-gradient(90deg, #15151a 0 1.2vh, transparent 1.2vh 1.5vh) 0.8vh 0.7vh / 9.4vh 1.1vh no-repeat, linear-gradient(#fff, #d9d6cf); box-shadow: 0 0.5vh 1.2vh rgba(0, 0, 0, 0.6), 0 0 0 0.25vh #15151a; left: calc(sin(calc(min(var(--lp, 0) / 0.82, 1) * 1.5708)) * (100% - 11vh)); }
+:root[data-vibe='metro'] .edge__c { height: 1.1vh; background: linear-gradient(#ffd23f 0 0.45vh, transparent 0.45vh 0.7vh, #35c6ff 0.7vh); }
+:root[data-vibe='metro'] .edge__c::after { content: ''; position: absolute; top: -1.2vh; width: 7vh; height: 2.4vh; border-radius: 1.4vh 1vh 1vh 1.4vh; background: linear-gradient(#35c6ff, #1a8fbf); box-shadow: 0 0.4vh 1vh rgba(0, 0, 0, 0.55); right: calc(sin(calc(min(var(--lp, 0) / 0.82, 1) * 1.5708)) * (100% - 7vh)); }
+:root[data-vibe='metro'] .edge__b, :root[data-vibe='metro'] .edge__d { width: 0.5vh; opacity: 0.7; }
+:root[data-vibe='metro'] .edge__b { background: #ffd23f; box-shadow: 0 0 1.4vh rgba(255, 210, 63, 0.5); }
+:root[data-vibe='metro'] .edge__d { background: #ff3b6b; box-shadow: 0 0 1.4vh rgba(255, 59, 107, 0.5); }
+
+/* the settings panel (z 21) and its scrim sit over the edge */
+:root[data-vibe='metro']:has(.sidepanel) .edge { z-index: 19; }
+/* no platform sign (small window, phone): the lines run along the very top */
+@media (max-aspect-ratio: 1/1) { :root[data-vibe='metro'] .edge__a { top: 0; } }
+:root[data-platform='android'][data-vibe='metro'] .edge__a { top: 0; }
