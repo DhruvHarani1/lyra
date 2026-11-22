@@ -1,0 +1,12 @@
+/* FILM STRIP edge: the strip's edge code. A black band along the bottom prints KODAK 5219 ▸ 12A… in yellow and scrolls it
+   endlessly to the left; the frame number on the right counts the lyric lines (--li) and the picture-gate bracket on the left
+   edge slides down with the line (--lp). Along the top, a thin perforation row steps one hole per new line. */
+:root[data-vibe='filmstrip'] .edge__c { height: 3.2vh; background: #0b0805; overflow: hidden; box-shadow: 0 -0.3vh 0 rgba(20, 16, 10, 0.4); }
+:root[data-vibe='filmstrip'] .edge__c::before { content: 'KODAK 5219 ▸ 12A ▸ ◂ SAFETY FILM ▸ 13 ▸ KODAK 5219 ▸ 13A ▸ ◂ SAFETY FILM ▸ 14 ▸ KODAK 5219 ▸ 14A ▸ ◂ SAFETY FILM ▸ 15 ▸ KODAK 5219 ▸ 15A ▸ ◂ SAFETY FILM ▸ 16 ▸ KODAK 5219 ▸ 16A ▸ ◂ SAFETY FILM ▸ 17 ▸ '; position: absolute; left: 0; top: 0; line-height: 3.2vh; white-space: nowrap; font: 700 1.5vh/3.2vh 'Inter Variable', sans-serif; letter-spacing: 0.28em; color: #ffb400; animation: fs-code 60s linear infinite; }
+@keyframes fs-code { to { transform: translateX(-50%); } }
+:root[data-vibe='filmstrip'] .edge__b::before { content: counter(fs-n, decimal-leading-zero) 'A'; counter-reset: fs-n var(--li, 0); position: absolute; right: 1.2vw; bottom: 4.4vh; padding: 0.4vh 1vh; background: #0b0805; color: #ffb400; font: 800 1.9vh/1 'Unbounded Variable', sans-serif; letter-spacing: 0.06em; }
+:root[data-vibe='filmstrip'] .edge__d::before { content: ''; position: absolute; left: 0.8vw; top: calc(8% + var(--lp, 0) * 76%); width: 2.2vh; height: 9vh; border: 0.35vh solid #14100a; border-right: 0; transition: top 0.1s linear; opacity: calc(0.35 + var(--lv, 0) * 0.65); }
+:root[data-vibe='filmstrip'] .edge__a { height: 1.4vh; background: repeating-linear-gradient(90deg, #14100a 0 1.6vh, transparent 1.6vh 3.2vh); background-position: calc(var(--li, 0) * 3.2vh) 0; transition: background-position 0.5s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0.8; }
+:root[data-platform='android'][data-vibe='filmstrip'] .edge__c { height: 18px; }
+:root[data-platform='android'][data-vibe='filmstrip'] .edge__c::before { font-size: 10px; line-height: 18px; }
+:root[data-platform='android'][data-vibe='filmstrip'] .edge__b::before { font-size: 11px; bottom: 26px; }

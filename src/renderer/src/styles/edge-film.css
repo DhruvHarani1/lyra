@@ -1,0 +1,21 @@
+/* FILM REEL edge: two film rails run down the left and right of the screen. Sprocket holes (the ::before column) advance one
+   frame on every lyric line (--li drives background-position, a transition makes the jump) and creep slowly while a line is
+   sung. Top and bottom carry a projector shadow with a gate flicker. */
+:root[data-vibe='film'] .edge__d,
+:root[data-vibe='film'] .edge__b { width: 4.6vw; background: #070503; box-shadow: 0 0 2vh rgba(0, 0, 0, 0.8); }
+:root[data-vibe='film'] .edge__d { border-right: 1px solid rgba(255, 244, 220, 0.18); }
+:root[data-vibe='film'] .edge__b { border-left: 1px solid rgba(255, 244, 220, 0.18); }
+:root[data-vibe='film'] .edge__d::before,
+:root[data-vibe='film'] .edge__b::before { content: ''; position: absolute; left: 1.3vw; width: 2vw; top: 0; bottom: 0; border-radius: 0.5vh;
+  background: repeating-linear-gradient(180deg, #e9e1cf 0 2.6vh, transparent 2.6vh 5.2vh);
+  background-position: 0 calc(var(--li, 0) * -10.4vh - var(--lp, 0) * 3vh); transition: background-position 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+:root[data-vibe='film'] .edge__b::before { background-position: 0 calc(var(--li, 0) * -10.4vh - var(--lp, 0) * 3vh); }
+:root[data-vibe='film'] .edge__a,
+:root[data-vibe='film'] .edge__c { height: 9vh; animation: fm-flick 0.18s steps(2) infinite; }
+:root[data-vibe='film'] .edge__a { background: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent); }
+:root[data-vibe='film'] .edge__c { background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent); }
+@keyframes fm-flick { 0% { opacity: 0.85; } 50% { opacity: 1; } 100% { opacity: 0.9; } }
+:root[data-vibe='film'] .edge__d::after { content: ''; position: absolute; left: 4.6vw; top: calc(10% + var(--lp, 0) * 70%); width: 1px; height: 14vh; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5), transparent); }
+:root[data-vibe='film'][data-mode='mini'] .edge__d, :root[data-vibe='film'][data-mode='mini'] .edge__b { width: 7vw; }
+:root[data-platform='android'][data-vibe='film'] .edge__d, :root[data-platform='android'][data-vibe='film'] .edge__b { width: 14px; }
+:root[data-platform='android'][data-vibe='film'] .edge__d::before, :root[data-platform='android'][data-vibe='film'] .edge__b::before { left: 4px; width: 6px; }

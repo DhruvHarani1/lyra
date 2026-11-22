@@ -68,6 +68,12 @@ import './styles/p-comic.css'
 import './styles/edge-comic.css'
 import './styles/p-stencil.css'
 import './styles/edge-stencil.css'
+import './styles/p-film.css'
+import './styles/edge-film.css'
+import './styles/p-filmstrip.css'
+import './styles/edge-filmstrip.css'
+import './styles/p-lock.css'
+import './styles/edge-lock.css'
 import './styles/minsizes.css'
 
 // Let CSS honour the in-app settings: reduced motion, rim light and the vibe in effect (a cycled / smart vibe is

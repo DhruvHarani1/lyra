@@ -1,0 +1,13 @@
+/* LOCK SCREEN edge: the phone's own chrome. The top edge is the status bar (a lavender glow, "Lyra" on the left, signal and
+   battery on the right); the bottom edge is the home indicator, a pill that fills white as the current line is sung (--lp),
+   and flashes brighter while a line is being sung (--lv). */
+:root[data-vibe='lock'] .edge__a { height: 7vh; background: linear-gradient(180deg, rgba(183, 155, 255, 0.45), transparent); }
+:root[data-vibe='lock'] .edge__a::before { content: 'Lyra  ▂▄▆█'; position: absolute; left: 3vw; top: 1.8vh; font: 600 1.8vh/1 'Inter Variable', sans-serif; letter-spacing: 0.04em; color: #fff; opacity: 0.9; }
+:root[data-vibe='lock'] .edge__a::after { content: '100%  ▮'; position: absolute; right: 16vw; top: 1.8vh; font: 600 1.8vh/1 'Inter Variable', sans-serif; letter-spacing: 0.04em; color: #fff; opacity: 0.9; }
+:root[data-vibe='lock'] .edge__c { left: 32vw; right: 32vw; bottom: 1.8vh; height: 0.8vh; border-radius: 1vh; background: rgba(255, 255, 255, 0.32); overflow: hidden; }
+:root[data-vibe='lock'] .edge__c::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--lp, 0) * 100%); border-radius: 1vh; background: #fff; transition: width 0.08s linear; opacity: calc(0.7 + var(--lv, 0) * 0.3); }
+:root[data-vibe='lock'] .edge__b, :root[data-vibe='lock'] .edge__d { width: 0.4vw; background: linear-gradient(180deg, rgba(183, 155, 255, 0.4), transparent 30%, transparent 70%, rgba(255, 92, 168, 0.35)); }
+:root[data-vibe='lock'][data-mode='mini'] .edge__a::before, :root[data-vibe='lock'][data-mode='mini'] .edge__a::after { font-size: 10px; top: 5px; }
+:root[data-platform='android'][data-vibe='lock'] .edge__a { height: 40px; }
+:root[data-platform='android'][data-vibe='lock'] .edge__a::before, :root[data-platform='android'][data-vibe='lock'] .edge__a::after { display: none; }
+:root[data-platform='android'][data-vibe='lock'] .edge__c { left: 30%; right: 30%; bottom: 8px; height: 5px; }
