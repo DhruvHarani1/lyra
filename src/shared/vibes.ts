@@ -21,7 +21,7 @@ export interface VibeInfo {
 }
 
 export const VIBES: readonly VibeInfo[] = [
-  { id: 'none', layout: 'side', style: 'classic', name: 'Artwork', tag: 'Colours from the cover' },
+  { id: 'none', layout: 'scene', style: 'classic', name: 'Artwork', tag: 'A gallery wall lit in the colours of the cover' },
   { id: 'neon', layout: 'scene', style: 'sign', name: 'Neon', tag: 'Rain alley, neon signs' },
   { id: 'chrome', layout: 'scene', style: 'liquid', name: 'Chrome', tag: 'Y2K liquid metal' },
   { id: 'dream', layout: 'scene', style: 'constellation', name: 'Dream', tag: 'Pastel star map' },

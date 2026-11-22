@@ -22,6 +22,20 @@ function SceneWindow({ children }: { children?: ReactNode }) {
   )
 }
 
+/** Artwork: a gallery wall. The wall is the cover's colours, the video hangs as a framed print under a brass picture light. */
+function NoneFx() {
+  return (
+    <div className="nonefx">
+      <div className="nonefx__wall" />
+      <div className="nonefx__lamp" />
+      <SceneWindow />
+      <div className="nonefx__frame" />
+      <div className="nonefx__bar" />
+      <div className="nonefx__floor" />
+    </div>
+  )
+}
+
 /** Chrome: liquid-metal blobs drift in the dark blue, a highlight runs around the screen edge, the video sits in a chrome bezel. */
 function ChromeFx({ sparkles }: { sparkles: { x: number; y: number; s: number; d: number }[] }) {
   return (
@@ -645,7 +659,7 @@ export function VibeFx() {
       })),
     []
   )
-  if (vibe === 'none') return null
+  if (vibe === 'none') return <NoneFx />
   return (
     <div className={`vibefx vibefx--${vibe}`} aria-hidden="true">
       <i className="vibeflash" key={vibe} />

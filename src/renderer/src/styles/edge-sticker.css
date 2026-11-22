@@ -1,0 +1,24 @@
+/* EDGE: Stickers. Four die-cut stickers sit half off the edge of the sheet. While a line is sung they are SLAPPED on one after the
+   other (each scales up from nothing a few seconds apart through the line, --lp), their colour comes from the line number (--li), and
+   when the next line starts they peel off and go again. Every one is a different shape. */
+:root[data-vibe='sticker'] .edge > i {
+  --pop: clamp(0, calc((var(--lp, 0) - var(--n) * 0.2) * 9), 1);
+  display: grid;
+  place-items: center;
+  width: 9vh;
+  height: 9vh;
+  background: hsl(calc(var(--li, 0) * 57 + var(--n) * 90) 95% 62%);
+  border: 0.45vh solid #fff;
+  box-shadow: 0.4vh 0.6vh 1.2vh rgba(0, 0, 0, 0.4);
+  color: #15101f;
+  font: 900 4.2vh/1 'Nunito Variable', system-ui, sans-serif;
+  scale: var(--pop);
+  transition: scale 0.14s cubic-bezier(0.3, 1.8, 0.5, 1), background 0.3s;
+}
+:root[data-vibe='sticker'] .edge > i::before { content: var(--g); }
+:root[data-vibe='sticker'] .edge > .edge__a { --n: 0; --g: '★'; left: 74vw; top: -3vh; height: 9vh; border-radius: 50%; rotate: -12deg; }
+:root[data-vibe='sticker'] .edge > .edge__b { --n: 1; --g: '♥'; right: -2.6vh; top: 50vh; bottom: auto; left: auto; width: 10vh; height: 10vh; border-radius: 2.2vh; rotate: 14deg; }
+:root[data-vibe='sticker'] .edge > .edge__c { --n: 2; --g: 'WOW'; left: 62vw; bottom: -3vh; right: auto; width: 17vh; height: 7.4vh; border-radius: 99px; rotate: 5deg; font-size: 3.2vh; letter-spacing: 0.04em; }
+:root[data-vibe='sticker'] .edge > .edge__d { --n: 3; --g: '✦'; left: -2.8vh; top: 62vh; bottom: auto; right: auto; border-radius: 40% 60% 55% 45%; rotate: -16deg; }
+:root[data-vibe='sticker'] .edge > i::after { content: ''; position: absolute; right: -0.5vh; top: -0.5vh; width: 2.4vh; height: 2.4vh; background: linear-gradient(225deg, #fff 50%, rgba(0, 0, 0, 0.18) 50%); border-radius: 0 0 0 100%; }
+:root[data-vibe='sticker'] .edge__c::after, :root[data-vibe='sticker'] .edge__d::after { display: none; }

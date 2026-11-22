@@ -1,0 +1,39 @@
+/* EDGE: Chrome. A thin polished-metal bevel frames the window. A specular highlight glides along it once per line; its direction
+   flips with every new line (left to right, then right to left), and it travels exactly as far as the line has been sung (--lp).
+   The bevel has a bright top edge and a dark bottom edge like real chrome; the vertical sides carry a slower, softer glint. */
+:root[data-vibe='chrome'] .edge__a {
+  inset: 0;
+  height: auto;
+  box-sizing: border-box;
+  padding: 0.8vh;
+  border-radius: 0;
+  background:
+    linear-gradient(100deg, transparent calc(var(--cx, 0%) - 14%), rgba(255, 255, 255, 1) var(--cx, 0%), transparent calc(var(--cx, 0%) + 14%)),
+    linear-gradient(180deg, #f2f8ff 0%, #9fb8e8 30%, #4a62a8 55%, #cfe0ff 100%);
+  --cx: calc(var(--lt, 0) * 100% + (1 - 2 * var(--lt, 0)) * var(--lp, 0) * 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 0.6vh rgba(143, 209, 255, 0.55));
+}
+/* the bloom of the highlight on the glass just inside the bevel (top and bottom only) */
+:root[data-vibe='chrome'] .edge__b, :root[data-vibe='chrome'] .edge__d {
+  top: 0;
+  bottom: 0;
+  width: 14vh;
+  opacity: calc(0.35 + 0.55 * var(--lv, 0));
+  transition: opacity 0.8s ease;
+}
+:root[data-vibe='chrome'] .edge__b { right: 0; background: linear-gradient(270deg, rgba(190, 220, 255, 0.28), transparent); }
+:root[data-vibe='chrome'] .edge__d { left: 0; background: linear-gradient(90deg, rgba(190, 220, 255, 0.28), transparent); }
+:root[data-vibe='chrome'] .edge__c {
+  left: 0;
+  right: 0;
+  height: 16vh;
+  background: linear-gradient(0deg, rgba(210, 230, 255, 0.3), transparent);
+  -webkit-mask: linear-gradient(90deg, transparent calc(var(--cx, 0%) - 24%), #000 var(--cx, 0%), transparent calc(var(--cx, 0%) + 24%));
+  mask: linear-gradient(90deg, transparent calc(var(--cx, 0%) - 24%), #000 var(--cx, 0%), transparent calc(var(--cx, 0%) + 24%));
+  --cx: calc(var(--lt, 0) * 100% + (1 - 2 * var(--lt, 0)) * var(--lp, 0) * 100%);
+  mix-blend-mode: screen;
+}

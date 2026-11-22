@@ -1,0 +1,26 @@
+/* EDGE: Artwork. A ring in the colours of the cover circles the window clockwise; it brightens while a line is sung and a soft
+   inner glow swells with how far through the line the song is. Clockwise, steady, calm. */
+@property --edge-none-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+:root[data-vibe='none'] .edge__a {
+  inset: 0;
+  height: auto;
+  box-sizing: border-box;
+  padding: 5px;
+  background: conic-gradient(from var(--edge-none-a), transparent 0deg 120deg, color-mix(in srgb, var(--tint1, #fff) 70%, transparent) 220deg, var(--accent) 300deg, #fff 358deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: calc(0.55 + 0.45 * var(--lv, 0));
+  transition: opacity 0.9s ease;
+  animation: edge-none-orbit 16s linear infinite;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+@keyframes edge-none-orbit { to { --edge-none-a: 360deg; } }
+:root[data-vibe='none'] .edge__b {
+  inset: 0;
+  width: auto;
+  box-shadow: inset 0 0 calc(28px + 70px * var(--lp, 0)) -14px color-mix(in srgb, var(--accent) 65%, transparent);
+  opacity: calc(0.45 + 0.4 * var(--lv, 0));
+  transition: opacity 0.9s ease;
+}
