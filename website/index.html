@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lyra — lyrics that move with the music · Windows, Android · 20 looks</title>
-  <meta name="description" content="Lyra shows word-by-word synced lyrics over the music video of whatever you play, in 20 hand-designed looks. Free, open source, no account. Windows and Android." />
+  <title>Lyra — lyrics that move with the music · Windows, Android · 33 looks</title>
+  <meta name="description" content="Lyra shows word-by-word synced lyrics over the music video of whatever you play, in 33 hand-designed looks. Free, open source, no account. Windows and Android." />
   <meta name="theme-color" content="#06050a" />
   <meta property="og:title" content="Lyra — lyrics that move with the music" />
-  <meta property="og:description" content="20 designed looks, word-by-word lyrics, music-video backgrounds. Free and open source." />
+  <meta property="og:description" content="33 designed looks, word-by-word lyrics, music-video backgrounds. Free and open source." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/shots/sheet-vibes.jpg" />
   <link rel="icon" href="assets/icon.png" />
@@ -21,11 +21,13 @@
   <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="grain" aria-hidden="true"></div>
   <div class="spot" id="spot" aria-hidden="true"></div>
+  <div class="prog" id="prog" aria-hidden="true"></div>
+  <a class="skip" href="#top">Skip to content</a>
 
   <header class="nv">
     <a class="brand" href="./"><img src="assets/icon.png" alt="" width="26" height="26" /> Lyra</a>
     <nav>
-      <a href="#looks">20 looks</a>
+      <a href="#looks">33 looks</a>
       <a href="#states">Every state</a>
       <a href="#cards">Cards</a>
       <a href="#demo">Try it</a>
@@ -34,13 +36,18 @@
       <a href="whats-new">What’s new</a>
     </nav>
     <a class="btn btn--sm btn--acc" href="#download">Download</a>
+    <button class="nv__burger" id="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
   </header>
+  <div class="mnav" id="mnav" hidden>
+    <a href="#looks">33 looks</a><a href="#states">Every state</a><a href="#cards">Cards</a><a href="#demo">Try it</a><a href="#android">Android</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a class="btn btn--acc" href="#download">Download</a>
+  </div>
 
   <main id="top">
     <!-- HERO -->
     <section class="hx">
+      <div class="hx__grid" aria-hidden="true"></div>
       <div class="hx__copy">
-        <p class="eyebrow reveal"><span class="dot"></span> Free · open source · no account · now with 20 looks</p>
+        <p class="eyebrow reveal"><span class="dot"></span> Free · open source · no account · now with 33 looks</p>
         <h1 id="hero-h1" aria-label="Lyrics that move with the music."><span class="w">Lyrics</span> <span class="w">that</span> <span class="w hot">move</span><br /><span class="w">with</span> <span class="w">the</span> <span class="w">music.</span></h1>
         <p class="lead reveal">Lyra reads what you play and shows it word by word, over the music video itself, in a look designed for the mood: neon tubes, a pencil sketchbook, a terminal, a stadium scoreboard, a film strip.</p>
         <div class="cta reveal">
@@ -69,11 +76,18 @@
 
     <!-- TICKER -->
     <div class="tick" aria-hidden="true"><div class="tick__track" id="tick"></div></div>
+    <div class="tick tick--rev" aria-hidden="true"><div class="tick__track" id="tick2"></div></div>
+
+    <!-- THE WALL -->
+    <section class="wallx" id="wall" aria-label="All 33 looks, one tap to open">
+      <div class="wallx__head"><p class="mono reveal">All 33, at once</p><h2 class="reveal">A whole <em>wall</em> of looks.</h2><p class="lead reveal">Every tile is a real screenshot of Lyra. Tap one to open it below.</p></div>
+      <div class="wallx__stage" id="wall-stage"></div>
+    </section>
 
     <!-- STATS -->
     <section class="sx" style="padding-top:60px">
       <div class="stats reveal">
-        <div><b data-count="20">20</b><span>hand-designed looks, each with its own type, colour and motion</span></div>
+        <div><b data-count="33">33</b><span>hand-designed looks, each with its own type, colour and motion</span></div>
         <div><b data-count="4">4</b><span>screens designed for every look: synced, unsynced, no lyrics, video</span></div>
         <div><b data-count="3">3</b><span>sizes: full screen, mini player, Android phone and tablet</span></div>
         <div><b>0</b><span>accounts, trackers or ads. Open source, MIT licence</span></div>
@@ -84,24 +98,25 @@
     <section class="sx" id="looks">
       <div class="sx__head">
         <p class="mono reveal">01 · The looks</p>
-        <h2 class="reveal">One song.<br /><em>Twenty</em> ways to see it.</h2>
+        <h2 class="reveal">One song.<br /><em>Thirty-three</em> ways to see it.</h2>
         <p class="lead reveal">A look is not a theme colour. It changes the type, the way each word arrives, the background, the player card, the cover frame, the Settings panel and even the card you share. Pick a favourite, cycle with one key, or let Lyra choose by the song.</p>
       </div>
       <div class="show">
-        <div class="show__list" id="show-list" role="tablist" aria-label="Looks"></div>
+        <div class="show__list" id="show-list" role="group" aria-label="Looks"></div>
         <div class="show__stage reveal">
           <div class="show__bar">
-            <div class="seg" id="seg-dev" role="tablist" aria-label="Device">
+            <button class="shuf" id="show-shuffle" type="button">Shuffle ⟳</button>
+            <div class="seg" id="seg-dev" role="group" aria-label="Device">
               <button class="is-on" data-dev="full">Full screen</button>
               <button data-dev="phone">Android</button>
               <button data-dev="mini">Mini player</button>
             </div>
-            <div class="seg" id="seg-vid" role="tablist" aria-label="Background">
+            <div class="seg" id="seg-vid" role="group" aria-label="Background">
               <button class="is-on" data-vid="1">With video</button>
               <button data-vid="0">Without</button>
             </div>
           </div>
-          <div class="show__canvas" id="show-canvas" data-dev="full"><img id="show-img" src="assets/shots/neon-full.jpg" alt="" /></div>
+          <div class="show__canvas" id="show-canvas" data-dev="full"><img id="show-img" src="assets/shots/neon-full.jpg" alt="Neon look, full screen" width="1600" height="900" /></div>
           <div class="show__info"><div><h3 id="show-name">Neon</h3><div class="tags" id="show-tags"></div></div><p id="show-tag">Synthwave tubes</p></div>
         </div>
       </div>
@@ -121,7 +136,7 @@
           <div class="story__step" data-s="nolyrics"><i>STATE 03</i><h3>No lyrics found</h3><p>A designed screen instead of an error: the reason in plain words, a live retry countdown, and ways out: search again, pick a match, paste your own.</p></div>
           <div class="story__step" data-s="full-novideo"><i>STATE 04</i><h3>No video available</h3><p>The look carries the scene on its own, so a missing video never leaves a hole.</p></div>
         </div>
-        <div class="story__art"><img id="story-img" src="assets/shots/sketch-full.jpg" alt="" /></div>
+        <div class="story__art"><div class="story__bar" aria-hidden="true"><i></i><i></i><i></i><span id="story-count">01 / 04</span></div><div class="story__stack"><img id="story-img" src="assets/shots/sketch-full.jpg" alt="Lyra in the Sketchbook look, showing the selected state" width="1600" height="900" /><img id="story-img2" src="assets/shots/sketch-full.jpg" alt="" aria-hidden="true" width="1600" height="900" /></div></div>
       </div>
     </section>
 
@@ -290,7 +305,7 @@
   <footer class="ft">
     <div class="ft__in">
       <div><p class="ft__big">Lyra.</p><p class="lead" style="font-size:15px">Lyrics that move with the music. Free and open source.</p></div>
-      <div><h4>Explore</h4><a href="#looks">20 looks</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a href="#demo">Live demo</a></div>
+      <div><h4>Explore</h4><a href="#looks">33 looks</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a href="#demo">Live demo</a></div>
       <div><h4>Get it</h4><a href="#download">Windows</a><a href="#download">Android</a><a href="#vega">Vega</a></div>
       <div><h4>Project</h4><a href="https://github.com/DhruvHarani1/lyra" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/DhruvHarani1/lyra/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a><a href="https://github.com/DhruvHarani1/lyra/issues" target="_blank" rel="noopener">Report a bug</a></div>
     </div>
