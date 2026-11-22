@@ -127,6 +127,7 @@ import './styles/edge-filmstrip.css'
 import './styles/p-lock.css'
 import './styles/edge-lock.css'
 import './styles/fit-full.css'
+import './styles/fit-mini.css'
 import './styles/minsizes.css'
 
 // Let CSS honour the in-app settings: reduced motion, rim light and the vibe in effect (a cycled / smart vibe is
