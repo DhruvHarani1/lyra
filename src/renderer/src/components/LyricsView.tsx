@@ -17,6 +17,7 @@ import { ShareCard } from './ShareCard'
 import { LyricsFallback } from './LyricsFallback'
 import { LyricsStage } from './LyricsStage'
 import { useEffectiveVibe } from '@/hooks/useVibe'
+import { plainInk } from '@/lib/journalInk'
 
 const RESUME_AFTER_MS = 6000
 
@@ -335,6 +336,7 @@ function WordLine({ line, nextTime }: { line: LyricLine; nextTime: number | unde
 function PlainLyrics({ result }: { result: LyricsResult }) {
   const showRomanization = useSettings((x) => x.settings.romanizeLyrics)
   const paragraphs = (result.plain ?? '').split(/\n{2,}/)
+  const journal = useEffectiveVibe().vibe === 'journal' // Journal marks the unsynced lines with its own pens too (lib/journalInk.ts)
   return (
     <div className="lyrics__scroller lyrics__scroller--plain" data-nodrag tabIndex={-1}>
       <div className="lyrics__inner lyrics__inner--plain">
@@ -343,14 +345,21 @@ function PlainLyrics({ result }: { result: LyricsResult }) {
         </p>
         {paragraphs.map((p, i) => (
           <p key={i} className="plain__stanza">
-            {p.split('\n').map((l, j) => (
-              <span key={j} style={{ display: 'block' }}>
+            {p.split('\n').map((l, j) => {
+              const ink = journal ? plainInk(i, j, l) : null
+              return (
+              <span
+                key={j}
+                style={{ display: 'block' }}
+                className={ink ? `jp jp--${ink.ink}${ink.mark ? ` jp--${ink.mark}` : ''}${ink.tag ? ` jp--tag-${ink.tag}` : ''}` : undefined}
+              >
                 {l}
                 {showRomanization && romanize(l) !== l && (
                   <span style={{ display: 'block', fontSize: '0.82em', opacity: 0.78 }}>{romanize(l)}</span>
                 )}
               </span>
-            ))}
+              )
+            })}
           </p>
         ))}
       </div>

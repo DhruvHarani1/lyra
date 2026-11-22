@@ -148,7 +148,6 @@
 /* ---------------- other lyric states (same regions) ---------------- */
 [data-vibe='journal'] .lyrics__notice { align-self: flex-start; background: var(--jn-note); border: 0; border-radius: 0.4vh; color: #22305c; font-family: 'Caveat', cursive; font-size: 2.4vh; font-weight: 700; letter-spacing: 0; box-shadow: 0.3vh 0.5vh 0.8vh rgba(70, 40, 20, 0.25); }
 [data-vibe='journal'] .plain__stanza { font-family: 'Caveat', cursive; font-weight: 700; font-size: min(3.6vw, 6vh); line-height: 1.1; letter-spacing: 0; color: #22305c; text-shadow: none; }
-[data-vibe='journal'] .plain__stanza > span:nth-child(odd) { width: fit-content; background: linear-gradient(180deg, transparent 58%, rgba(255, 216, 74, 0.6) 58% 92%, transparent 92%); }
 [data-vibe='journal'] .lfb { align-items: flex-start; text-align: left; }
 [data-vibe='journal'] .lfb__poster { display: none; }
 [data-vibe='journal'] .lfb h3 { font-family: 'Caveat', cursive; font-weight: 700; text-transform: none; letter-spacing: 0; font-size: clamp(36px, 6vw, 88px); line-height: 0.95; color: #22305c; text-shadow: none; background: linear-gradient(180deg, transparent 60%, rgba(255, 216, 74, 0.8) 60% 92%, transparent 92%); }
