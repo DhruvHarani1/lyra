@@ -1,4 +1,8 @@
 import { useMemo, type ReactNode } from 'react'
+import { useActiveLine } from '@/hooks/useLyricsSync'
+import { caretColumn, identOf, langInfo, lineBase, pickLang } from '@/lib/codeGen'
+import { useLyrics } from '@/store/lyrics'
+import { usePlayer } from '@/store/player'
 
 /** The video window host (same markup as VibeFx's SceneWindow; styles/scene.css positions it from the --sc-* variables). */
 function SceneWin({ children }: { children?: ReactNode }) {
@@ -67,25 +71,48 @@ export function RouteFx() {
   )
 }
 
-/** Editor: an IDE. Title bar, tabs, breadcrumb and a preview pane; the activity bar, minimap and progress line are the window edge. */
+/** Editor: an IDE. Title bar, tabs, breadcrumb, a preview pane and a status line (language, Ln/Col, encoding); the file name and the language follow the song. The activity bar, minimap and progress line are the window edge. */
 export function EditorFx() {
+  const title = usePlayer((x) => x.snapshot?.track?.title ?? 'Song')
+  const lyrics = useLyrics((x) => x.state)
+  const lines = useMemo(() => (lyrics.phase === 'ready' ? lyrics.result.lines : []), [lyrics])
+  const active = useActiveLine(lines)
+  const lang = pickLang(title)
+  const { label, ext } = langInfo(lang)
+  const file = `${identOf(title)}.${ext}`
+  const ln = lineBase(lang, title) + Math.max(0, active)
+  const col = active >= 0 && lines[active] ? caretColumn(lang, lines[active]!.text) : 1
   return (
     <div className="edfx">
       <div className="edfx__title">
         <i />
         <i />
         <i />
-        <span>lyrics.ts — Glass Hours — Lyra</span>
+        <span>{file} — Lyra</span>
       </div>
       <div className="edfx__tabs">
-        <span className="is-on">lyrics.ts</span>
+        <span className="is-on">{file}</span>
         <span>notes.md</span>
       </div>
-      <div className="edfx__crumb">src {'›'} lyrics {'›'} line</div>
+      <div className="edfx__crumb">
+        src {'›'} songs {'›'} {file} {'›'} play()
+      </div>
       <div className="edfx__pane">
         <span>
-          <b>▶</b> Preview — glass_hours.mp4
+          <b>▶</b> Preview — {identOf(title).toLowerCase()}.mp4
         </span>
+      </div>
+      <div className="edfx__status">
+        <span>⎇ main</span>
+        <span>⊗ 0 ⚠ 0</span>
+        <em />
+        <span>
+          Ln {ln}, Col {col}
+        </span>
+        <span>Spaces: 4</span>
+        <span>UTF-8</span>
+        <span>LF</span>
+        <span className="edfx__lang">{label}</span>
       </div>
       <SceneWin />
     </div>

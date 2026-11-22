@@ -14,6 +14,7 @@ if (tv) document.documentElement.dataset.platform = 'tv'
 if (q.get('overlay')) document.documentElement.dataset.overlay = '1'
 const idx = Number(q.get('track') ?? 0)
 let track = DEMO_TRACKS[idx] ?? DEMO_TRACKS[0]!
+if (q.get('title')) track = { ...track, title: q.get('title')! }
 const playbackListeners: Array<(s: PlaybackSnapshot) => void> = []
 let settings: Settings = { ...DEFAULT_SETTINGS, onboarded: true, source: 'api', ...(JSON.parse(q.get('s') ?? '{}') as Partial<Settings>) }
 let startedAt = Date.now() - Number(q.get('t') ?? 40000)
