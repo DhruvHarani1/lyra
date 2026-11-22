@@ -1,0 +1,45 @@
+/* ==========================================================================
+   DM, premium pass: a messenger on a phone. The thread sits in a real phone bezel on the LEFT (dynamic-island pill, glass
+   reflection); the video is a story on the right inside the turning ring; the card is the message bar under the story.
+   Settings: a conversation, every section is a message bubble with a tail. Phone: the dock is a rounded message bar.
+   ========================================================================== */
+:root[data-vibe='chat'] {
+  --sc-ww: min(30vw, 50vh);
+  --sc-wl: calc(94vw - var(--sc-ww) - 3vw);
+  --sc-wt: 13vh;
+  --sc-wr: 5.4vh;
+  --sc-cl: var(--sc-wl);
+  --sc-cb: auto;
+  --sc-ct: calc(var(--sc-wt) + var(--sc-wh) + 5.4vh);
+  --sc-cw: var(--sc-ww);
+  --sc-ll: 11vw;
+  --sc-lt: 7vh;
+  --sc-lw: min(36vw, 62vh);
+  --sc-lb: 7vh;
+  --sc-lbs: 7vh;
+}
+:root[data-vibe='chat'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(32vw, 54vh); }
+[data-vibe='chat'] .backdrop .backdrop__field { background: radial-gradient(70% 60% at 25% 50%, #1c2c5c, transparent 70%), radial-gradient(60% 60% at 80% 20%, #2a1b5a, transparent 70%), #080c18; }
+/* the phone: a bezel, a pill at the top, a faint reflection */
+:root[data-vibe='chat']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .chat {
+  position: relative;
+  border-radius: 5.4vh;
+  box-shadow: inset 0 0 0 1.2vh #0c0f18, inset 0 0 0 1.45vh #46506f, inset 0 0 0 1.7vh #05060b;
+  padding: 4.4vh 3vh 3vh;
+}
+:root[data-vibe='chat']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .chat::before {
+  content: ''; position: absolute; left: 50%; top: 1vh; width: 11vh; height: 2.4vh; margin-left: -5.5vh; border-radius: 99px; background: #000; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); z-index: 2;
+}
+:root[data-vibe='chat']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .chat::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(120deg, rgba(255, 255, 255, 0.07), transparent 28%); z-index: 2;
+}
+:root[data-vibe='chat']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { border-radius: 2.6vh !important; }
+/* settings: a conversation */
+:root[data-vibe='chat'] .sidepanel { --panel: #0d1428; --accent: #5b8cff; background: linear-gradient(180deg, #151f40, #0a1022); border: 0; border-radius: 30px; box-shadow: 0 0 0 1px rgba(91, 140, 255, 0.4), 0 30px 80px rgba(0, 0, 30, 0.65); }
+:root[data-vibe='chat'] .sidepanel .settings section { background: #1b2750; box-shadow: none; border-radius: 24px 24px 24px 6px; }
+:root[data-vibe='chat'] .sidepanel .settings section:nth-of-type(2n) { background: #0b6fe0; border-radius: 24px 24px 6px 24px; margin-left: 18px; }
+:root[data-vibe='chat'] .sidepanel .stabs button.is-on { background: linear-gradient(135deg, #3b82ff, #7a5cff); color: #fff; }
+:root[data-vibe='chat'] .sidepanel h3 { font-weight: 800; letter-spacing: -0.02em; }
+/* phone */
+:root[data-platform='android'][data-vibe='chat'] .phone__dock { border-radius: 28px; background: #1b2750; box-shadow: inset 0 0 0 1px rgba(91, 140, 255, 0.35); }
+:root[data-platform='android'][data-vibe='chat'] .phone__bar { background: linear-gradient(180deg, rgba(91, 140, 255, 0.18), transparent); }

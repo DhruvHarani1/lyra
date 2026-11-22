@@ -1,0 +1,13 @@
+/* Arcade edge: LED chase lights running CLOCKWISE around the window (top to the right, right side down, bottom to the left, left side up).
+   Three colours in a repeating pattern; the chase speeds up while a line is sung (--lv); a lit streak on each side brightens with --lp. */
+:root[data-vibe='arcade'] .edge__a, :root[data-vibe='arcade'] .edge__c { height: 1.4vh; background: repeating-linear-gradient(90deg, #ffe14d 0 1vh, transparent 1vh 2.4vh, #ff2d6f 2.4vh 3.4vh, transparent 3.4vh 4.8vh, #3df2ff 4.8vh 5.8vh, transparent 5.8vh 7.2vh); }
+:root[data-vibe='arcade'] .edge__b, :root[data-vibe='arcade'] .edge__d { width: 1.4vh; background: repeating-linear-gradient(180deg, #ffe14d 0 1vh, transparent 1vh 2.4vh, #ff2d6f 2.4vh 3.4vh, transparent 3.4vh 4.8vh, #3df2ff 4.8vh 5.8vh, transparent 5.8vh 7.2vh); }
+:root[data-vibe='arcade'] .edge__a { animation: arc-chase-r calc(1.6s - var(--lv) * 0.9s) linear infinite; }
+:root[data-vibe='arcade'] .edge__b { animation: arc-chase-d calc(1.6s - var(--lv) * 0.9s) linear infinite; }
+:root[data-vibe='arcade'] .edge__c { animation: arc-chase-l calc(1.6s - var(--lv) * 0.9s) linear infinite; }
+:root[data-vibe='arcade'] .edge__d { animation: arc-chase-u calc(1.6s - var(--lv) * 0.9s) linear infinite; }
+@keyframes arc-chase-r { to { background-position: 7.2vh 0; } }
+@keyframes arc-chase-d { to { background-position: 0 7.2vh; } }
+@keyframes arc-chase-l { to { background-position: -7.2vh 0; } }
+@keyframes arc-chase-u { to { background-position: 0 -7.2vh; } }
+:root[data-vibe='arcade'] .edge { filter: drop-shadow(0 0 0.6vh rgba(255, 225, 77, 0.7)); }

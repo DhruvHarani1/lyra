@@ -1,0 +1,10 @@
+/* DM edge: three typing dots bounce at the bottom of the thread while a line is sung, a "sent" bar fills along the bottom
+   edge with the line (--lp), the sides carry a faint blue read-light. */
+:root[data-vibe='chat'] .edge__c { height: 0.55vh; background: rgba(91, 140, 255, 0.12); }
+:root[data-vibe='chat'] .edge__c::before { content: ''; position: absolute; inset: 0 auto 0 0; width: calc(var(--lp) * 100%); border-radius: 0 99px 99px 0; background: linear-gradient(90deg, #5b8cff, #7a5cff, #ff5ca8); box-shadow: 0 0 2.4vh #5b8cff; transition: width 0.1s linear; }
+:root[data-vibe='chat'] .edge__a { top: auto; bottom: 1.4vh; left: calc(11vw + 2vh); right: auto; width: 1.2vh; height: 1.2vh; border-radius: 50%; background: #8fb0ff; opacity: calc(0.25 + var(--lv) * 0.75); animation: dm-dot 1.1s ease-in-out infinite; }
+:root[data-vibe='chat'] .edge__a::before, :root[data-vibe='chat'] .edge__a::after { content: ''; position: absolute; top: 0; width: 100%; height: 100%; border-radius: 50%; background: inherit; animation: dm-dot 1.1s ease-in-out infinite; }
+:root[data-vibe='chat'] .edge__a::before { left: 2vh; animation-delay: 0.16s; }
+:root[data-vibe='chat'] .edge__a::after { left: 4vh; animation-delay: 0.32s; }
+@keyframes dm-dot { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-0.9vh); } }
+:root[data-vibe='chat'] .edge__b, :root[data-vibe='chat'] .edge__d { width: 0.5vh; background: linear-gradient(180deg, transparent, rgba(91, 140, 255, 0.55), transparent); opacity: calc(0.35 + var(--lv) * 0.4); }

@@ -1,0 +1,16 @@
+/* Diary edge: a string of fairy lights along the top edge. Every bulb twinkles on its own; a soft spotlight travels along the
+   string with the line being sung (--lp), so each line lights the next stretch of bulbs. Warm light spills down the side walls. */
+:root[data-vibe='paper'] .edge__a {
+  height: 5.4vh;
+  background:
+    radial-gradient(closest-side, rgba(255, 214, 150, 0.95), rgba(255, 194, 122, 0) 100%) calc(var(--lp) * 100% - 9vh) 0 / 18vh 100% no-repeat,
+    radial-gradient(circle at 50% 62%, #ffe3b0 0 0.55vh, rgba(255, 190, 110, 0.55) 0.8vh, transparent 1.9vh) 0 0 / 5.6vh 100% repeat-x;
+  transition: background-position 0.1s linear;
+  animation: dy-twk 3.2s ease-in-out infinite;
+}
+:root[data-vibe='paper'] .edge__a::before { content: ''; position: absolute; left: 0; right: 0; top: 3.1vh; height: 1px; background: rgba(160, 120, 70, 0.55); }
+@keyframes dy-twk { 0%, 100% { filter: brightness(0.8); } 50% { filter: brightness(1.2); } }
+:root[data-vibe='paper'] .edge__b, :root[data-vibe='paper'] .edge__d { width: 5vh; opacity: calc(0.45 + var(--lv) * 0.4); animation: dy-twk 5s ease-in-out infinite; }
+:root[data-vibe='paper'] .edge__b { background: linear-gradient(270deg, rgba(255, 170, 90, 0.2), transparent); }
+:root[data-vibe='paper'] .edge__d { background: linear-gradient(90deg, rgba(255, 170, 90, 0.2), transparent); }
+:root[data-vibe='paper'] .edge__c { height: 6vh; background: linear-gradient(0deg, rgba(255, 170, 90, 0.16), transparent); }

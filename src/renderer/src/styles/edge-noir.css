@@ -1,0 +1,8 @@
+/* Cinema edge: a projector. A vignette with film-gate flicker; a vertical scratch that wanders across the frame while a line is
+   sung; a reel-change cue mark (a white dot, top right) that blinks on every new line (--lt flips); black corner burn. No colour. */
+:root[data-vibe='noir'] .edge__a { inset: 0; width: auto; height: auto; background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.85)); animation: nr-gate 0.9s steps(1) infinite; }
+@keyframes nr-gate { 0% { opacity: 0.95; } 18% { opacity: 0.8; } 36% { opacity: 1; } 55% { opacity: 0.86; } 74% { opacity: 0.97; } 100% { opacity: 0.9; } }
+:root[data-vibe='noir'] .edge__b { top: 0; bottom: 0; right: auto; left: 30%; width: 1px; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5) 20% 80%, transparent); opacity: calc(var(--lv) * 0.8); animation: nr-scratch 2.6s steps(1) infinite; }
+@keyframes nr-scratch { 0% { left: 18%; } 20% { left: 64%; } 40% { left: 41%; } 60% { left: 82%; } 80% { left: 27%; } 100% { left: 55%; } }
+:root[data-vibe='noir'] .edge__c { left: auto; right: 2.6vw; bottom: auto; top: 2.2vh; width: 2.2vh; height: 2.2vh; border-radius: 50%; background: #fff; box-shadow: 0 0 1.6vh rgba(255, 255, 255, 0.7); opacity: calc(0.12 + var(--lt) * 0.85); transition: opacity 0.35s; }
+:root[data-vibe='noir'] .edge__d { width: 14vw; background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), transparent); }

@@ -1,0 +1,41 @@
+/* ==========================================================================
+   CINEMA, premium pass: a proper widescreen. The picture is a 2.39:1 scope frame with black letterbox bars above and below
+   (the video plays in black and white inside the gate); the subtitles live in the lower bar like a real print; the ticket stub is
+   in the upper bar. The window edge is a projector: a vignette that flickers, a vertical film scratch that wanders, and a reel-change
+   cue mark in the corner that blinks on every new line.
+   Settings: a black programme card in serif with hairline rules. Phone: the dock is a letterbox bar.
+   ========================================================================== */
+:root[data-vibe='noir'] {
+  --sc-ww: 100vw;
+  --sc-wh: calc(100vw * 0.4184);
+  --sc-wl: 0px;
+  --sc-wt: calc((100vh - var(--sc-wh)) / 2);
+  --sc-wr: 0px;
+  --sc-cl: 2.4vw;
+  --sc-ct: 1.4vh;
+  --sc-cw: max(280px, min(22vw, 320px));
+  --sc-ll: 10vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 0.8vh);
+  --sc-lw: 80vw;
+  --sc-lb: 1.2vh;
+  --sc-lbs: 1.2vh;
+}
+[data-vibe='noir'] .backdrop .backdrop__field { background: #000; }
+/* the gate: hairlines where the scope frame ends */
+.noirfx::before { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--sc-wt) - 1px); height: 1px; background: rgba(255, 255, 255, 0.35); pointer-events: none; z-index: 2; }
+.noirfx::after { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--sc-wt) + var(--sc-wh)); height: 1px; background: rgba(255, 255, 255, 0.35); pointer-events: none; z-index: 2; }
+/* the bars are really black: nothing of the picture shows outside the frame */
+:root[data-vibe='noir']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .noirfx__vignette { background: radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.6)); }
+/* subtitles: one clean line in the bar */
+:root[data-vibe='noir'] .stage--subtitle { justify-content: center; }
+/* settings: a programme card */
+:root[data-vibe='noir'] .sidepanel { --panel: #050505; --accent: #f2f2f2; background: #050505; border: 0; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 0 0 7px #050505, 0 0 0 8px rgba(255, 255, 255, 0.25), 0 30px 80px rgba(0, 0, 0, 0.8); font-family: 'Fraunces Variable', Georgia, serif; }
+:root[data-vibe='noir'] .sidepanel .settings section { background: transparent; border-radius: 0; box-shadow: none; border-top: 1px solid rgba(255, 255, 255, 0.28); }
+:root[data-vibe='noir'] .sidepanel h3 { font-family: 'Fraunces Variable', Georgia, serif; font-style: italic; letter-spacing: 0.06em; }
+:root[data-vibe='noir'] .sidepanel .stabs button.is-on { background: #f2f2f2; color: #000; border-radius: 0; }
+/* phone: a letterbox dock */
+:root[data-platform='android'][data-vibe='noir'] .phone__dock { background: #000 !important; border-radius: 0 !important; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+:root[data-platform='android'][data-vibe='noir'] .phone__bar { background: #000; }
+/* a brighter, punchier print; the blind slats are only a hint */
+:root[data-vibe='noir']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { filter: grayscale(1) contrast(1.45) brightness(1.2); }
+.noirfx__blinds { opacity: 0.4; }

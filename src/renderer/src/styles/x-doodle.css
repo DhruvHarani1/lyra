@@ -1,0 +1,60 @@
+/* ==========================================================================
+   DOODLE, premium pass: a drawing of a TV. The video is a hand-drawn television set in the bottom-right (pink body with a thick
+   marker outline, a knob panel, two antennas); the marker lettering fills the top-left of the page; the speech-bubble card sits at
+   the bottom-left; a scribbled marker border re-draws itself around the whole page, anticlockwise, in a new colour every lyric line.
+   Settings: a worksheet, every section has a marker outline and a yellow offset. Phone: the dock is a speech bubble.
+   ========================================================================== */
+:root[data-vibe='doodle'] {
+  --sc-ww: min(40vw, 62vh);
+  --sc-wl: calc(94vw - var(--sc-ww) - 9vh);
+  --sc-wt: calc(90vh - var(--sc-wh) - 4vh);
+  --sc-wr: 1.2vh;
+  --sc-ll: 6vw;
+  --sc-lt: 18vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 9vh - 6vw - 4vw);
+  --sc-lb: 30vh;
+  --sc-lbs: 28vh;
+  --sc-cl: 6vw;
+  --sc-cb: 6vh;
+  --sc-ct: auto;
+  --sc-cw: min(40vw, 520px);
+}
+:root[data-vibe='doodle'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(42vw, 64vh); }
+/* the television: pink body, marker outline, knob panel on the right, antennas on top */
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame {
+  left: calc(var(--sc-wl) - 2.2vh);
+  top: calc(var(--sc-wt) - 2.2vh);
+  width: calc(var(--sc-ww) + 2.2vh + 11.2vh);
+  height: calc(var(--sc-wh) + 4.4vh);
+  border: 2.2vh solid var(--dd-pink);
+  border-right-width: 11.2vh;
+  border-radius: 4.2vh 3vh 4.6vh 3.2vh / 3.2vh 4.4vh 3vh 4.6vh;
+  box-shadow: 0 0 0 0.7vh #14110f, inset 0 0 0 0.7vh #14110f, 1.8vh 2vh 0 0.7vh #14110f;
+}
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame::before {
+  content: ''; position: absolute; right: -10.4vh; top: 50%; width: 9vh; height: 20vh; margin-top: -10vh;
+  background:
+    radial-gradient(circle, var(--dd-yellow) 0 2.6vh, #14110f 2.7vh 3.3vh, transparent 3.4vh) 50% 0 / 9vh 9vh no-repeat,
+    radial-gradient(circle, var(--dd-blue) 0 2.6vh, #14110f 2.7vh 3.3vh, transparent 3.4vh) 50% 100% / 9vh 9vh no-repeat,
+    repeating-linear-gradient(180deg, #14110f 0 0.5vh, transparent 0.5vh 1.3vh) 50% 50% / 5vh 3.4vh no-repeat;
+}
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame::after {
+  content: ''; position: absolute; left: 40%; top: -9.6vh; width: 7vh; height: 7vh; border-right: 0.8vh solid #14110f; border-bottom: 0.8vh solid #14110f; border-radius: 0 0 1vh 0; rotate: 45deg; transform-origin: 50% 50%;
+}
+.dfx__arrow { left: calc(var(--sc-wl) - 18vh); top: calc(var(--sc-wt) + 6vh); transform: scaleX(-1) rotate(-20deg); }
+.dfx__zig { left: calc(var(--sc-wl) + 3vh); top: calc(var(--sc-wt) - 7vh); }
+.dfx__sun { left: auto; right: 4vw; top: 5vh; }
+.dfx__cloud { left: 38vw; top: 5vh; }
+.dfx__star--a { left: 46vw; bottom: 12vh; }
+.dfx__spiral { right: auto; left: 46vw; bottom: 27vh; }
+/* the words: bigger, bolder, tilted a touch like drawn letters */
+.sign--scrawl .sign__row { font-size: min(6.8vw, 11.6vh); }
+/* settings: a worksheet */
+:root[data-vibe='doodle'] .sidepanel { background-image: radial-gradient(rgba(20, 17, 15, 0.16) 1.4px, transparent 1.6px); background-size: 20px 20px; }
+:root[data-vibe='doodle'] .sidepanel .settings section { background: #fff; box-shadow: 0 0 0 2.5px #14110f, 4px 5px 0 #ffd84a; border-radius: 14px; }
+:root[data-vibe='doodle'] .sidepanel h3 { font-weight: 900; text-decoration: underline wavy #ff5f7e 3px; text-underline-offset: 6px; }
+/* phone: a speech bubble dock */
+:root[data-platform='android'][data-vibe='doodle'] .phone__dock { --fg: #14110f; --fg-2: #3a332e; --fg-3: #4a423c; background: #fff !important; color: #14110f; border: 3px solid #14110f; border-radius: 26px 26px 26px 6px !important; box-shadow: 5px 6px 0 #ffd84a; }
+:root[data-platform='android'][data-vibe='doodle'] .phone__bar { background: transparent; }
+/* the small window: smaller marker lettering so the whole line fits */
+:root[data-vibe='doodle'][data-mode='mini'] .sign--scrawl .sign__row { font-size: min(5vw, 7.6vh); }
