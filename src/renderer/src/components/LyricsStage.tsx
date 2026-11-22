@@ -9,6 +9,7 @@ import { useArtwork } from '@/hooks/useArtwork'
 import { usePlayer } from '@/store/player'
 import { clamp } from '@/lib/format'
 import { countRepeats, lineInk, normLine, wordInk, type LineInk } from '@/lib/journalInk'
+import { buildFile, escapeLiteral, pickLang, type CodeLine, type Tok } from '@/lib/codeGen'
 
 /**
  * Staged lyrics for fullscreen: one phrase at a time instead of a scrolling list.
@@ -106,7 +107,8 @@ export function LyricsStage({ lines, active, mode }: StageProps) {
       {(mode === 'sign' || mode === 'liquid' || mode === 'pixel' || mode === 'title' || mode === 'ink' || mode === 'glitch' || mode === 'bubble' || mode === 'spray' || mode === 'intertitle' || mode === 'note' || mode === 'jot' || mode === 'scrawl' || mode === 'label' || mode === 'metro' || mode === 'weave' || mode === 'picto' || mode === 'wall' || mode === 'flap') && <Sign lines={lines} active={active} variant={mode} />}
       {mode === 'bloom' && <Bloom lines={lines} active={active} />}
       {mode === 'log' && <TermLog lines={lines} active={active} />}
-      {(mode === 'lockscreen' || mode === 'wallet' || mode === 'route' || mode === 'editor') && <Feed lines={lines} active={active} variant={mode} />}
+      {(mode === 'lockscreen' || mode === 'wallet' || mode === 'route') && <Feed lines={lines} active={active} variant={mode} />}
+      {mode === 'editor' && <CodeStage lines={lines} active={active} />}
       {active >= 0 && !live && (
         <div className="stage__rest" aria-label="instrumental break">
           <i />
@@ -865,6 +867,57 @@ const Feed = memo(function Feed({ lines, active, variant }: { lines: readonly Ly
     </div>
   )
 })
+
+// ---------- editor: the song as a source file (real syntax in one of seven languages, picked from the title; see lib/codeGen.ts) ----------
+const CodeStage = memo(function CodeStage({ lines, active }: { lines: readonly LyricLine[]; active: number }) {
+  const title = usePlayer((s) => s.snapshot?.track?.title ?? '')
+  const lang = useMemo(() => pickLang(title), [title])
+  const rows = useMemo(() => {
+    const statements = []
+    for (let i = 0; i <= active && i < lines.length; i++) statements.push({ index: i, text: lines[i]!.text, timeMs: lines[i]!.timeMs })
+    return buildFile(lang, title, statements, { keep: 4 })
+  }, [lines, active, lang, title])
+  return (
+    <div className={`code code--${lang}`} data-lang={lang}>
+      {rows.map((r) => (
+        <CodeRow key={`${r.kind}${r.n}`} row={r} lang={lang} line={r.lyric !== undefined ? lines[r.lyric] : undefined} nextTime={r.lyric !== undefined ? lines[r.lyric + 1]?.timeMs : undefined} current={r.lyric !== undefined && r.lyric === active} />
+      ))}
+    </div>
+  )
+})
+const CodeRow = memo(function CodeRow({ row, lang, line, nextTime, current }: { row: CodeLine; lang: string; line: LyricLine | undefined; nextTime: number | undefined; current: boolean }) {
+  return (
+    <div className={`code__row code__row--${row.kind}${current ? ' is-current' : ''}`} data-git={row.git} style={{ ['--depth' as string]: row.depth }}>
+      <span className="code__gut">
+        <i className="code__git" />
+        <span className="code__ln">{row.n}</span>
+        <span className="code__fold">{row.kind === 'fold' ? '▸' : row.depth > 0 && row.kind === 'code' ? '▾' : ''}</span>
+      </span>
+      <span className="code__src">
+        {row.toks.map((t, i) => (t.t === 'lyric' && line ? <CodeWords key={i} lang={lang} line={line} nextTime={nextTime} current={current} /> : <CodeTok key={i} tok={t} />))}
+        {row.kind === 'fold' && <span className="tk tk--com"> {row.folded} {row.folded === 1 ? 'line' : 'lines'}</span>}
+        {current && <i className="code__caret" />}
+      </span>
+    </div>
+  )
+})
+function CodeTok({ tok }: { tok: Tok }) {
+  return tok.t === 'ws' ? <>{tok.s}</> : <span className={`tk tk--${tok.t}${tok.m ? ' tk--m' : ''}`}>{tok.s}</span>
+}
+function CodeWords({ lang, line, nextTime, current }: { lang: string; line: LyricLine; nextTime: number | undefined; current: boolean }) {
+  const words = useMemo(() => stageWords(line, nextTime), [line, nextTime])
+  const revealed = useRevealed(words, !current)
+  return (
+    <span className="tk tk--lyric">
+      {words.map((w, i) => (
+        <span key={i} className={['code__w', i < revealed ? 'is-in' : '', current && i === revealed - 1 ? 'is-now' : ''].join(' ')}>
+          {escapeLiteral(lang as never, w.text)}
+          {i < words.length - 1 ? ' ' : ''}
+        </span>
+      ))}
+    </span>
+  )
+}
 const FeedRow = memo(function FeedRow({ line, index, nextTime, age }: { line: LyricLine; index: number; nextTime: number | undefined; age: number }) {
   const words = useMemo(() => stageWords(line, nextTime), [line, nextTime])
   const revealed = useRevealed(words, age > 0)

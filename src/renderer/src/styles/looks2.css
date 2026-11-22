@@ -110,17 +110,6 @@
 .nvfx__tabs span { padding: 1.2vh 2.4vh; font: 1.7vh/1 'Cascadia Code', Consolas, monospace; color: #9d9d9d; background: #2d2d2d; }
 .nvfx__tabs span:first-child { background: #1e1e1e; color: #fff; border-top: 0.3vh solid #3b9eff; }
 .nvfx__gutter { position: absolute; left: 0; top: 5.6vh; bottom: 7.4vh; width: calc(2vw + 5vh); background: #1e1e1e; border-right: 1px solid #2d2d2d; }
-.feed--editor { justify-content: flex-end; gap: 0.2vh; font-family: 'Cascadia Code', Consolas, monospace; }
-.feed--editor .feed__row { position: relative; display: block; padding: 0.4vh 0; color: #ce9178; opacity: calc(1 - var(--age) * 0.14); }
-.feed--editor .feed__row.is-current { background: rgba(255, 255, 255, 0.05); }
-.feed--editor .feed__row::before { content: counter(lnum); counter-reset: lnum var(--ln); position: absolute; left: calc(-5vh - 1vw); width: 4vh; text-align: right; font-size: min(1.5vw, 2.8vh); color: #6e7681; }
-.feed--editor .feed__txt { display: block; font-size: min(1.55vw, 2.9vh); line-height: 1.5; }
-.feed--editor .feed__txt::before { content: 'const line = "'; color: #569cd6; }
-.feed--editor .feed__txt::after { content: '";'; color: #d4d4d4; }
-.feed--editor .feed__word { color: #ce9178; opacity: 0.35; } .feed--editor .feed__word.is-in { opacity: 1; }
-.feed--editor .feed__word.is-now { color: #f5c897; text-shadow: 0 0 1vh rgba(245, 200, 151, 0.5); }
-.feed--editor .feed__row.is-current .feed__txt::after { border-right: 0.3vh solid #fff; padding-right: 0.2vh; animation: ed-caret 1s steps(1) infinite; }
-@keyframes ed-caret { 50% { border-color: transparent; } }
 :root[data-vibe='editor']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { height: auto !important; min-height: 7.4vh; padding: 0.6vh 3vw !important; } /* grows with its content (title + progress) so nothing hangs out of the bar on short windows */
 :root[data-vibe='editor']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 5.2vh !important; }
 
