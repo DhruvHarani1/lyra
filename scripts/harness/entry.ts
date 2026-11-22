@@ -25,6 +25,8 @@ const snap = (): PlaybackSnapshot => ({
 })
 // ?lang=hi|pa plays original sample lyrics in Devanagari / Gurmukhi (for glyph clipping and Roman-line checks)
 const SAMPLE: Record<string, string[]> = {
+  // ?lang=rp: English lines with a repeated chorus, a quoted line and an exclamation (Journal pens, chorus brace)
+  rp: ['Streetlights hum a quiet tune', 'Hold on, hold on tight!', '“Never again,” she said', 'Over rooftops, under the moon', 'Hold on, hold on tight!', 'I count the hours in the glass', 'Hold on, hold on tight!', 'Watching every moment pass'],
   hi: ['रात के सन्नाटे में तेरी याद आई', 'चाँदनी बिखरी है सारी राहों में', 'दिल ने फिर तुझको पुकारा है', 'धड़कनों में गूँजती है एक कहानी', 'तू जहाँ भी है मेरी दुआओं में है', 'ख़्वाबों की बारिश में भीगा सा मन', 'लौट आ कि अब भी इंतज़ार है', 'हर लम्हा तेरे नाम कर दिया', 'साँसों की डोर तुझसे बँधी है', 'आसमान तक फैली हैं आशाएँ', 'चाँद भी आज थका सा लगता है', 'बस एक बार मुड़कर देख ले'],
   pa: ['ਰਾਤ ਦੀ ਚੁੱਪ ਵਿੱਚ ਤੇਰੀ ਯਾਦ ਆਈ', 'ਚਾਂਦਨੀ ਖਿੱਲਰੀ ਹੈ ਸਾਰੀਆਂ ਰਾਹਾਂ ਵਿੱਚ', 'ਦਿਲ ਨੇ ਫਿਰ ਤੈਨੂੰ ਪੁਕਾਰਿਆ ਹੈ', 'ਧੜਕਣਾਂ ਵਿੱਚ ਗੂੰਜਦੀ ਹੈ ਇੱਕ ਕਹਾਣੀ', 'ਤੂੰ ਜਿੱਥੇ ਵੀ ਹੈਂ ਮੇਰੀਆਂ ਦੁਆਵਾਂ ਵਿੱਚ ਹੈਂ', 'ਖ਼ਾਬਾਂ ਦੀ ਬਾਰਿਸ਼ ਵਿੱਚ ਭਿੱਜਿਆ ਮਨ', 'ਮੁੜ ਆ ਕਿ ਹੁਣ ਵੀ ਇੰਤਜ਼ਾਰ ਹੈ', 'ਹਰ ਪਲ ਤੇਰੇ ਨਾਮ ਕਰ ਦਿੱਤਾ', 'ਸਾਹਾਂ ਦੀ ਡੋਰ ਤੇਰੇ ਨਾਲ ਬੱਝੀ ਹੈ', 'ਅਸਮਾਨ ਤੱਕ ਫੈਲੀਆਂ ਨੇ ਆਸਾਂ', 'ਚੰਨ ਵੀ ਅੱਜ ਥੱਕਿਆ ਜਿਹਾ ਲੱਗਦਾ ਹੈ', 'ਬੱਸ ਇੱਕ ਵਾਰ ਮੁੜ ਕੇ ਵੇਖ ਲੈ']
 }

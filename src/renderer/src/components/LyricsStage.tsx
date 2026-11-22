@@ -8,6 +8,7 @@ import { lyricPosition } from '@/hooks/useLyricsSync'
 import { useArtwork } from '@/hooks/useArtwork'
 import { usePlayer } from '@/store/player'
 import { clamp } from '@/lib/format'
+import { countRepeats, lineInk, normLine, wordInk, type LineInk } from '@/lib/journalInk'
 
 /**
  * Staged lyrics for fullscreen: one phrase at a time instead of a scrolling list.
@@ -654,21 +655,62 @@ const LtBar = memo(function LtBar({ line, nextTime }: { line: LyricLine; nextTim
   )
 })
 
+/** Journal: the margin marks of a line: a star, an arrow, an exclamation mark, a small number, or a brace and a note for a chorus line. */
+function JotMargin({ ink }: { ink: LineInk }) {
+  if (ink.chorus) {
+    return (
+      <>
+        <svg className="jl__brace" viewBox="0 0 20 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M16 2 C8 2 10 10 10 26 C10 40 8 46 2 50 C8 54 10 60 10 74 C10 90 8 98 16 98" />
+        </svg>
+        <span className="jl__chorus">{`chorus ×${ink.chorus}`}</span>
+      </>
+    )
+  }
+  if (ink.tag === 'star')
+    return (
+      <svg className="jl__tag jl__tag--star" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 5 L29 19 L44 19 L32 28 L36 43 L24 34 L12 43 L16 28 L4 19 L19 19 Z" />
+      </svg>
+    )
+  if (ink.tag === 'arrow')
+    return (
+      <svg className="jl__tag jl__tag--arrow" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M4 30 C16 36 30 30 40 16" />
+        <path d="M28 14 L41 14 L38 27" />
+      </svg>
+    )
+  if (ink.tag === 'excl')
+    return (
+      <svg className="jl__tag jl__tag--excl" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M22 6 C21 18 22 26 24 32" />
+        <path d="M24 40 L24.5 41" />
+      </svg>
+    )
+  if (ink.tag === 'num') return <span className="jl__num">{ink.num}</span>
+  return null
+}
+
 // ---------- sign: the song is lit word by word on a wall sign, the next line waits underneath ----------
 const Sign = memo(function Sign({ lines, active, variant }: { lines: readonly LyricLine[]; active: number; variant: string }) {
+  const repeats = useMemo(() => (variant === 'jot' ? countRepeats(lines) : null), [lines, variant])
   const line = active >= 0 ? lines[active] : undefined
   const live = line && line.text !== '' ? line : undefined
   const next = lines.slice(active + 1).find((l) => l.text !== '')
   return (
     <div className={`sign sign--${variant}`}>
       <AnimatePresence mode="wait" initial={false}>
-        {live && <SignLine key={active} line={live} index={active} nextTime={lines[active + 1]?.timeMs} next={next?.text} variant={variant} />}
+        {live && <SignLine key={active} line={live} index={active} nextTime={lines[active + 1]?.timeMs} next={next?.text} variant={variant} occurrences={repeats?.get(normLine(live.text)) ?? 0} />}
       </AnimatePresence>
     </div>
   )
 })
-const SignLine = memo(function SignLine({ line, index, nextTime, next, variant }: { line: LyricLine; index: number; nextTime: number | undefined; next: string | undefined; variant: string }) {
+const SignLine = memo(function SignLine({ line, index, nextTime, next, variant, occurrences }: { line: LyricLine; index: number; nextTime: number | undefined; next: string | undefined; variant: string; occurrences: number }) {
   const words = useMemo(() => stageWords(line, nextTime), [line, nextTime])
+  // Journal: every line is marked up with its own pens (see lib/journalInk.ts)
+  const jot = variant === 'jot'
+  const inks = useMemo(() => (jot ? wordInk(index, line.text, words.map((w) => w.text)) : null), [jot, index, line.text, words])
+  const lineMark = useMemo(() => (jot ? lineInk(index, line.text, occurrences) : null), [jot, index, line.text, occurrences])
   const revealed = useRevealed(words)
   // one word per line flickers now and then, like a tired tube (picked from the line itself so it stays put)
   const tired = hash(index, line.text) % words.length
@@ -677,8 +719,9 @@ const SignLine = memo(function SignLine({ line, index, nextTime, next, variant }
       {words.map((w, i) => (
         <span
           key={i}
-          className={['sign__word', i < revealed ? 'is-in' : '', i === revealed - 1 ? 'is-now' : '', i === tired ? 'is-tired' : ''].join(' ')}
+          className={['sign__word', i < revealed ? 'is-in' : '', i === revealed - 1 ? 'is-now' : '', i === tired ? 'is-tired' : '', inks?.[i]?.mark ? `jm jm--${inks[i]!.mark}` : ''].join(' ')}
           style={{ ['--wi' as string]: i, ['--wn' as string]: words.length }}
+          data-note={inks?.[i]?.note}
         >
           {variant === 'flap'
             ? Array.from(w.text).map((c, j) => (
@@ -698,13 +741,14 @@ const SignLine = memo(function SignLine({ line, index, nextTime, next, variant }
   )
   return (
     <motion.div
-      className="sign__line"
-      style={{ ['--r' as string]: words.length ? revealed / words.length : 0 }}
+      className={lineMark ? `sign__line jl jl--${lineMark.ink}${lineMark.chorus ? ' jl--chorus' : ''}` : 'sign__line'}
+      style={{ ['--r' as string]: words.length ? revealed / words.length : 0, ...(lineMark ? { ['--jt' as string]: `${lineMark.tilt / 10}deg` } : {}) }}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10, transition: { duration: 0.22 } }}
       transition={{ duration: 0.3, ease: [0.2, 0.7, 0.2, 1] }}
     >
+      {lineMark && <JotMargin ink={lineMark} />}
       <div className="sign__row">{row}</div>
       {next && <div className="sign__next">{next}</div>}
       <div className="sign__refl" aria-hidden="true">

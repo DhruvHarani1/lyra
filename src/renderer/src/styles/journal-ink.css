@@ -1,0 +1,104 @@
+/* ==========================================================================
+   JOURNAL, pens: a real journal is marked up with more than one highlighter (picked per word and per line by lib/journalInk.ts).
+   Black pen: underline (single / double / wavy), scribble. Blue ballpoint: circle, box, a chorus line. Red pen: strike-through with
+   a small note above. Markers: yellow, pink, green (each a slightly different shape). Ink blot. In the margin: star, arrow, exclamation
+   mark, a numbered circle, or a brace and "chorus xN". Marks draw themselves on as the word is sung (clip-path wipe, like a pen
+   moving left to right); with reduced motion or motion off they are simply there.
+   ========================================================================== */
+:root[data-vibe='journal'] {
+  --jk-black: #15161c;
+  --jk-blue: #2548c4;
+  --jk-red: #d2342c;
+  --jk-green: #1f7a52;
+  --jk-yellow: rgba(255, 214, 64, 0.82);
+  --jk-pink: rgba(255, 112, 168, 0.5);
+  --jk-lime: rgba(112, 214, 120, 0.6);
+}
+
+/* the line: pen colour of the whole line, a tiny tilt of its own, room for the margin mark */
+.sign--jot .sign__line { position: relative; rotate: calc(-1.2deg + var(--jt, 0deg)); padding-left: min(2.6vw, 4.6vh); }
+.sign--jot .sign__line.jl--blue { --ink: var(--jk-blue); }
+.sign--jot .sign__line.jl--green { --ink: var(--jk-green); }
+.sign--jot .sign__word.is-in { color: var(--ink, #22305c); }
+/* the word being written right now: the pen presses a little harder, the marker comes with the word's own mark below */
+.sign--jot .sign__word.is-now { background: none; animation: none; color: color-mix(in srgb, var(--ink, #22305c) 78%, #000); text-shadow: 0 0 0.4px currentColor; }
+
+/* ---------------- word marks ---------------- */
+.sign--jot .sign__word.jm { isolation: isolate; }
+.sign--jot .sign__word.jm::before,
+.sign--jot .sign__word.jm::after { content: ''; position: absolute; pointer-events: none; clip-path: inset(-30% 101% -30% 0); }
+.sign--jot .sign__word.jm.is-in::before,
+.sign--jot .sign__word.jm.is-in::after { animation: jn-pen 0.55s cubic-bezier(0.3, 0.7, 0.3, 1) forwards; }
+@keyframes jn-pen { to { clip-path: inset(-30% -6% -30% -6%); } }
+
+/* black pen: underline, double underline, wavy underline */
+.sign--jot .sign__word.jm--ul::after { left: -2%; right: -3%; bottom: 0.02em; height: 0.055em; border-radius: 0.1em; background: var(--jk-black); rotate: -1.2deg; }
+.sign--jot .sign__word.jm--ul2::after { left: -3%; right: -4%; bottom: -0.08em; height: 0.17em; background: linear-gradient(var(--jk-black), var(--jk-black)) 0 0 / 100% 0.05em no-repeat, linear-gradient(var(--jk-black), var(--jk-black)) 4% 0.11em / 96% 0.05em no-repeat; rotate: -1.6deg; }
+.sign--jot .sign__word.jm--wavy::after { left: -2%; right: -2%; bottom: -0.1em; height: 0.13em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q5 -1 10 5 T20 5' fill='none' stroke='%2315161c' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 50% / 0.42em 100%; }
+/* blue ballpoint: a quick circle and a box */
+.sign--jot .sign__word.jm--circle::after { inset: -0.08em -0.2em -0.06em -0.18em; border: 0.055em solid var(--jk-blue); border-radius: 55% 45% 52% 48% / 62% 48% 55% 42%; rotate: -3deg; }
+.sign--jot .sign__word.jm--box::after { inset: 0.02em -0.1em 0.02em -0.08em; border: 0.045em solid var(--jk-blue); border-radius: 0.06em 0.18em 0.08em 0.16em; rotate: 1.2deg; }
+/* markers, three shapes: yellow (a straight swipe), pink (a slanted, thinner one), green (a fat, chiselled one) */
+.sign--jot .sign__word.jm--hl-yellow::before { z-index: -1; inset: 0.2em -0.1em 0.04em -0.08em; background: var(--jk-yellow); border-radius: 0.1em 0.35em 0.12em 0.3em; transform: skewX(-4deg); }
+.sign--jot .sign__word.jm--hl-pink::before { z-index: -1; inset: 0.3em -0.14em 0.02em -0.04em; background: var(--jk-pink); border-radius: 0.3em 0.08em 0.28em 0.1em; transform: skewX(6deg) rotate(-1deg); }
+.sign--jot .sign__word.jm--hl-green::before { z-index: -1; inset: 0.1em -0.12em -0.02em -0.1em; background: var(--jk-lime); clip-path: polygon(0 12%, 4% 0, 100% 6%, 97% 100%, 5% 94%); border-radius: 0.06em; }
+.sign--jot .sign__word.jm--hl-green.is-in::before { animation-name: jn-pen-poly; }
+@keyframes jn-pen-poly { from { clip-path: polygon(0 12%, 0 0, 0 6%, 0 100%, 0 94%); } to { clip-path: polygon(0 12%, 4% 0, 100% 6%, 97% 100%, 5% 94%); } }
+/* red pen: a strike-through and a small note above */
+.sign--jot .sign__word.jm--strike { color: color-mix(in srgb, var(--ink, #22305c) 70%, #fff); }
+.sign--jot .sign__word.jm--strike::after { left: -3%; right: -3%; top: 52%; height: 0.065em; border-radius: 0.1em; background: var(--jk-red); rotate: -2.5deg; }
+.sign--jot .sign__word.jm--strike::before { content: attr(data-note); left: 4%; top: -0.62em; font-family: 'Caveat', cursive; font-weight: 700; font-size: max(10.5px, 0.4em); line-height: 1; color: var(--jk-red); white-space: nowrap; rotate: -5deg; clip-path: none; opacity: 0; transition: opacity 0.4s 0.35s; }
+.sign--jot .sign__word.jm--strike.is-in::before { animation: none; opacity: 1; }
+/* black pen scribble over a word, and an ink blot */
+.sign--jot .sign__word.jm--scrib::after { inset: 0.16em -0.06em 0.06em -0.04em; opacity: 0.8; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 20' preserveAspectRatio='none'%3E%3Cpath d='M0 4 L24 16 M0 16 L24 4 M0 10 L24 10' fill='none' stroke='%2315161c' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0 / 0.6em 100%; }
+.sign--jot .sign__word.jm--scrib { color: color-mix(in srgb, var(--ink, #22305c) 55%, #fff); }
+.sign--jot .sign__word.jm--blot::after { right: -0.2em; bottom: 0.02em; width: 0.2em; height: 0.18em; background: var(--jk-black); border-radius: 58% 42% 55% 45%; box-shadow: 0.3em 0.07em 0 -0.07em var(--jk-black), -0.07em -0.2em 0 -0.08em var(--jk-black); clip-path: none; transform: scale(0); }
+.sign--jot .sign__word.jm--blot.is-in::after { animation: jn-blot 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) forwards; }
+@keyframes jn-blot { to { transform: scale(1); } }
+
+/* ---------------- margin marks ---------------- */
+.jl__tag { position: absolute; left: 0; top: 0.4vh; width: min(2.5vw, 4.4vh); height: min(2.5vw, 4.4vh); fill: none; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.jl__tag path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: jn-ink 0.7s ease-out 0.15s forwards; }
+@keyframes jn-ink { to { stroke-dashoffset: 0; } }
+.jl__tag--star { stroke: #e6a400; top: 1vh; rotate: -10deg; }
+.jl__tag--arrow { stroke: var(--jk-red); top: 1.4vh; }
+.jl__tag--excl { stroke: var(--jk-red); stroke-width: 4.4; top: 0.6vh; }
+.jl__num { position: absolute; left: 0; top: 0.8vh; display: grid; place-items: center; box-sizing: border-box; width: min(2.4vw, 4.2vh); height: min(2.4vw, 4.2vh); border: 2px solid var(--jk-blue); border-radius: 50% 46% 52% 48%; font: 700 max(10.5px, min(1.5vw, 2.6vh)) / 1 'Caveat', cursive; color: var(--jk-blue); rotate: -6deg; animation: jn-in 0.4s ease-out 0.1s both; }
+/* a chorus line: a brace in the margin and a note */
+.jl__brace { position: absolute; left: 0; top: 0.4vh; bottom: 0.6vh; width: min(1.6vw, 3vh); height: auto; fill: none; stroke: var(--jk-blue); stroke-width: 2.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.jl__brace path { vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; animation: jn-ink 0.7s ease-out forwards; }
+.jl__chorus { position: absolute; right: 0; top: -2.8vh; font: 700 max(10.5px, min(1.6vw, 2.8vh)) / 1 'Caveat', cursive; color: var(--jk-blue); rotate: -3deg; white-space: nowrap; animation: jn-in 0.5s ease-out 0.25s both; }
+
+:root[data-motion='off'] :is(.jl__tag path, .jl__brace path) { animation: none; stroke-dashoffset: 0; }
+:root[data-motion='off'] :is(.jl__num, .jl__chorus) { animation: none; }
+:root[data-motion='off'] .sign--jot .sign__word.jm::before,
+:root[data-motion='off'] .sign--jot .sign__word.jm::after { animation: none !important; clip-path: inset(-30% -6% -30% -6%); }
+:root[data-motion='off'] .sign--jot .sign__word.jm--blot::after { transform: none; }
+:root[data-motion='off'] .sign--jot .sign__word.jm--strike::before { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.jl__tag path, .jl__brace path) { animation: none; stroke-dashoffset: 0; }
+  :is(.jl__num, .jl__chorus) { animation: none; }
+  .sign--jot .sign__word.jm::before,
+  .sign--jot .sign__word.jm::after { animation: none !important; clip-path: inset(-30% -6% -30% -6%); }
+  .sign--jot .sign__word.jm--blot::after { transform: none; }
+}
+/* a word that is not sung yet has no marks, so the page is never marked ahead of the song */
+.sign--jot .sign__word.jm:not(.is-in)::before,
+.sign--jot .sign__word.jm:not(.is-in)::after { visibility: hidden; }
+
+/* ---------------- unsynced lyrics: the same pens, one per line ---------------- */
+[data-vibe='journal'] .plain__stanza > span.jp { position: relative; width: fit-content; max-width: 100%; padding-left: min(2.8vw, 4.8vh); background: none; --ink: #22305c; color: var(--ink); isolation: isolate; }
+[data-vibe='journal'] .plain__stanza > span.jp--blue { --ink: var(--jk-blue); }
+[data-vibe='journal'] .plain__stanza > span.jp--green { --ink: var(--jk-green); }
+.jp--hl-yellow, .jp--hl-pink, .jp--hl-green { background-repeat: no-repeat; }
+[data-vibe='journal'] .plain__stanza > span.jp--hl-yellow { background: linear-gradient(var(--jk-yellow), var(--jk-yellow)) 2.6vw 56% / calc(100% - 2.6vw) 56% no-repeat; }
+[data-vibe='journal'] .plain__stanza > span.jp--hl-pink { background: linear-gradient(var(--jk-pink), var(--jk-pink)) 2.6vw 68% / calc(100% - 2.6vw) 44% no-repeat; }
+[data-vibe='journal'] .plain__stanza > span.jp--hl-green { background: linear-gradient(var(--jk-lime), var(--jk-lime)) 2.6vw 50% / calc(100% - 2.6vw) 78% no-repeat; }
+[data-vibe='journal'] .plain__stanza > span.jp--ul { background: linear-gradient(var(--jk-black), var(--jk-black)) 2.6vw 94% / calc(100% - 2.6vw) 0.06em no-repeat; }
+[data-vibe='journal'] .plain__stanza > span.jp--ul2 { background: linear-gradient(var(--jk-black), var(--jk-black)) 2.6vw 90% / calc(100% - 2.6vw) 0.05em no-repeat, linear-gradient(var(--jk-black), var(--jk-black)) 2.9vw 100% / calc(100% - 3vw) 0.05em no-repeat; }
+[data-vibe='journal'] .plain__stanza > span.jp--wavy { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 10' preserveAspectRatio='none'%3E%3Cpath d='M0 5 Q5 -1 10 5 T20 5' fill='none' stroke='%2315161c' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 2.6vw 100% / 0.42em 0.18em; }
+[data-vibe='journal'] .plain__stanza > span.jp--box { box-shadow: inset 0 0 0 0.05em var(--jk-blue); border-radius: 0.1em 0.3em 0.12em 0.25em; margin-left: min(2.8vw, 4.8vh); padding-left: 0.3em; padding-right: 0.3em; }
+.jp--tag-star::before, .jp--tag-arrow::before, .jp--tag-excl::before { content: ''; position: absolute; left: 0; top: 0.12em; width: 0.9em; height: 0.9em; background-repeat: no-repeat; background-size: contain; }
+.jp--tag-star::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 5 L29 19 L44 19 L32 28 L36 43 L24 34 L12 43 L16 28 L4 19 L19 19 Z' fill='none' stroke='%23e6a400' stroke-width='3.4' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.jp--tag-arrow::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M4 30 C16 36 30 30 40 16 M28 14 L41 14 L38 27' fill='none' stroke='%23d2342c' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.jp--tag-excl::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M22 6 C21 18 22 26 24 32 M24 40 L24.5 41' fill='none' stroke='%23d2342c' stroke-width='4.6' stroke-linecap='round'/%3E%3C/svg%3E"); }

@@ -36,7 +36,7 @@
 .jfx__corner { display: none !important; }
 .jfx__flower { left: calc(var(--sc-wl) + var(--sc-ww) - 3vh); bottom: 14vh; }
 .jfx__doodle--heart { right: 10vw; top: 16vh; }
-.jfx__doodle--squig { right: 9vw; top: 64vh; }
+.jfx__doodle--squig { right: auto; left: 16vw; top: 78vh; }
 .jfx__doodle--star { right: 16vw; bottom: 22vh; }
 :root[data-vibe='journal'] .jfx__rules { -webkit-mask: none; mask: none; }
 /* the card: a yellow sticky note on the mat, under the book */
