@@ -1,0 +1,78 @@
+/* ==========================================================================
+   PICTO: a bento board of pictogram tiles (fullscreen: layout mechanics are in scene.css; shared row card in looks2.css).
+   Rounded tiles on ink-navy: the video top-left, an orange pictogram tile, the player tile (with live equaliser bars and the card),
+   and one wide tile for the words, where every word gets a pictogram. Flat colour, no gradients on the tiles, no shadows but a
+   hard lift. Edge: a pictogram frieze runs along the bottom and right edges like a conveyor; it advances one icon per line (edge-picto.css).
+   ========================================================================== */
+:root[data-vibe='picto'] {
+  --pc-gap: 2vw;
+  --pc-ink: #1c2130;
+  --nv-radius: 2.2vh;
+  --nv-shadow: 0 0.6vh 0 rgba(0, 0, 0, 0.35);
+  --sc-ww: min(31vw, 48vh);
+  --sc-wl: 4.5vw;
+  --sc-wt: 12vh;
+  --sc-wr: 2.6vh;
+  --sc-cw: calc(95.5vw - var(--sc-wl) - var(--sc-ww) - var(--pc-gap) * 2 - 11vw - 4vh);
+  --sc-cl: calc(var(--sc-wl) + var(--sc-ww) + var(--pc-gap) * 2 + 11vw + 2vh);
+  --sc-ct: calc(var(--sc-wt) + var(--sc-wh) - 12.6vh);
+  --sc-cb: auto;
+  --sc-ll: calc(4.5vw + 2.6vw);
+  --sc-lw: calc(91vw - 5.2vw);
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + var(--pc-gap) * 0.9 + 2.2vh);
+  --sc-lb: 11vh;
+  --sc-lbs: 11vh;
+}
+:root[data-vibe='picto'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(34vw, 52vh); }
+[data-vibe='picto'] .backdrop .backdrop__field { background: #11141c; }
+[data-vibe='picto'] .scenewin { box-shadow: 0 0 0 0.7vh #fff, 0 0.9vh 0 0.7vh rgba(0, 0, 0, 0.35); }
+:root[data-vibe='picto'][data-rim='on']::after { display: none; }
+.pcfx { position: absolute; inset: 0; pointer-events: none; display: none; }
+:root[data-vibe='picto']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .pcfx { display: block; }
+.pcfx__tile { position: absolute; border-radius: 3vh; background: var(--pc-ink); box-shadow: 0 0.6vh 0 rgba(0, 0, 0, 0.35); }
+.pcfx__tile--icon {
+  left: calc(var(--sc-wl) + var(--sc-ww) + var(--pc-gap)); top: calc(var(--sc-wt) - 0.7vh); width: 11vw; height: calc(var(--sc-wh) + 1.4vh);
+  background: #ff7a59; display: grid; place-items: center;
+}
+.pcfx__tile--icon svg { width: 62%; max-height: 62%; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; animation: pc-spin 40s linear infinite; }
+@keyframes pc-spin { to { rotate: 360deg; } }
+.pcfx__tile--player {
+  left: calc(var(--sc-wl) + var(--sc-ww) + var(--pc-gap) * 2 + 11vw); top: calc(var(--sc-wt) - 0.7vh);
+  width: calc(95.5vw - var(--sc-wl) - var(--sc-ww) - var(--pc-gap) * 2 - 11vw); height: calc(var(--sc-wh) + 1.4vh);
+}
+.pcfx__label { position: absolute; left: 2.4vh; top: 2.2vh; font: 800 max(10.5px, 1.5vh) 'Inter Variable', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: #8c93a8; }
+.pcfx__eq { position: absolute; left: 2.4vh; right: 2.4vh; top: 5.4vh; height: calc(var(--sc-wh) - 19vh); min-height: 5vh; display: flex; align-items: flex-end; gap: 0.9vh; }
+.pcfx__eq i { flex: 1; border-radius: 99px; background: #ff7a59; animation: pc-eq 1.2s ease-in-out infinite; }
+.pcfx__eq i:nth-child(5n+2) { background: #ffd166; } .pcfx__eq i:nth-child(5n+3) { background: #4dd0e1; } .pcfx__eq i:nth-child(5n+4) { background: #b794ff; } .pcfx__eq i:nth-child(5n) { background: #7ae582; }
+@keyframes pc-eq { 0%, 100% { height: 16%; } 50% { height: 100%; } }
+.pcfx__tile--words {
+  left: 4.5vw; top: calc(var(--sc-wt) + var(--sc-wh) + var(--pc-gap) * 0.9 + 0.7vh); right: 4.5vw; bottom: 8.6vh;
+  background: var(--pc-ink); border-radius: 3.4vh;
+}
+.pcfx__dot { position: absolute; width: 1.4vh; height: 1.4vh; border-radius: 50%; background: #ffd166; }
+.pcfx__dot--a { right: calc(4.5vw + 2vh); bottom: calc(8.6vh + 2vh); background: #ff7a59; }
+.pcfx__dot--b { right: calc(4.5vw + 4.6vh); bottom: calc(8.6vh + 2vh); background: #4dd0e1; }
+.pcfx__dot--c { right: calc(4.5vw + 7.2vh); bottom: calc(8.6vh + 2vh); background: #b794ff; }
+:root[data-vibe='picto'][data-mode='mini'] :is(.pcfx__tile--icon, .pcfx__eq) { display: none; }
+:root[data-motion='off'] .pcfx * { animation: none !important; }
+:root[data-calm] .pcfx * { animation-play-state: paused !important; }
+/* the card: white, a hard lift */
+:root[data-vibe='picto']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { padding: 1vh 2vh 1vh 1vh !important; }
+:root[data-vibe='picto']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 8.4vh !important; border-radius: 1.6vh !important; box-shadow: none; }
+/* the words: every word with its pictogram, bigger */
+.sign--picto .sign__row { font-size: min(5vw, 9.4vh); }
+:root[data-vibe='picto'] .stage--picto .sign__line { justify-content: center; }
+[data-vibe='picto'] .lyrics__notice { align-self: flex-start; background: #fff; color: #14171f; border-radius: 99px; font-weight: 800; }
+[data-vibe='picto'] .plain__stanza { font-family: 'Inter Variable', sans-serif; font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+[data-vibe='picto'] .plain__stanza > span:nth-child(5n+1) { color: #ff7a59; } [data-vibe='picto'] .plain__stanza > span:nth-child(5n+3) { color: #4dd0e1; }
+[data-vibe='picto'] .lfb h3 { font-family: 'Inter Variable', sans-serif; font-weight: 800; letter-spacing: -0.04em; color: #fff; text-shadow: none; }
+[data-vibe='picto'] .lfb__eq i { background: #ff7a59; box-shadow: none; }
+/* settings: a white sheet of pictogram tiles */
+:root[data-vibe='picto'] .sidepanel { --panel: #fff; --fg: #14171f; --fg-2: #394055; --fg-3: #566; --line: rgba(20,23,31,.14); --line-2: rgba(20,23,31,.26); --accent: #ff7a59; --glow: #ff7a59; --glow-soft: transparent;
+  background: #fff; color: #14171f; border: 0; border-radius: 28px; box-shadow: 0 0 0 0.7vh #1c2130, 0 1.2vh 0 0.7vh rgba(0,0,0,.4); -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root[data-vibe='picto'] .sidepanel .settings section { background: #f1f3f8; box-shadow: none; border-radius: 18px; }
+:root[data-vibe='picto'] .sidepanel .stabs button.is-on { background: #ff7a59; color: #fff; box-shadow: none; }
+/* the small window: the player tile and the pictogram tile make way, the card goes under the video */
+:root[data-vibe='picto'][data-mode='mini'] { --sc-cl: 4vw; --sc-cw: 92vw; --sc-ct: auto; --sc-cb: 3vh; --sc-ll: 7vw; --sc-lw: 86vw; --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 3vh); --sc-lb: 21vh; --sc-lbs: 21vh; }
+:root[data-vibe='picto'][data-mode='mini'] :is(.pcfx__tile--player, .pcfx__tile--icon) { display: none; }
+:root[data-vibe='picto'][data-platform='android'] :is(.edge__c, .edge__b) { display: none; }

@@ -1,0 +1,16 @@
+/* ==========================================================================
+   EDGE · LENS: an iris and a flare ring (see components/EdgeFx.tsx for --lp --lv --ts).
+   The corners darken like a lens vignette and the iris opens while a line is being sung and closes in the gaps; a thin ring of
+   light (a flare) rotates with the song's clock; the window rim glows a little more while singing. Cheap: gradients only.
+   ========================================================================== */
+@property --lens-iris { syntax: '<percentage>'; inherits: true; initial-value: 58%; }
+:root[data-vibe='lens'] { --lens-iris: calc(56% + var(--lv, 0) * 18%); transition: --lens-iris 0.7s ease; }
+:root[data-vibe='lens'] .edge__a { inset: 0; height: auto; background: radial-gradient(ellipse 74% 80% at 50% 46%, transparent var(--lens-iris), rgba(0, 8, 8, 0.78) 100%); }
+:root[data-vibe='lens'] .edge__b {
+  inset: auto; left: 50%; top: 46%; width: min(118vh, 96vw); height: min(118vh, 96vw); translate: -50% -50%; border-radius: 50%;
+  background: conic-gradient(from calc(var(--ts, 0) * 14deg), transparent 0 6%, rgba(127, 227, 212, 0.6) 11%, transparent 19% 55%, rgba(255, 190, 120, 0.45) 62%, transparent 70%);
+  -webkit-mask: radial-gradient(circle, transparent 66%, #000 66.7% 67.7%, transparent 68.4%);
+  mask: radial-gradient(circle, transparent 66%, #000 66.7% 67.7%, transparent 68.4%);
+  opacity: calc(0.35 + var(--lv, 0) * 0.55);
+}
+:root[data-vibe='lens'] .edge__d { inset: 0; width: auto; box-shadow: inset 0 0 0 1px rgba(127, 227, 212, 0.35), inset 0 0 7vh rgba(127, 227, 212, calc(0.06 + var(--lv, 0) * 0.16)); }

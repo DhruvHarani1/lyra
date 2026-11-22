@@ -1,0 +1,78 @@
+/* ==========================================================================
+   SPLIT-FLAP: a departures board (fullscreen: layout mechanics are in scene.css; shared row card in looks2.css).
+   The words fill the board in flap tiles across the whole width (rows separated by board rules, a column header on top), the video is
+   a small "gate camera" panel bottom right with a yellow frame, the card is a boarding-pass stub with notched sides.
+   Edge: a row of 40 flap tiles along the bottom that flip open one after another as the line is sung, and flip back for the next (edge-flap.css).
+   ========================================================================== */
+:root[data-vibe='flap'] {
+  --nv-radius: 0.6vh;
+  --nv-bg: #ffd23f;
+  --nv-fg: #14110a;
+  --nv-fg2: #4a3f10;
+  --nv-btn-bg: #14110a;
+  --nv-btn-fg: #ffd23f;
+  --nv-rail: rgba(20, 17, 10, 0.25);
+  --nv-shadow: 0 1.4vh 3vh rgba(0, 0, 0, 0.5);
+  --sc-ww: min(26vw, 40vh);
+  --sc-wl: calc(94vw - var(--sc-ww));
+  --sc-wt: calc(100vh - var(--sc-wh) - 8.4vh);
+  --sc-wr: 0.8vh;
+  --sc-ll: 5vw;
+  --sc-lt: 18vh;
+  --sc-lw: 90vw;
+  --sc-lb: calc(var(--sc-wh) + 13vh);
+  --sc-lbs: calc(var(--sc-wh) + 13vh);
+  --sc-cl: 5vw;
+  --sc-cb: 8.4vh;
+  --sc-ct: auto;
+  --sc-cw: min(56vw, 700px) !important;
+}
+:root[data-vibe='flap'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(30vw, 46vh); }
+[data-vibe='flap'] .backdrop .backdrop__field { background: radial-gradient(100% 80% at 50% 0%, #1c1c22, #0b0b0e 80%); }
+[data-vibe='flap'] .scenewin { box-shadow: 0 0 0 0.8vh #1b1b1f, 0 0 0 calc(0.8vh + 3px) #ffd23f, 0 2vh 5vh rgba(0, 0, 0, 0.55); }
+:root[data-vibe='flap'][data-rim='on']::after { display: none; }
+.flfx { position: absolute; inset: 0; pointer-events: none; display: none; font-family: 'Cascadia Code', Consolas, monospace; text-transform: uppercase; }
+:root[data-vibe='flap']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .flfx { display: block; }
+.flfx__head { position: absolute; left: 5vw; right: 5vw; top: 9.4vh; display: grid; grid-template-columns: 1fr 12vw 9vw 14vw; gap: 2vw; font: 700 max(10.5px, 1.55vh) 'Cascadia Code', Consolas, monospace; letter-spacing: 0.2em; color: #8a8a92; padding-bottom: 1.2vh; border-bottom: 0.3vh solid #ffd23f; }
+.flfx__head b { color: #ffd23f; font-weight: 700; }
+.flfx__rules { position: absolute; left: 5vw; right: 5vw; top: 18vh; bottom: calc(var(--sc-wh) + 13vh); }
+.flfx__rules i { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255, 255, 255, 0.1); }
+.flfx__rules i:nth-child(1) { top: 33%; } .flfx__rules i:nth-child(2) { top: 66%; } .flfx__rules i:nth-child(3) { bottom: 0; }
+.flfx__cam { position: absolute; left: var(--sc-wl); top: calc(var(--sc-wt) - 3.4vh); width: var(--sc-ww); display: flex; justify-content: space-between; font: 700 max(10px, 1.25vh) 'Cascadia Code', Consolas, monospace; letter-spacing: 0.16em; color: #ffd23f; }
+.flfx__cam em { font-style: normal; color: #7ae582; }
+/* the edge: 40 flap tiles along the bottom, each opens when the line's progress passes it */
+.flfx__edge { position: fixed; left: 1vw; right: 24vw; bottom: 1.2vh; height: 3.8vh; display: none; grid-template-columns: repeat(40, 1fr); gap: 0.25vw; perspective: 700px; z-index: 62; }
+:root[data-rim='on'] .flfx__edge { display: grid; }
+:root[data-vibe='flap'][data-platform='tv'] .flfx__edge { display: none; }
+.flfx__edge i { position: relative; transform-style: preserve-3d; transform: rotateX(calc(clamp(0, var(--lp, 0) * 40 - var(--k), 1) * -180deg)); transition: transform 0.12s linear; }
+.flfx__edge i::before, .flfx__edge i::after { content: ''; position: absolute; inset: 0; border-radius: 0.3vh; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flfx__edge i::before { background: linear-gradient(180deg, #25252b 49%, #0a0a0c 49% 52%, #1c1c21 52%); box-shadow: inset 0 0 0 1px #34343b; }
+.flfx__edge i::after { background: linear-gradient(180deg, #ffd23f 49%, #7a6012 49% 52%, #f2c02a 52%); transform: rotateX(180deg); }
+:root[data-motion='off'] .flfx__edge i { transition: none; }
+:root[data-vibe='flap'][data-mode='mini'] .flfx__head, :root[data-vibe='flap'][data-mode='mini'] .flfx__cam { display: none; }
+/* the card: a boarding-pass stub with notched sides */
+:root[data-vibe='flap']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  padding: 1.2vh 2.4vh 1.2vh 2.4vh !important;
+  -webkit-mask: radial-gradient(circle 0.9vh at 0 50%, transparent 98%, #000), radial-gradient(circle 0.9vh at 100% 50%, transparent 98%, #000);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+  mask: radial-gradient(circle 0.9vh at 0 50%, transparent 98%, #000), radial-gradient(circle 0.9vh at 100% 50%, transparent 98%, #000);
+  border-left: 0 !important;
+}
+:root[data-vibe='flap']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 8.2vh !important; border-radius: 0.4vh !important; box-shadow: 0 0 0 0.3vh #14110a; }
+:root[data-vibe='flap']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 700 2vh/1.1 'Cascadia Code', Consolas, monospace; text-transform: uppercase; letter-spacing: 0.04em; }
+:root[data-vibe='flap']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-family: 'Cascadia Code', Consolas, monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+/* the words: bigger tiles across the board */
+.sign--flap .sign__row { font-size: min(4.4vw, 8vh); gap: 1.2vh 2.4vh; }
+[data-vibe='flap'] .lyrics__notice { align-self: flex-start; background: #1b1b1f; border: 1px solid #ffd23f; color: #ffd23f; border-radius: 0.4vh; font-family: 'Cascadia Code', Consolas, monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+[data-vibe='flap'] .plain__stanza { font-family: 'Cascadia Code', Consolas, monospace; text-transform: uppercase; letter-spacing: 0.06em; color: #f4f4f4; }
+[data-vibe='flap'] .plain__stanza > span:nth-child(odd) { color: #ffd23f; }
+[data-vibe='flap'] .lfb h3 { font-family: 'Cascadia Code', Consolas, monospace; text-transform: uppercase; letter-spacing: 0.04em; color: #ffd23f; text-shadow: none; }
+[data-vibe='flap'] .lfb__eq i { background: #ffd23f; box-shadow: none; }
+/* settings: a black timetable with yellow rules */
+:root[data-vibe='flap'] .sidepanel { --panel: #131317; --fg: #f4f4f4; --fg-2: #c8c8cf; --fg-3: #9a9aa4; --line: rgba(255,255,255,.12); --line-2: rgba(255,210,63,.4); --accent: #ffd23f; --glow: #ffd23f; --glow-soft: transparent;
+  background: #131317; color: #f4f4f4; border: 1px solid #ffd23f; border-radius: 0.8vh; box-shadow: 0 0 0 0.6vh #0b0b0e, 0 2vh 6vh rgba(0,0,0,.6); -webkit-backdrop-filter: none; backdrop-filter: none; font-family: 'Cascadia Code', Consolas, monospace; }
+:root[data-vibe='flap'] .sidepanel .settings section { background: #1b1b1f; box-shadow: inset 0 0 0 1px #34343b; border-radius: 0.5vh; }
+:root[data-vibe='flap'] .sidepanel .stabs button.is-on { background: #ffd23f; color: #14110a; box-shadow: none; border-radius: 0.4vh; }
+:root[data-vibe='flap'] .sidepanel h3, :root[data-vibe='flap'] .sidepanel .settings h4 { text-transform: uppercase; letter-spacing: 0.12em; }
+:root[data-vibe='flap'][data-mode='mini'] { --sc-cw: 58vw !important; }
+:root[data-vibe='flap'][data-platform='android'] .flfx__edge { display: none; }
