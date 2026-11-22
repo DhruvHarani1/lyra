@@ -14,6 +14,7 @@ const EXTRA = [
   { id: 'wall', name: 'Drift Wall', tag: 'Words land on a wall that drifts in 3D', layout: 'scene', stage: 'wall', acc: '#ffa23b', light: false },
   { id: 'flap', name: 'Split-flap', tag: 'An airport board flips each word', layout: 'scene', stage: 'flap', acc: '#ffd23b', light: false },
   { id: 'journal', name: 'Journal', tag: 'A ruled page, a taped polaroid, marker highlights', layout: 'scene', stage: 'jot', acc: '#e0556d', light: true },
+  { id: 'dusk', name: 'Dusk Ridge', tag: 'A star-filled sky over sunlit mountains', layout: 'scene', stage: 'bloom', acc: '#ffb86b', light: false },
   { id: 'doodle', name: 'Doodle', tag: 'Fat marker, bright shapes, scribbles that draw themselves', layout: 'scene', stage: 'scrawl', acc: '#ff5f7e', light: true },
 ]
 const VIBES = [...BASE_VIBES, ...EXTRA.filter((x) => !BASE_VIBES.some((b) => b.id === x.id))]

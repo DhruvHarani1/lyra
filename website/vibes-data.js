@@ -190,6 +190,20 @@ window.LYRA_VIBES = [
   "light": false
  },
  {
+  "id": "dusk",
+  "name": "Dusk Ridge",
+  "tag": "A star-filled sky over sunlit mountains",
+  "layout": "scene",
+  "stage": "bloom",
+  "acc": "#ffb86b",
+  "c2": "#ff8f70",
+  "c3": "#1b1640",
+  "kinds": [
+   "night"
+  ],
+  "light": false
+ },
+ {
   "id": "blocks",
   "name": "Blocks",
   "tag": "A sandbox with a chat log",
