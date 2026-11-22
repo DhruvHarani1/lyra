@@ -1,0 +1,124 @@
+/* ==========================================================================
+   MINI LOOKS: the small window (420x700 and kin, never Android) gets a composition of its own per look.
+   Every scene look shares one portrait skeleton in the mini window (video on top, lyrics under it, card at the bottom: scene.css,
+   max-aspect-ratio 1/1). Here each look changes the SHAPE and PLACE of its video window (a cinema strip, a panorama, a taped polaroid,
+   a street-view inset, a preview pane...) and moves the lyrics up or down to match, so the mini reads as that look and not as a
+   squeezed copy of another. Every rule is scoped to one look and data-mode='mini' with :not([data-platform='android']).
+   Geometry variables: --sc-wl --sc-wt --sc-ww --sc-wh (video window) and --sc-lt (top of the lyrics).
+   ========================================================================== */
+@media (max-aspect-ratio: 1/1) {
+  /* Cinema: a 2.39:1 scope screen across the whole width, subtitles under it */
+  :root[data-arch='scene'][data-vibe='noir'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 8vw !important;
+    --sc-ww: 84vw !important;
+    --sc-wt: 11vh !important;
+    --sc-wh: 42vw !important;
+    --sc-lt: calc(11vh + 42vw + 5vh) !important;
+  }
+  /* Sunset Drive: a wide windscreen panorama */
+  :root[data-arch='scene'][data-vibe='sunset'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 4vw !important;
+    --sc-ww: 92vw !important;
+    --sc-wt: 9vh !important;
+    --sc-wh: 38vw !important;
+    --sc-lt: calc(9vh + 38vw + 6vh) !important;
+  }
+  /* Artwork: a framed print with a wall around it */
+  :root[data-arch='scene'][data-vibe='none'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 14vw !important;
+    --sc-ww: 72vw !important;
+    --sc-wt: 9vh !important;
+    --sc-wh: 40.5vw !important;
+    --sc-lt: calc(9vh + 40.5vw + 8vh) !important;
+  }
+  /* Journal: a small taped polaroid on the page, the handwriting under it */
+  :root[data-arch='scene'][data-vibe='journal'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 14vw !important;
+    --sc-ww: 62vw !important;
+    --sc-wt: 8vh !important;
+    --sc-wh: 36vw !important;
+    --sc-lt: calc(8vh + 36vw + 13vh) !important;
+  }
+  /* Lens: a 4:3 viewfinder */
+  :root[data-arch='scene'][data-vibe='lens'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 10vw !important;
+    --sc-ww: 80vw !important;
+    --sc-wt: 8vh !important;
+    --sc-wh: 60vw !important;
+    --sc-lt: calc(8vh + 60vw + 3vh) !important;
+  }
+  /* Route: the video is a small street-view inset in the corner, the stops get the room */
+  :root[data-arch='scene'][data-vibe='route'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 47vw !important;
+    --sc-ww: 48vw !important;
+    --sc-wt: 8vh !important;
+    --sc-wh: 28vw !important;
+    --sc-lt: calc(8vh + 28vw + 3vh) !important;
+  }
+  /* Editor: a small preview pane at the top right, the code gets the height */
+  :root[data-arch='scene'][data-vibe='editor'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 55vw !important;
+    --sc-ww: 40vw !important;
+    --sc-wt: 11vh !important;
+    --sc-wh: 22.5vw !important;
+    --sc-lt: calc(11vh + 22.5vw + 2vh) !important;
+  }
+
+  /* Stencil: a small pasted poster at the right, huge sprayed words get the width */
+  :root[data-arch='scene'][data-vibe='stencil'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 42vw !important;
+    --sc-ww: 54vw !important;
+    --sc-wt: 9vh !important;
+    --sc-wh: 30vw !important;
+    --sc-lt: calc(9vh + 30vw + 3vh) !important;
+  }
+  /* Trailer: an edge-to-edge hero frame, no window around it */
+  :root[data-arch='scene'][data-vibe='trailer'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 0 !important;
+    --sc-ww: 100vw !important;
+    --sc-wt: 0 !important;
+    --sc-wh: 56.25vw !important;
+    --sc-wr: 0px !important;
+    --sc-lt: calc(56.25vw + 5vh) !important;
+  }
+  /* Lock Screen: the video is the wallpaper behind the clock and the notification stack */
+  :root[data-arch='scene'][data-vibe='lock'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 0 !important;
+    --sc-ww: 100vw !important;
+    --sc-wt: 0 !important;
+    --sc-wh: 100vh !important;
+    --sc-wr: 0px !important;
+  }
+  /* Web: a round dewdrop hanging in the web */
+  :root[data-arch='scene'][data-vibe='web'][data-mode='mini']:not([data-platform='android']) {
+    --sc-wl: 22vw !important;
+    --sc-ww: 56vw !important;
+    --sc-wt: 7vh !important;
+    --sc-wh: 56vw !important;
+    --sc-wr: 50% !important;
+    --sc-lt: calc(7vh + 56vw + 3vh) !important;
+  }
+  /* Dream: the moon disc is big, so the constellation stops above it */
+  :root[data-arch='scene'][data-vibe='dream'][data-mode='mini']:not([data-platform='android']) {
+    --sc-lb: 31vh !important;
+    --sc-lbs: 31vh !important;
+  }
+}
+/* Artwork: the lyrics stage is a little smaller so a whole line sits under the print */
+:root[data-vibe='none'][data-mode='mini']:not([data-platform='android']) .full[data-arch='scene'] .full__lyrics .lyric__text { font-size: max(21px, 6.4vw) !important; line-height: 1.15 !important; }
+
+/* Cinema: slimmer curtains (a 420px window is not a cinema hall), the screen glow and seats follow the strip */
+:root[data-vibe='noir'][data-mode='mini']:not([data-platform='android']) .noirfx::before {
+  background:
+    linear-gradient(180deg, #2a0a10 0 2.6vh, #6b1a26 2.6vh 4.2vh, #c9a14a 4.2vh 4.6vh, transparent 4.6vh) 0 0 / 100% 5.4vh no-repeat,
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.62)) 0 0 / 6vw 100% no-repeat,
+    repeating-linear-gradient(90deg, #4a1019 0 1.2vw, #7a1f2c 1.2vw 2vw, #3a0c14 2vw 2.8vw) 0 0 / 6vw 100% no-repeat,
+    linear-gradient(270deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.62)) 100% 0 / 6vw 100% no-repeat,
+    repeating-linear-gradient(270deg, #4a1019 0 1.2vw, #7a1f2c 1.2vw 2vw, #3a0c14 2vw 2.8vw) 100% 0 / 6vw 100% no-repeat,
+    radial-gradient(circle at 50% 120%, #15151a 0 3.4vh, transparent 3.5vh) 0 100% / 9vw 6vh repeat-x;
+}
+:root[data-vibe='noir'][data-mode='mini']:not([data-platform='android']) .noirfx::after { left: 10vw; width: 80vw; height: 14vh; }
+
+/* Picto: the icon frieze runs under the card, not behind it */
+:root[data-vibe='picto'][data-mode='mini']:not([data-platform='android']) .full.full[data-arch='scene'] .full__side { bottom: 6.6vh !important; }
+:root[data-vibe='picto'][data-mode='mini']:not([data-platform='android']) .edge__c { bottom: 1vh; height: 4vh; }
