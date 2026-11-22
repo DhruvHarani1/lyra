@@ -22,3 +22,4 @@
 :root[data-vibe='sticker'] .edge > .edge__d { --n: 3; --g: '✦'; left: -2.8vh; top: 62vh; bottom: auto; right: auto; border-radius: 40% 60% 55% 45%; rotate: -16deg; }
 :root[data-vibe='sticker'] .edge > i::after { content: ''; position: absolute; right: -0.5vh; top: -0.5vh; width: 2.4vh; height: 2.4vh; background: linear-gradient(225deg, #fff 50%, rgba(0, 0, 0, 0.18) 50%); border-radius: 0 0 0 100%; }
 :root[data-vibe='sticker'] .edge__c::after, :root[data-vibe='sticker'] .edge__d::after { display: none; }
+@media (max-width: 700px) { :root[data-vibe='sticker'] .edge { display: none !important; } }

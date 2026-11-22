@@ -292,6 +292,13 @@ function TermFx() {
       <SceneWindow />
       <div className="termfx__pane termfx__pane--video" data-title="video.mp4" />
       <div className="termfx__pane termfx__pane--log" data-title="lyrics.log" />
+      <div className="termfx__pane termfx__pane--eq" data-title="spectrum">
+        <div className="termfx__bars">
+          {Array.from({ length: 28 }, (_, i) => (
+            <i key={i} style={{ ['--d' as string]: `${-((i * 0.37) % 1.4).toFixed(2)}s` }} />
+          ))}
+        </div>
+      </div>
       <div className="termfx__cursor" />
       <div className="termfx__roll" />
       <div className="termfx__scan" />
