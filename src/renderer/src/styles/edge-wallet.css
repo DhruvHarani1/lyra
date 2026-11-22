@@ -8,4 +8,3 @@
 :root[data-vibe='wallet'] .edge__d::after { content: ''; position: fixed; left: -26vh; top: -26vh; width: 52vh; height: 52vh; border-radius: 50%; border: 0.3vh solid rgba(184, 255, 217, 0.8); transform: scale(calc(var(--lp, 0) * 0.7)); opacity: calc((1 - var(--lp, 0)) * var(--lv, 0) * 0.5); }
 
 /* the settings panel (z 21) and its scrim sit over the edge */
-:root[data-vibe='wallet']:has(.sidepanel) .edge { z-index: 19; }

@@ -8,7 +8,7 @@ import { trackKey } from '@core/songKey'
 import { keyForId } from '@core/trackIndex'
 import { userChoices } from '@core/userChoices'
 import type { LyraApi, Unsubscribe } from '@shared/ipc'
-import { DEFAULT_SETTINGS, type ConnectionStatus, type ModeEvent, type PlaybackSnapshot, type QueueItem, type SavedMoment, type Settings, type ViewMode } from '@shared/types'
+import { DEFAULT_SETTINGS, type ConnectionStatus, type LyricsResult, type ModeEvent, type PlaybackSnapshot, type QueueItem, type SavedMoment, type Settings, type ViewMode } from '@shared/types'
 import { installAndroidPlatform, LocalStore, preloadSecrets, setAppVersion } from './platform'
 import { nativeFetch, rpc } from './rpc'
 
@@ -221,7 +221,28 @@ async function withRetry<T extends { status: string }>(first: () => Promise<T>, 
   return again()
 }
 
-export const androidApi: LyraApi & { android: NonNullable<LyraApi['android']> } = {
+/**
+ * The TV follows a Lyra app on a computer (Lyra Connect): that computer already found the lyrics for this song (and honours
+ * the person's own pick for it), so use those, in time with its song clock. The host sends them a moment after the song
+ * changes, so wait a little; if it has none, or nothing arrives, the page asks its own services as before.
+ */
+async function hostLyrics(trackId: string): Promise<LyricsResult | null> {
+  if (document.documentElement.dataset.platform !== 'tv') return null
+  for (let i = 0; i < 8; i++) {
+    let r: (LyricsResult & { fallback?: boolean }) | false | null
+    try {
+      r = await rpc<(LyricsResult & { fallback?: boolean }) | false | null>('tvLyrics', trackId)
+    } catch {
+      return null
+    }
+    if (r === false || (r && r.fallback)) return null // not following a computer, or the computer has none
+    if (r) return r
+    await new Promise((ok) => setTimeout(ok, 400))
+  }
+  return null
+}
+
+export const androidApi: LyraApi &{ android: NonNullable<LyraApi['android']> } = {
   settings: {
     get: async () => sanitize(settingsStore.get()),
     set: async (patch) => {
@@ -303,7 +324,7 @@ export const androidApi: LyraApi & { android: NonNullable<LyraApi['android']> } 
     openInSpotify: async () => void (await rpc('openSpotify'))
   },
   lyrics: {
-    get: (t) => withRetry(() => lyricsService.get(t), () => lyricsService.get(t, true)),
+    get: async (t) => (await hostLyrics(t.id)) ?? withRetry(() => lyricsService.get(t), () => lyricsService.get(t, true)),
     refresh: (t) => lyricsService.get(t, true),
     candidates: (t) => lyricsService.candidates(t),
     choose: (t, provider, id) => lyricsService.choose(t, provider, id),

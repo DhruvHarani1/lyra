@@ -150,7 +150,6 @@
 .duskfx__star { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: var(--c, #fff); box-shadow: 0 0 calc(var(--s) * 3) var(--c, #fff), 0 0 calc(var(--s) * 7) color-mix(in srgb, var(--c, #fff) 45%, transparent); opacity: 0.35; animation: dusk-twinkle var(--d, 4s) ease-in-out infinite; animation-delay: var(--w, 0s); }
 .duskfx__star--big::before, .duskfx__star--big::after { content: ''; position: absolute; left: 50%; top: 50%; background: linear-gradient(90deg, transparent, var(--c, #fff), transparent); width: calc(var(--s) * 9); height: 1px; transform: translate(-50%, -50%); }
 .duskfx__star--big::after { transform: translate(-50%, -50%) rotate(90deg); }
-@keyframes dusk-twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
 .duskfx__shoot { position: absolute; left: 62%; top: 9%; width: 16vh; height: 2px; background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff); border-radius: 2px; rotate: 24deg; opacity: 0; animation: dusk-shoot 17s ease-in 3s infinite; }
 .duskfx__shoot--b { left: 22%; top: 18%; animation-delay: 11s; animation-duration: 23s; }
 @keyframes dusk-shoot { 0%, 94% { opacity: 0; transform: translate(0, 0); } 95% { opacity: 1; } 100% { opacity: 0; transform: translate(-24vh, 11vh); } }

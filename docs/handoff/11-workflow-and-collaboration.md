@@ -17,13 +17,19 @@
 * Do not create a PR unless asked; the owner asks regularly ("make a release") which implies PR + merge + dispatch.
 
 ## Parallel workers (forks)
-Used in 0.22 to build five areas at once. Pattern:
+Used in 0.22 and again for 0.23 / 0.24 (looks, Connect, Android, website, docs in parallel). Pattern:
 1. Split by **file ownership** so branches do not conflict: e.g. one worker owns a new CSS file (`cards.css`), one owns Kotlin + `android-web`, one owns new vibes (and is the only one allowed to touch `vibes.ts`/`types.ts`), one owns test scripts + engine hooks, one owns generated website assets.
 2. Spawn forks with worktree isolation, tell each: do not push, do not open PRs, commit on your own branch, run these checks, reply with the branch name and a short summary including what is unverified.
 3. Give each worker its own dev-server port (`UI_PORT`); stale servers and a shared port made runs kill each other.
 4. Merge their branches into the dev branch, resolve conflicts (append-only CSS usually just needs both sides), then **re-run the whole test set** on the merged result.
 5. Workers' claims ("failures also happen on a clean checkout") need checking: they were environment artefacts (symlinked `node_modules`).
 Do not duplicate a worker's work while it runs; wait for its notification.
+
+Lessons added in 0.23 / 0.24 (also in `CONTEXT.md` sections 9 and 10):
+* Separate ports per worker (`vibe-sheet.mjs` 5197, `video-sync.mjs` 5198 fixed, the rest 5199 / `UI_PORT`); `node_modules` through a Windows junction, with Vite's font-path restriction in mind; copy the git-ignored harness clips into each worktree.
+* The checkers are narrower than they look: `scene-check.mjs` measures layout only; `test:ui:quick` needs the lyric-stage selectors (`stageSel` / `nowSel` in `run.mjs`); contrast and clip measures can differ between CI (Linux fonts) and a Windows PC, so leave margin.
+* One visual check per look while building, the full suites once at the end, three harnesses in parallel on different ports (`docs/ui-testing.md`).
+* Review and merge real contributor PRs; never copy a PR's change by hand and close it.
 
 ## Scheduled follow-ups
 For waiting on CI use `ScheduleWakeup` (~270-480 s) with a self-contained prompt (what to check, what to do on green/red). Do not poll in a loop.

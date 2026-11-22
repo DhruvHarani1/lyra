@@ -121,4 +121,3 @@
 
 /* Picto: the icon frieze runs under the card, not behind it */
 :root[data-vibe='picto'][data-mode='mini']:not([data-platform='android']) .full.full[data-arch='scene'] .full__side { bottom: 6.6vh !important; }
-:root[data-vibe='picto'][data-mode='mini']:not([data-platform='android']) .edge__c { bottom: 1vh; height: 4vh; }

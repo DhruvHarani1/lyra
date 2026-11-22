@@ -1,5 +1,7 @@
 import os
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Route, Editor and Metro are not in this table on purpose: each has its own hand-made plate for the small player and the phone dock
+# (styles/route.css, editor.css, metro.css). Every other look is listed here.
 P = {
  'none':   ('linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05))','rgba(255,255,255,.22)',1,'22px','0 18px 40px -16px var(--glow)',''),
  'neon':   ('rgba(14,4,34,.84)','#ff3bd9',2,'18px','0 0 22px rgba(255,59,217,.55), inset 0 0 16px rgba(255,59,217,.18)',''),
@@ -55,8 +57,4 @@ out.append("/* full-screen side layout */")
 for v, (bg, bc, bw, rad, sh, vars_) in side.items():
     out.append(f":root[data-vibe='{v}'] .full[data-arch='side']:not(.is-cinema) .full__side {{ {vars_} color: var(--fg); background: {bg} !important; border: {bw}px solid {bc} !important; border-radius: 28px !important; box-shadow: {sh} !important; padding: 18px !important; }}")
 open('src/renderer/src/styles/cards.css', 'w').write('\n'.join(out) + '\n')
-p = 'src/renderer/src/main.tsx'
-s = open(p).read()
-if 'cards.css' not in s:
-    s = s.replace("import './styles/states.css'", "import './styles/states.css'\nimport './styles/cards.css'", 1)
-    open(p, 'w').write(s)
+# main.tsx imports './styles/cards.css' (kept by hand; this script only writes cards.css)

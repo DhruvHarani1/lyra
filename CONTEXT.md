@@ -1,6 +1,6 @@
 # Lyra: context for the next session
 
-Read this first. It says what Lyra is, how the repo works, how to test and release, what has been done, what the owner (Dhruv) asked for next, and the rules we work by. Everything here is current as of **2026-11-21** (Windows 0.19.0, Android 0.5.0).
+Read this first. It says what Lyra is, how the repo works, how to test and release, what has been done, what the owner (Dhruv) asked for next, and the rules we work by. Everything here is current as of **2026-11-23** (Windows 0.24.1, Android 0.10.1, 34 looks).
 
 ## 1. What Lyra is
 A free, open-source, account-free lyrics companion. It shows word-by-word synced lyrics over the music video of what you play, on **Windows** (Electron) and **Android** (a Kotlin shell around the same React UI in a WebView). Sources of what is playing: Windows media controls (Spotify desktop app), the Spotify Web API, the Android media session, or a built-in demo.
@@ -8,41 +8,51 @@ A free, open-source, account-free lyrics companion. It shows word-by-word synced
 ## 2. Repository map
 | Path | What |
 |---|---|
-| `src/renderer/src` | The React UI, shared by Windows and Android (components, hooks, stores, `styles/*.css`) |
-| `src/main`, `src/preload` | Electron main process, IPC, settings, windows, Spotify/SMTC sources |
-| `src/core` | Platform-agnostic engine: lyrics (`lyrics/`), backgrounds/video (`background/`), `resilience.ts`, `songKey.ts`, `platform.ts` interface |
-| `src/shared` | Types, IPC names, shortcuts, `vibes.ts` (vibe catalogue + layout archetypes + smart picker), `lrc.ts` |
-| `src/android-web` | The Android side of `window.lyra` (same core, run inside the WebView) |
-| `android/` | Kotlin: `MediaMonitor`, `LyricsNotifier`, `LyraWidget`, recorder, overlay, ambient |
-| `scripts/harness` | A browser harness: the real UI with demo data and a mocked `window.lyra` (see section 5) |
-| `scripts/ui-test` | `run.mjs` (UI matrix) and `settings.mjs` (click every setting) |
-| `docs/` | Design notes. **Start with** `docs/ui-state-matrix.md`, `docs/engine-plan.md`, `docs/roadmap.md` |
+| `src/renderer/src` | The React UI, shared by Windows and Android: `components/` (incl. `fx/` look effect layers, `EdgeFx.tsx` the per-look window edge, `DmKinds.tsx` the DM message kinds, `DevicesPanel.tsx`, `CarMode.tsx`, `KaraokeScreen.tsx`), `hooks/`, `store/` (incl. `connect.ts`, `room.ts`, `jam.ts`), `lib/` (incl. `codeGen.ts` real code for the Editor look, `journalInk.ts` the Journal pens, `car.ts`), `styles/*.css` |
+| `src/main`, `src/preload` | Electron main process, IPC, settings, windows, SMTC/Spotify sources, `updater.ts` (electron-updater), `studio.ts` (lyric-video export) |
+| `src/main/connect` | Lyra Connect host: `hub.ts` (http + WebSocket state machine), `ws.ts` (own RFC 6455 server), `mdns.ts` (`_lyra-connect._tcp`), `net.ts` (LAN address and origin checks), `viewerHtml.ts` (browser viewer), `overlayPage.ts` (OBS overlay), `pwa.ts`, `service.ts` (glue, device store `connect-devices.json`) |
+| `src/core` | Platform-agnostic engine: `lyrics/` (LRCLIB + public-domain providers, ranking, `romanize.ts` for Hindi/Punjabi), `background/` (video choice, YouTube, iTunes, failed videos, black-bar crop), `cache/` (`PersistentCache`, the "Clear cache" registry), `connect/` (protocol, pairing, HMAC, clock sync, role redaction), `karaoke/`, `clock.ts`, `userChoices.ts` (what you picked by hand, per song), `resilience.ts`, `songKey.ts`, `startGate.ts`, `platform.ts` interface |
+| `src/shared` | Types, IPC names, shortcuts, `vibes.ts` (the 34 looks + smart picker), `lrc.ts`, `lyraFeed.ts` (what the OBS overlay renders) |
+| `src/android-web` | The Android side of `window.lyra` (same core, inside the WebView), plus the `tv`, `car`, `ambient` and `record` entries |
+| `android/` | Kotlin (`dev.lyra.android`): `MediaMonitor`, `LyricsNotifier`, `LyraWidget`, recorder, overlay, ambient / always-on (`AmbientActivity`, `AodLyricsView`), `LyraDream` screen saver, and the packages `car/`, `tv/` (`TvActivity`, `PairedSource`, `ConnectTransport`), `update/` (in-app updater: `UpdateManager`, `ApkVerifier`) |
+| `scripts/harness` | A browser harness: the real UI with demo data and a mocked `window.lyra` (see section 4) |
+| `scripts/ui-test` | `run.mjs` (UI matrix), `settings.mjs`, `scene-check.mjs` (one look, every state and size), `vibe-sheet.mjs` (contact sheets), `video-sync.mjs`, `overlay-check.mjs` (real Connect hub + Chromium) |
+| `docs/` | Design notes. **Start with** `docs/handoff/README.md` (a 13-part pack), then `docs/ui-state-matrix.md`, `docs/engine-plan.md`, `docs/roadmap.md`, `docs/connect-redesign.md` |
 
 ## 3. Key concepts
-* **Vibe** (`src/shared/vibes.ts`): a complete look (colours, type, background FX in `VibeFx.tsx`, a lyric *stage* in `LyricsStage.tsx`, and a *layout archetype*: side / dock / orb / bar / chat / term). 15 vibes. Modes: Fixed, Every song (cycle a chosen pool), Smart (`pickVibe` scores words, pace, year, cover colours). `V` / `Shift+V` cycles.
-* **Layout archetype**: where the card, lyrics and controls go in fullscreen (`styles/layouts.css`, `data-arch` on `.full`).
-* **Song identity** (`core/songKey.ts`): `artist|title` normalised. Lyric picks, video picks, imported lyrics and vibe picks are stored under it so they survive switching player.
+* **Vibe / look** (`src/shared/vibes.ts`): a complete look. There are **34** (`VIBES`). Each has its own lyric *stage* (`LyricsStage.tsx`, 35 `LyricStyle` kinds), background FX (`VibeFx.tsx`, `components/fx/`), a window **edge** (`EdgeFx.tsx` + `styles/edge-<look>.css`, driven by the line being sung), a video window, a player card, a mini-player composition, an Android dock, a share card and a Settings skin. Since 0.24 every look uses the `scene` layout archetype (`styles/scene.css` is the shared mechanics, each look sets its own geometry as CSS variables); the older archetypes (side / dock / orb / bar / chat / term) remain in `LayoutArch` and `layouts.css` for the legacy paths. Modes: Fixed, Every song (cycle a chosen pool), Smart (`pickVibe` scores words, pace, year, cover colours). `V` / `Shift+V` cycles. The look is designed, not configured: `lockLook` in `store/settings.ts` ignores old layout/typeface values.
+* **Song identity** (`core/songKey.ts`): `artist|title` normalised. Lyric picks, video picks, imported lyrics, vibe picks and timing nudges are stored under it so they survive switching player. `core/userChoices.ts` is the one place for "what the user picked by hand" and wins over automatic ranking.
 * **Resilience** (`core/resilience.ts`): backoff + jitter, retry, circuit breaker. Used by the lyrics service and the video lookups. Lyrics: stale-if-error, no false "no lyrics", imports (`.lrc/.srt/.txt`), per-service health in Settings.
+* **Persistent cache** (`core/cache/persistentCache.ts`): versioned, size-capped, TTL'd stores for lyrics, YouTube picks, karaoke searches and Apple clip lookups; one registry so Settings -> **Clear cache** can forget them (pinned and imported lyrics and user choices are not cleared). Lyrics are synced-first: a plain result never beats a synced one and is re-checked after 24 h.
+* **Lyra Connect** (Windows host, off by default): pairs other screens on the LAN (QR or 8-character code, per-device tokens, challenge-response, signed commands, roles viewer / controller / overlay, party mode, follow-me by a shared clock, OBS overlay link, browser/PWA viewer). Spec `docs/connect-protocol.md`, rationale and honest limits `docs/connect-redesign.md`. Plain unencrypted ws/http by design for now. Rooms / Jam over PeerJS is a separate, older internet feature (`store/room.ts`, `store/jam.ts`).
 * **VideoStatus** (`components/VideoStatus.tsx`, `store/bgState.ts`): one place that says what the video behind the lyrics is doing.
+* **Clock** (`core/clock.ts`): one position clock for playback interpolation; the karaoke screen smooths it (`core/karaoke/clockSmooth.ts`).
 * **Performance**: `data-perf` (Auto/Smooth/Light), `data-calm` pauses endless animations when paused/hidden; the backdrop picture is pre-blurred (`useTinyArt`).
+* **Android parts**: widgets (eight), notification + lock-screen card, always-on lyrics screen and screen saver (`docs/android-ambient.md`), car mode for passengers (`docs/android-car.md`; Lyra declares no Android Auto media app on purpose), TV screen (`docs/android-tv.md`, one APK), in-app updater for GitHub-installed APKs (`android/.../update/`; skips Play / F-Droid builds).
 
 ## 4. How to run things
 ```
 npm ci
-npm run typecheck && npm test                 # 112 unit tests
+npm run typecheck && npm test                 # unit tests (vitest, 31 *.test.ts files plus Kotlin unit tests under android/)
 npm run dev                                    # Electron (Windows)
 npx vite -c scripts/harness/vite.config.ts --port 5199   # the browser harness
-npm run test:ui                                # 195 screens (every vibe x 13 sizes)
-npm run test:ui:quick | test:ui:layouts | test:settings
+npm run test:ui            # every look x 13 sizes (34 x 13 = 442 screens)
+npm run test:ui:quick      # 5 sizes x 34 looks = 170 screens (CI)
+npm run test:ui:states     # lyric states (plain / none / offline) on 4 sizes (CI)
+npm run test:settings      # clicks every setting (CI)
+npm run test:video         # video pauses with the music, needs ffmpeg (CI)
+node scripts/ui-test/scene-check.mjs --vibe=neon --port=5199   # one look: every state x size (layout only, see section 9)
+node --experimental-transform-types scripts/ui-test/overlay-check.mjs   # OBS overlay + viewer against the real Connect hub
 npm run build && npm run build:android-ui
+npm run check:docs         # relative links and referenced src paths in the docs exist
 ```
-Harness URL switches: `?mode=mini|compact|minimal|full`, `?android=1`, `?paused=1&t=<ms>`, `?video=night|day`, `?vs=searching|nokey|none|error|live|preview`, `?ly=offline|resting|error|none|stale`, `?lang=hi|pa`, `?s=<json settings>`, `?panel=settings|queue|lyrics`. `window.__next()` plays the next demo song. Playwright + Chromium work in the cloud container; `ffmpeg` generates the test clips (`scripts/harness/make-video.sh`).
+Harness URL switches: `?mode=mini|compact|minimal|full`, `?android=1`, `?paused=1&t=<ms>`, `?video=night|day`, `?vs=searching|nokey|none|error|live|preview`, `?ly=offline|resting|error|none|stale|plain`, `?lang=hi|pa`, `?s=<json settings>`, `?panel=settings|queue|lyrics`. `window.__next()` plays the next demo song. Playwright + Chromium work in the cloud container; `ffmpeg` generates the test clips (`scripts/harness/make-video.sh`). Details: `docs/ui-testing.md`.
 
-## 5. Release procedure (important: tags cannot be pushed from the cloud session)
-1. Work on the dev branch, open a PR, wait for CI (`check`, `ui`, CodeQL), squash-merge.
+## 5. Release procedure
+1. Work on a branch, open a PR, wait for CI (`check`, `ui`, CodeQL), squash-merge.
 2. Bump `package.json` (+ lock) and `android/app/version.properties` (versionCode must rise).
-3. Dispatch the workflows **on main with `publish=true`**: `release.yml` (Windows installer, `latest.yml`, becomes "latest", the updater serves it) and `android.yml` (APK, `--latest=false`). GitHub creates the tag and release itself. Pre-release is decided from the **version** (a dash means pre-release), not the tag name.
-4. Verify both releases exist with their files.
+3. Dispatch the workflows **on main with `publish=true`**: `release.yml` (Windows installer, `latest.yml`, becomes "latest", the updater serves it) and `android.yml` (APK, `--latest=false`). GitHub creates the tag and release itself. Pre-release is decided from the **version** (a dash means pre-release), not the tag name. **The release workflows require a green CI for the commit, with a force override** (being added by another agent in this round: check `.github/workflows/release.yml` and `android.yml` for the exact input name before relying on it; not verified at the time of writing).
+4. Verify both releases exist with their files (`gh release list`; `v<ver>` has the `.exe`, `.blockmap`, `latest.yml`; `android-v<ver>` has the `.apk`).
 Tag pushes and `git push --force` are blocked in the cloud environment; use the workflow route.
 
 ## 6. Rules of engagement (from the owner)
@@ -52,35 +62,49 @@ Tag pushes and `git push --force` are blocked in the cloud environment; use the 
 * Keep Settings simple and human; remove what is not needed.
 * PRs follow `.github/pull_request_template.md`; commits end with the Co-Authored-By trailer given by the session.
 
-## 7. State of the world (2026-11-21, Windows 0.22.0 / Android 0.8.0)
-**0.22.0 additions:** (built by parallel workers) Stencil and Film Reel vibes (20 vibes), per-vibe mini-player / phone-dock / side-layout card plates (`styles/cards.css`, generated by `scripts/gen-cards.py`), Android widget palettes per vibe + Android queue for prefetch where the player publishes one, `npm run test:video` (pause/resume latency, in CI) and an optional, off-by-default start gate (`src/core/startGate.ts`, Settings > Video > More). Also: a signature player-card plate per vibe in the dock/pill/bar layouts (`styles/skins.css`, bottom): neon tube, chrome plate, dream pill, sunset, stadium, trailer, cinema, glitch, arcade; small-text floor of 10px enforced by the state tests.
+## 7. State of the world (2026-11-23, Windows 0.24.1 / Android 0.10.1)
+**Releases** (from `gh release list` and `website/whats-new.html`; Windows `vX` and Android `android-vX` ship together):
+| Windows | Android | Date | What |
+|---|---|---|---|
+| 0.22.0 | 0.8.0 | 2026-11-21 | player-card plate per look, Stencil and Film Reel (20 looks), widget palettes, Android queue, optional start gate, video pause/resume test |
+| 0.23.0 | 0.9.0 | 2026-11-22 | 30 looks each with its own screen, video window, card and edge; Lyra Connect (pairing, roles, follow-me, party, remote control); smarter picks and persistent cache; karaoke and recording work; OBS overlay; Android TV screen; eight widgets, lock-screen card, always-on screen, car mode, in-app updater; Settings redesign with search; website redesign (PR #82) |
+| 0.24.0 | 0.10.0 | 2026-11-22 | 33 looks (Journal, Doodle added), per-look edges moving with the song, Editor shows real code, Journal pens, DM as a real chat (PR #84) |
+| 0.24.1 | 0.10.1 | 2026-11-22 | Dusk Ridge (34th look), mini player composition per look, Android looks (docks, play buttons, progress bars), new website screenshots (PR #85) |
+Earlier: 0.18 vibes, 0.19 per-look layouts and tablet, 0.20 fixed look and clip cache, 0.21 per-look states and prefetch. Android 0.4 to 0.10 ran in step.
 
-**0.21.0 additions:** every vibe got its own screens for *unsynced words*, *no lyrics / waiting* and *video playing* (`styles/states.css`, one block per vibe, reviewed one vibe at a time with `node scripts/ui-test/vibe-sheet.mjs --vibe=<id>`); fixed the terminal layout that overlapped when a video played; two new motion-graphics vibes, **Sketchbook** and **Glitch**, built on a new `zoom` lyric stage (one giant word thrown at the camera, the line small underneath; owner's reference was an Instagram typographic lyric video over a pencil sketch). 20 vibes now. Also: the next queued song's lyrics / video / Apple clip are prefetched while the current one plays (`hooks/usePrefetchNext.ts`, Spotify queue only; Android has no queue yet) and the phone's YouTube video now pauses with the music (hidden while paused).
+**What exists now:** 34 looks with designed screens for synced / unsynced / no lyrics / video on Windows full screen, mini player, and the Android phone and tablet; Lyra Connect (docs above); synced-first lyrics engine with persistent caches, remembered manual choices, karaoke screen with count-in and word fill, lyric-video export (Windows), share cards per look, Hindi / Punjabi romanization (offline), Android widgets / notification / lock-screen card / always-on / car / TV / updater, the website, UI tests in CI (`test:ui:quick`, `test:ui:states`, `test:settings`, `test:video`).
 
-Done: 20 vibes with archetype layouts, cycle/smart, resilient lyrics/video backend, lyrics import, VideoStatus, performance mode, simplified settings (6 tabs) with **no layout/style controls** (`lockLook` in `store/settings.ts` ignores the old values), synced-first lyrics engine (plain kept as fallback, re-checked after 24 h), Apple clips cached on disk (`main/background/service.ts`), failed videos remembered per song (`lib/failMemory.ts`), video fades in only once playing, per-vibe **share cards** (`lib/shareCard.ts` `cardTheme`), per-vibe **Settings skins** (`styles/skins.css`), per-vibe animated **poster frames** for the cover (`styles/posters.css`, deco layers in `Artwork.tsx`), Android phone layout + tablet/foldable two-pane, UI tests in CI (`test:ui:quick`, `test:ui:states`, `test:ui:layouts`, settings), Android widget (**compiled, not run on a device**). Screenshots: `docs/img/`.
-Known gaps: widget untested on a launcher (it compiles in CI and follows the vibe in effect); Android clip proxy has no cache; dead `fullLayout` code paths remain (no effect); nothing was exercised on real Windows/Android hardware by this agent; Electron 45 Dependabot bump unreviewed; installer not code-signed (#53).
+**Website** (lyra-website-rho.vercel.app, deployed by Vercel from `website/` on main): `index.html`, `vibes.html` + `vibes.js`, `whats-new.html` (add an entry per release), `site.css`, `site.js`, `demo.*`, `vibes-data.js` (regenerate from `src/shared/vibes.ts` when a look is added), `room.html` (Listening together). Screenshots in `website/assets/shots/` come from `scripts/make-site-shots.mjs` (needs the harness and a calm `site.mp4`, git-ignored).
 
-**Website (live at lyra-website-rho.vercel.app, deployed by Vercel from `website/` on main):** redesigned in 0.22 (PR #82). Files: `index.html` (home), `vibes.html` + `vibes.js` (gallery with every state, card and Settings panel per look), `whats-new.html` (release notes: add an entry per release), `site.css` (design system), `site.js` (hero, showcase, story, rails, release links from the GitHub API), `demo.css` + `demo.js` (the live lyric demo), `vibes-data.js` (look list: regenerate from `src/shared/vibes.ts` when a vibe is added; includes an accent colour per look), `room.html` (Listening together, untouched). Screenshots: `website/assets/shots/` (162 files, 13 MB) are generated by `scripts/make-site-shots.mjs` (needs the harness running and a calm `site.mp4` in `scripts/harness/public/`, git-ignored: make one with ffmpeg); re-run with `--only=<ids>` after changing a vibe, and add the new vibe to `vibes-data.js`.
+**Open items (honest):**
+* **TV pairing is being redesigned by another agent**; the Android TV screen and its pairing with a PC were never run on a real TV or emulator.
+* Several Android parts were verified by compile, unit tests and the browser harness only, not on real devices: widgets on real launchers (#76), car mode, always-on screen, in-app updater, recording on many phones.
+* **Not built:** word-level sync from LRCLIB (the engine reads enhanced LRC, LRCLIB rarely has it), romanization for Chinese / Japanese / Korean (Hindi and Punjabi exist), **Chromecast (skipped)**, **macOS (not supported)**, encrypted Connect traffic (TLS with a pinned certificate is planned), merging Rooms onto the Connect protocol.
+* **Windows installer is unsigned** (#53): SmartScreen warns.
+* Apple clip stutter and YouTube iframe latency never measured on a real PC (#74); no measured "ready before the song" rate (#75); more looks (#77, standing).
+* Dead `fullLayout` code paths remain (no effect); Electron major bumps from Dependabot are unreviewed.
 
-**Issue status (2026-11-21):** closed: #51, #70, #71, #72, #73. Open roadmap: #69 (designed screen for every matrix cell; mini player and tablet reuse the vibe CSS), #74 (Apple clip stutter not measured; Android clip cache), #75 (no measured 95 % preload check), #76 (widget on real launchers), #77 (more vibes, standing issue). Older open issues: #53 code signing, #54 Vega source, #48/#47/#46/#45 karaoke, #33/#30/#28 Android recording, and others.
-
-**How the 0.22 work was parallelised:** forked workers in git worktrees each took one area on their own branch (small-player cards, widget + Android queue, extra vibes, video test + start gate, website screenshots) and the main session merged the branches. Tips: give each worker a distinct dev-server port (`UI_PORT`), a worktree needs `node_modules` available and the git-ignored harness clips, and always re-run the full UI tests after merging.
-
-## 8. What the owner asked for NEXT (verbatim intent, organised)
-See `docs/roadmap.md` for the plan and the GitHub issues labelled `roadmap`. Status after 0.22: items 2-6 are done (item 1: tests and designs exist for synced / unsynced / none / video on every vibe, per-cell polish on mini and tablet remains), item 7 is ongoing (20 vibes).
-1. **(done for all 20 vibes on Windows full screen and the phone; mini/tablet reuse the CSS)** **Fixed UI per vibe for every state.** No user control of layout. For each vibe, one fixed design for every combination: *video playing / no video* x *lyrics synced / plain (unsynced) / none / loading / error* x *every device and size* (Windows compact/minimal/expanded/fullscreen, small windows, Android phone portrait & landscape, Android tablet/foldable). Spec: `docs/ui-state-matrix.md`.
-2. **(done)** **Remove UI-manipulation settings** (fullscreen layout Cinema/Split/Poster/Focus/Auto, lyric style, typeface, size, line spacing, animation ...). The owner will improve the fixed UIs from feedback.
-3. **(done in 0.22)** **Everything per vibe**: the player card, the share card, the lyric style, how the video is shown, the whole layout, and even the Settings page skin. Cards should be **personalised, doodle-style where it fits** (the share-card doodle was the reference), not the default glass card. "Think of what styles suit each vibe."
-4. **(done)** **Lyrics engine:** always prefer **synced** lyrics, reject unsynced when a synced one exists (see `docs/engine-plan.md`).
-5. **(done: pause/resume on Windows and phone, clip cache, failure memory; stutter not measured on a real PC)** **Video:** pause/resume exactly with the music; the 30 s Apple preview lags a lot (fix); other videos lag too; cache so a video that failed once does not fail again for the same song.
-6. **(done: prefetch + optional start gate)** **Smooth start:** if lyrics/video are not ready, avoid a long wait; idea: preload for the next song, merge smoothly from start to end, a short gate at most (never "pause 10 s for every song").
-7. Keep adding vibes later (the owner wants more, including sports/games/music/movie themes).
+## 8. What the owner asked for NEXT (organised)
+See `docs/roadmap.md`. The earlier big asks are done: a fixed designed UI per look for every state (still open in spirit: per-cell polish on mini and tablet), no UI-manipulation settings, everything per look (card, share card, Settings skin, edge, mini player), synced-first lyrics, video that follows the music, smooth start. Ongoing: more looks (sports / games / music / movie themes), real-device testing by the owner, and the TV pairing redesign.
 
 ## 9. Pitfalls we hit
-* `paused=1` in the harness must freeze the position (it now does) or tests drift into instrumental gaps.
-* A generic rule forces the active lyric word white in non-light themes (`lyrics.css`); light vibes must override it (Diary does).
-* Android `RemoteViews` supports only a few view types; the widget compiles in CI but is untested on devices.
-* 3D transforms on lyric lines made neighbours collide; depth is now size + opacity only.
+* `paused=1` in the harness must freeze the position or tests drift into instrumental gaps.
+* A generic rule forces the active lyric word white in non-light themes (`lyrics.css`); light looks must override it.
+* Android `RemoteViews` supports only a few view types; widgets compile in CI but are untested on devices.
+* 3D transforms on lyric lines made neighbours collide; depth is size + opacity only.
+* **`scene-check.mjs` only measures layout** (controls outside the card, regions overlapping). It says nothing about contrast, clipping of text inside boxes or whether the look is good: look at the screenshots and run `run.mjs` too.
+* **`test:ui:quick` needs the lyric-stage selectors**: `run.mjs` finds the lyric text through `stageSel` / `nowSel` (about line 74 and 86). A new lyric stage that is not in those lists gives a false "no lyric text" failure; add its selectors when you add a stage.
+* **CI renders on Linux, the owner's PC is Windows.** Font rasterisation differs, so contrast and clip measures that pass locally can flake on CI (and the reverse). Re-run before assuming a real regression, keep margin on contrast (commit c968130 deepened the DM outgoing bubble "so the lyric contrast has margin") and do not tighten thresholds to the pixel.
 
-## 10. How to review a vibe
-`node scripts/ui-test/vibe-sheet.mjs --vibe=neon --out=/tmp/x` writes one contact sheet per device (video / no video x synced / unsynced / no lyrics). Kill stale `vite` servers first (`pkill -f 'port 519'`): an old server can serve old CSS. Then `npm run test:ui:states` and `node scripts/ui-test/run.mjs --vibe=<id>`.
+## 10. How to work with several agents at once
+Forked workers in git worktrees each take one area on their own branch and the main session merges. Lessons from 0.22 to 0.24:
+* Give every worker its **own dev-server port** (`UI_PORT`, `--port`): two runs on one port kill each other. `vibe-sheet.mjs` defaults to 5197, `video-sync.mjs` is fixed at 5198, the others to 5199.
+* A worktree has no `node_modules`: use a **junction** to the main checkout's (Windows: `mklink /J`), and remember Vite then refuses to serve fonts from the real path (fake clipping or contrast failures): allow the path or copy.
+* Also copy the git-ignored harness clips (`scripts/harness/public/*.mp4`).
+* Kill stale `vite` servers before a visual check; an old server serves old CSS. Write contact sheets to a fresh path.
+* Split files by owner (one agent per area: looks, Connect, Android, website, docs) so merges do not collide; shared files (`vibes.ts`, `main.tsx` CSS import order) need one person.
+* Run one **visual check per look**, the full test suites once at the end (see `docs/ui-testing.md`: three harnesses in parallel on different ports).
+* Review and merge real contributor PRs; do not copy the change and close them.
+
+## 11. How to review a look
+`node scripts/ui-test/vibe-sheet.mjs --vibe=neon --out=/tmp/x` writes one contact sheet per device (video / no video x synced / unsynced / no lyrics). Then `node scripts/ui-test/scene-check.mjs --vibe=neon` for layout, `npm run test:ui:states`, and `node scripts/ui-test/run.mjs --vibe=<id>`.

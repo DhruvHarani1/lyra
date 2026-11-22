@@ -11,24 +11,10 @@
   --gl-cyan: #26f0ff;
   --gl-ink: #0a0504;
   /* scene geometry (styles/scene.css): the monitor top left, the card under it, the words on the right */
-  --sc-ww: min(46vw, 74vh);
-  --sc-wl: 5vw;
-  --sc-wt: 10vh;
-  --sc-wr: 0.6vh;
-  --sc-cl: 5vw;
-  --sc-cb: 5vh;
-  --sc-ct: auto;
-  --sc-cw: var(--sc-ww);
-  --sc-ll: calc(5vw + var(--sc-ww) + 4vw);
-  --sc-lt: 12vh;
-  --sc-lw: calc(95vw - 5vw - var(--sc-ww) - 4vw);
-  --sc-lb: 14vh;
-  --sc-lbs: 14vh;
   --sc-art-bg: linear-gradient(90deg, #c8c8c8 0 14.28%, #c8c800 14.28% 28.56%, #00c8c8 28.56% 42.84%, #00c800 42.84% 57.12%, #c800c8 57.12% 71.4%, #c80000 71.4% 85.68%, #0000c8 85.68%);
   --sc-art-fg: #fff;
   --sc-eq: #fff;
 }
-:root[data-vibe='glitch'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(50vw, 80vh); --sc-ll: calc(5vw + min(50vw, 80vh) + 4vw); }
 :root[data-vibe='glitch'][data-rim='on']::after { display: none; }
 [data-vibe='glitch'] .shell { --accent: #ff4a2e; --glow: rgba(255, 74, 46, 0.55); --glow-soft: rgba(255, 74, 46, 0.2); --font: 'Unbounded Variable', 'Inter Variable', system-ui, sans-serif; --fg: #fff; --bg-0: #0a0504; }
 
@@ -60,7 +46,7 @@
 :root[data-motion='off'] .glitchfx * { animation: none !important; }
 /* the monitor: a dark bezel; a red and a cyan ghost of the picture edge, scanlines on the glass, and a sideways jolt */
 [data-vibe='glitch'] .scenewin { box-shadow: 0 0 0 1.1vh #14090a, 0 0 0 calc(1.1vh + 2px) rgba(255, 74, 46, 0.7), -0.7vh 0 0 calc(1.1vh + 2px) rgba(255, 42, 26, 0.35), 0.7vh 0 0 calc(1.1vh + 2px) rgba(38, 240, 255, 0.3), 0 0 6vh rgba(255, 42, 26, 0.25); }
-.glitchfx__glass { position: absolute; inset: 0; background: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 4px), radial-gradient(120% 120% at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.5)); }
+.glitchfx__glass { position: absolute; inset: 0; }
 .glitchfx__slice { position: absolute; left: 0; right: 0; height: 12%; top: 36%; background: linear-gradient(90deg, rgba(255, 42, 26, 0.28), rgba(38, 240, 255, 0.22)); mix-blend-mode: screen; opacity: 0; animation: gl-slice 5.2s steps(1) infinite; }
 @keyframes gl-slice { 0%, 61%, 66%, 100% { opacity: 0; transform: translateX(0); } 62% { opacity: 1; transform: translateX(-3%); } 64% { opacity: 1; transform: translateX(4%); } 65% { opacity: 1; transform: translateX(-1%); } }
 .scenewin__art span { background: #000; padding: 0.4vh 1.2vh; font-family: 'VT323', monospace; font-size: 3.4vh; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; }
@@ -73,11 +59,9 @@
   gap: 2vh;
   padding: 1.3vh 2vh 1.3vh 1.3vh !important;
   border-radius: 0.4vh !important;
-  background: rgba(8, 3, 3, 0.9) !important;
   border: 0 !important;
-  box-shadow: inset 0 0 0 2px rgba(255, 74, 46, 0.65), -0.5vh 0 0 rgba(255, 42, 26, 0.3), 0.5vh 0 0 rgba(38, 240, 255, 0.25) !important;
 }
-:root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { content: '▶ PLAY'; position: absolute; left: 2vh; top: -2.8vh; font: 2.6vh/1 'VT323', monospace; letter-spacing: 0.08em; color: #fff; text-shadow: -2px 0 0 var(--gl-red), 2px 0 0 var(--gl-cyan); }
+:root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { position: absolute; left: 2vh; top: -2.8vh; font: 2.6vh/1 'VT323', monospace; letter-spacing: 0.08em; color: #fff; text-shadow: -2px 0 0 var(--gl-red), 2px 0 0 var(--gl-cyan); }
 :root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 9vh !important; border-radius: 0 !important; filter: contrast(1.15) saturate(0.85); box-shadow: -0.4vh 0 0 rgba(255, 42, 26, 0.5), 0.4vh 0 0 rgba(38, 240, 255, 0.4); }
 :root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
 :root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
@@ -94,10 +78,9 @@
 /* ---------------- lyrics: each word is corrupted for a blink, then holds (stage 'glitch') ---------------- */
 .stage--glitch { display: flex; flex-direction: column; justify-content: center; }
 .sign--glitch .sign__line { gap: 2vh; }
-.sign--glitch .sign__row { font-family: 'Unbounded Variable', 'Inter Variable', sans-serif; font-weight: 800; font-size: min(3.6vw, 6.8vh); line-height: 1.08; letter-spacing: -0.03em; text-transform: uppercase; gap: 0 0.3em; }
+.sign--glitch .sign__row { font-family: 'Unbounded Variable', 'Inter Variable', sans-serif; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; gap: 0 0.3em; }
 .sign--glitch .sign__word { color: rgba(255, 255, 255, 0.2); }
-.sign--glitch .sign__word.is-in { color: #fff; text-shadow: -0.04em 0 0 var(--gl-red), 0.04em 0 0 var(--gl-cyan); animation: gl-in 0.5s steps(1) 1; }
-.sign--glitch .sign__word.is-now { animation: gl-in 0.5s steps(1) 1, gl-jit 2.6s steps(1) 0.5s infinite; }
+.sign--glitch .sign__word.is-in { color: #fff; animation: gl-in 0.5s steps(1) 1; }
 @keyframes gl-in {
   0% { opacity: 0; transform: translateX(-0.18em) skewX(-14deg); text-shadow: -0.14em 0 0 var(--gl-red), 0.14em 0 0 var(--gl-cyan); }
   16% { opacity: 1; clip-path: inset(0 0 58% 0); transform: translateX(0.12em); text-shadow: -0.1em 0 0 var(--gl-red), 0.1em 0 0 var(--gl-cyan); }
@@ -122,3 +105,63 @@
 [data-vibe='glitch'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='glitch'] .lfb__eq i { background: #fff; box-shadow: -2px 0 0 var(--gl-red), 2px 0 0 var(--gl-cyan); }
 :root[data-calm] [data-vibe='glitch'] .lfb h3 { animation: none; }
+
+/* ---- second pass, was p-glitch.css ---- */
+/* ==========================================================================
+   GLITCH, premium pass: a broadcast monitor in the middle of a dead channel.
+   The video is a wide centred monitor with a REC / channel HUD and crop brackets; vertical channel labels run up both sides;
+   the song is set big under the monitor, flush left, and the player card is the VHS on-screen display on the right.
+   (Was: monitor top left, words right.) The edge is in edge-glitch.css.
+   ========================================================================== */
+:root[data-vibe='glitch'] {
+  --sc-ww: min(54vw, 86vh);
+  --sc-wl: calc((100vw - var(--sc-ww)) / 2);
+  --sc-wt: 6.5vh;
+  --sc-wr: 0.3vh;
+  --sc-cl: auto;
+  --sc-cr: 4vw;
+  --sc-cb: 4.5vh;
+  --sc-ct: auto;
+  --sc-cw: min(37vw, 540px);
+  --sc-ll: 5vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 4.5vh);
+  --sc-lw: calc(100vw - 5vw - min(37vw, 540px) - 4vw - 3vw);
+  --sc-lb: 4vh;
+  --sc-lbs: 4vh;
+}
+:root[data-vibe='glitch'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(54vw, 86vh); --sc-ll: 5vw; }
+.glitchfx__edge { display: none; }
+/* HUD on the monitor: crop brackets, REC, channel */
+.glitchfx__glass {
+  background:
+    linear-gradient(#fff, #fff) 1.6vh 1.6vh / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) 1.6vh 1.6vh / 2px 3.4vh no-repeat,
+    linear-gradient(#fff, #fff) calc(100% - 1.6vh) 1.6vh / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) calc(100% - 1.6vh) 1.6vh / 2px 3.4vh no-repeat,
+    linear-gradient(#fff, #fff) 1.6vh calc(100% - 1.6vh) / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) 1.6vh calc(100% - 1.6vh) / 2px 3.4vh no-repeat,
+    linear-gradient(#fff, #fff) calc(100% - 1.6vh) calc(100% - 1.6vh) / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) calc(100% - 1.6vh) calc(100% - 1.6vh) / 2px 3.4vh no-repeat,
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 4px),
+    radial-gradient(120% 120% at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.55));
+}
+.glitchfx__glass::before { content: '● REC'; position: absolute; left: 3.4vh; top: 3vh; font: 3.2vh/1 'VT323', monospace; letter-spacing: 0.08em; color: #fff; text-shadow: -2px 0 #ff2a1a, 2px 0 #26f0ff; animation: gl-rec 1.4s steps(1) infinite; }
+.glitchfx__glass::after { content: 'CH 03  ·  SP  ·  L' counter(gl-l, decimal-leading-zero); counter-reset: gl-l var(--li, 0); position: absolute; right: 3.4vh; top: 3vh; font: 3vh/1 'VT323', monospace; letter-spacing: 0.08em; color: #fff; text-shadow: -2px 0 #ff2a1a, 2px 0 #26f0ff; }
+@keyframes gl-rec { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+/* channel labels up the sides */
+.glitchfx::before, .glitchfx::after { position: absolute; top: 50%; font: 2.6vh/1 'VT323', monospace; letter-spacing: 0.4em; color: rgba(255, 255, 255, 0.34); writing-mode: vertical-rl; white-space: nowrap; }
+.glitchfx::before { content: 'SIGNAL LOST ▪ NO CARRIER'; left: 2vw; transform: translateY(-50%) rotate(180deg); text-shadow: 2px 0 rgba(255, 42, 26, 0.5); }
+.glitchfx::after { content: 'AUTO TRACKING ▪ CH 03'; right: 2vw; transform: translateY(-50%); text-shadow: -2px 0 rgba(38, 240, 255, 0.5); }
+/* the song: big, flush left under the monitor, split into red and cyan */
+.sign--glitch .sign__row { font-size: min(4.6vw, 7.6vh); line-height: 1.04; }
+.sign--glitch .sign__word.is-in { text-shadow: -0.05em 0 0 var(--gl-red), 0.05em 0 0 var(--gl-cyan); }
+.sign--glitch .sign__word.is-now { color: #fff; background: linear-gradient(180deg, transparent 0 46%, rgba(255, 42, 26, 0.35) 46% 54%, transparent 54%); animation: gl-in 0.5s steps(1) 1, gl-jit 1.7s steps(1) 0.5s infinite; }
+/* the card: the VHS on-screen display, a taller block on the right */
+:root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  background: rgba(8, 3, 3, 0.94) !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 74, 46, 0.7), inset 0 0 0 5px #0a0504, inset 0 0 0 6px rgba(38, 240, 255, 0.4), -0.7vh 0 0 rgba(255, 42, 26, 0.3), 0.7vh 0 0 rgba(38, 240, 255, 0.28) !important;
+}
+:root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { content: '▶ PLAY  SP'; }
+/* settings: a channel menu */
+:root[data-vibe='glitch'] .sidepanel { background: #0d0504; border: 0; border-radius: 0; box-shadow: inset 0 0 0 2px rgba(255, 74, 46, 0.7), -4px 0 0 rgba(255, 42, 26, 0.25), 4px 0 0 rgba(38, 240, 255, 0.22); }
+:root[data-vibe='glitch'] .sidepanel h3, :root[data-vibe='glitch'] .sidepanel .settings h4 { font-family: 'VT323', monospace; font-size: 20px; letter-spacing: 0.12em; text-transform: uppercase; text-shadow: -1.5px 0 #ff2a1a, 1.5px 0 #26f0ff; }
+:root[data-vibe='glitch'] .sidepanel .settings section { border-radius: 0; }
+/* the phone: scanlines over the whole screen, a bleeding dock */
+:root[data-platform='android'][data-vibe='glitch'] .mini--phone { background-image: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0 2px, transparent 2px 4px); }
+:root[data-platform='android'] .glitchfx::before, :root[data-platform='android'] .glitchfx::after, :root[data-mode='mini'] .glitchfx::before, :root[data-mode='mini'] .glitchfx::after { display: none; }

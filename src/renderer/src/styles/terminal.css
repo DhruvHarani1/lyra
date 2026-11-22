@@ -10,24 +10,15 @@
   --tm-dim: rgba(53, 255, 122, 0.45);
   --tm-bg: #020a04;
   /* scene geometry (styles/scene.css): the video pane left, the log pane right, the status bar along the bottom */
-  --sc-ww: min(42vw, 68vh);
-  --sc-wl: 4vw;
-  --sc-wt: 9vh;
   --sc-wr: 0px;
   --sc-cl: 0px;
   --sc-cw: 100vw;
   --sc-cb: 0px;
   --sc-ct: auto;
-  --sc-ll: calc(4vw + var(--sc-ww) + 3vw);
-  --sc-lt: 9vh;
-  --sc-lw: calc(96vw - var(--sc-ww) - 4vw - 3vw);
-  --sc-lb: 16vh;
-  --sc-lbs: 16vh;
   --sc-art-bg: repeating-linear-gradient(180deg, rgba(53, 255, 122, 0.08) 0 2px, transparent 2px 4px), #020a04;
   --sc-art-fg: #35ff7a;
   --sc-eq: #35ff7a;
 }
-:root[data-vibe='crt'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(46vw, 74vh); }
 :root[data-vibe='crt'][data-rim='on']::after { display: none; }
 [data-vibe='crt'] .shell { --accent: #35ff7a; --glow: rgba(53, 255, 122, 0.55); --glow-soft: rgba(53, 255, 122, 0.22); --font: 'VT323', 'Cascadia Code', Consolas, monospace; --fg: #b9ffd0; --fg-2: rgba(185, 255, 208, 0.75); --fg-3: rgba(185, 255, 208, 0.55); --bg-0: #020a04; }
 [data-vibe='crt'] .backdrop .backdrop__field { background: radial-gradient(100% 90% at 50% 40%, #04180b, #010603 85%); }
@@ -107,7 +98,7 @@
 /* ---------------- other lyric states (same regions) ---------------- */
 [data-vibe='crt'] .lyrics__notice { align-self: flex-start; background: transparent; border: 1px solid var(--tm-green); border-radius: 0; color: var(--tm-green); font: 2.2vh/1.2 'VT323', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
 [data-vibe='crt'] .lyrics__notice::before { content: '# '; }
-[data-vibe='crt'] .plain__stanza { font-family: 'VT323', monospace; font-weight: 400; font-size: min(2.4vw, 4.2vh); line-height: 1.12; letter-spacing: 0.03em; color: #d8ffe6; text-shadow: 0 0 0.8vh rgba(53, 255, 122, 0.4); }
+[data-vibe='crt'] .plain__stanza { font-family: 'VT323', monospace; font-weight: 400; line-height: 1.12; letter-spacing: 0.03em; color: #d8ffe6; text-shadow: 0 0 0.8vh rgba(53, 255, 122, 0.4); }
 [data-vibe='crt'] .lfb { align-items: flex-start; text-align: left; }
 [data-vibe='crt'] .lfb__poster { display: none; }
 [data-vibe='crt'] .lfb h3 { font-family: 'VT323', monospace; font-weight: 400; text-transform: none; letter-spacing: 0.04em; font-size: clamp(26px, 3.4vw, 48px); color: #d8ffe6; text-shadow: 0 0 1.2vh var(--tm-green); }
@@ -121,3 +112,39 @@
   :root[data-vibe='crt']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; row-gap: 0.6vh; }
   :root[data-vibe='crt']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { height: 11.6vh !important; }
 }
+
+/* ---- second pass, was recomp1.css ---- */
+/* ===== TERMINAL: tiled tmux: video pane + spectrum pane on the left, the log pane on the right, a status line along the bottom ===== */
+:root[data-vibe='crt'] {
+  --sc-ww: min(40vw, 62vh);
+  --sc-wl: 1.4vw;
+  --sc-wt: 7vh;
+  --sc-ll: calc(var(--sc-wl) + var(--sc-ww) + 3.4vh);
+  --sc-lw: calc(100vw - var(--sc-ll) - 1.4vw - 1.6vh);
+  --sc-lt: 7vh;
+  --sc-lb: 10.2vh;
+  --sc-lbs: 10.2vh;
+}
+:root[data-vibe='crt'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(40vw, 62vh); }
+.termfx__pane--eq { display: none; }
+:root[data-vibe='crt']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .termfx__pane--eq { display: block; left: calc(var(--sc-wl) - 1.2vh); top: calc(var(--sc-wt) + var(--sc-wh) + 1.8vh); width: calc(var(--sc-ww) + 2.4vh); bottom: 9.2vh; overflow: hidden; }
+.termfx__bars { position: absolute; left: 1.6vh; right: 1.6vh; bottom: 1.2vh; top: 2.4vh; display: flex; align-items: flex-end; gap: 0.5vh; }
+.termfx__bars i { flex: 1; background: repeating-linear-gradient(0deg, var(--tm-green) 0 0.5vh, transparent 0.5vh 0.8vh); height: 100%; transform-origin: bottom; animation: rc-term-bar 1.4s steps(8) infinite; animation-delay: var(--d, 0s); opacity: 0.85; box-shadow: 0 0 0.8vh rgba(53, 255, 122, 0.3); }
+@keyframes rc-term-bar { 0%, 100% { transform: scaleY(0.2); } 25% { transform: scaleY(0.7); } 50% { transform: scaleY(0.4); } 75% { transform: scaleY(0.95); } }
+:root[data-calm] .termfx__bars i { animation-play-state: paused; }
+:root[data-motion='off'] .termfx__bars i { animation: none; transform: scaleY(0.5); }
+/* the log: smaller mono, one line per entry, never wrapped (long lines are cut with an ellipsis) */
+:root[data-vibe='crt'] .termlog__row { font-size: min(1.7vw, 3.4vh); white-space: nowrap; gap: 1.2vh; }
+:root[data-vibe='crt'] .termlog__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:root[data-vibe='crt'] .termlog__row.is-current { font-size: min(2.2vw, 4.2vh); }
+:root[data-vibe='crt'] .termlog__ts { font-size: max(10.5px, 0.8em); }
+[data-vibe='crt'] .plain__stanza { font-size: min(1.8vw, 3.4vh); }
+[data-vibe='crt'] .termfx__pane--video, [data-vibe='crt'] .termfx__pane--log, [data-vibe='crt'] .termfx__pane--eq { background: rgba(2, 14, 6, 0.4); }
+
+:root[data-vibe='crt'] .full__device { visibility: hidden; }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* ---------- Terminal in the mini window and on the phone: the log keeps a readable size; a long line is cut with an ellipsis ---------- */
+:root[data-vibe='crt']:is([data-mode='mini'], [data-platform='android']) .termlog__row { font-size: max(11px, min(1.7vw, 3.4vh)); min-width: 0; }
+:root[data-vibe='crt']:is([data-mode='mini'], [data-platform='android']) .termlog__row.is-current { font-size: max(12px, min(2.2vw, 4.2vh)); }
+:root[data-vibe='crt']:is([data-mode='mini'], [data-platform='android']) .termlog__text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -6,8 +6,6 @@
    keep running. The lyrics are written big and plain under the strip, the card is a film-can label.
    ========================================================================== */
 :root[data-vibe='filmstrip'] {
-  --rimc: #e8b873;
-  --fm-sepia: #e8b873;
   --fm-cream: #f2e6cf;
   --film-k: 0;
   --film-n: 5;
@@ -23,39 +21,34 @@
   --sc-ct: auto;
   --sc-cw: min(34vw, 480px);
   --sc-ll: calc(6vw + min(34vw, 480px) + 4vw);
-  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 11vh);
   --sc-lw: calc(95vw - var(--sc-ll));
-  --sc-lb: 5vh;
-  --sc-lbs: 5vh;
   --sc-art-bg: radial-gradient(circle at 50% 40%, #3a2a18, #120c07 80%);
   --sc-art-fg: #e8b873;
   --sc-eq: #e8b873;
 }
 :root[data-vibe='filmstrip'][data-rim='on']::after { display: none; }
-[data-vibe='filmstrip'] .shell { --accent: #e8b873; --glow: rgba(232, 184, 115, 0.45); --glow-soft: rgba(232, 184, 115, 0.2); --font: 'Fraunces Variable', Georgia, serif; --fg: #f2e6cf; --bg-0: #0f0a06; }
-[data-vibe='filmstrip'] .backdrop .backdrop__field { background: radial-gradient(100% 90% at 50% 45%, #2a1c10, #0b0704 85%); }
+[data-vibe='filmstrip'] .shell { --font: 'Fraunces Variable', Georgia, serif; }
 :root[data-vibe='filmstrip'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
 /* the picture, the frame and the strip all move with the same easing, so they stay glued together */
 :root[data-vibe='filmstrip']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { filter: sepia(0.5) contrast(1.1) saturate(1.1); transition: left 0.9s cubic-bezier(0.5, 0, 0.2, 1), width 0.7s, height 0.7s; }
 :root[data-vibe='filmstrip']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin { transition: left 0.9s cubic-bezier(0.5, 0, 0.2, 1), width 0.7s, height 0.7s; }
 .filmstripfx { display: none; }
 :root[data-vibe='filmstrip']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .filmstripfx { display: block; position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.filmstripfx__strip { position: absolute; left: 0; right: 0; top: calc(var(--sc-wt) - 4.6vh); height: calc(var(--sc-wh) + 9.2vh); background: #070503; box-shadow: 0 0 0 1px rgba(232, 184, 115, 0.18), 0 2vh 5vh rgba(0, 0, 0, 0.6); clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--sc-wl) 4.6vh, calc(var(--sc-wl) + var(--sc-ww)) 4.6vh, calc(var(--sc-wl) + var(--sc-ww)) calc(4.6vh + var(--sc-wh)), var(--sc-wl) calc(4.6vh + var(--sc-wh)), var(--sc-wl) 4.6vh); transition: clip-path 0.9s cubic-bezier(0.5, 0, 0.2, 1); }
+.filmstripfx__strip { position: absolute; left: 0; right: 0; top: calc(var(--sc-wt) - 4.6vh); height: calc(var(--sc-wh) + 9.2vh); background: #070503; clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--sc-wl) 4.6vh, calc(var(--sc-wl) + var(--sc-ww)) 4.6vh, calc(var(--sc-wl) + var(--sc-ww)) calc(4.6vh + var(--sc-wh)), var(--sc-wl) calc(4.6vh + var(--sc-wh)), var(--sc-wl) 4.6vh); transition: clip-path 0.9s cubic-bezier(0.5, 0, 0.2, 1); }
 /* the empty frames: dark, grained, with a faint number; their pattern is anchored to the video frame so they move with it */
 .filmstripfx__frames { position: absolute; inset: 4.6vh 0; background: repeating-linear-gradient(90deg, rgba(232, 184, 115, 0.07) 0 calc(var(--sc-ww) - 0.6vh), transparent calc(var(--sc-ww) - 0.6vh) calc(var(--sc-ww) + 1.8vh)); background-position-x: var(--sc-wl); transition: background-position-x 0.9s cubic-bezier(0.5, 0, 0.2, 1); }
 .filmstripfx__holes { position: absolute; left: 0; right: -10vh; height: 2.4vh; }
 .filmstripfx__holes::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #d8c9ad 0 2.4vh, transparent 2.4vh 4.6vh); border-radius: 0.3vh; opacity: 0.9; animation: fsm-run 2.4s linear infinite; }
 .filmstripfx__holes--t { top: 1vh; } .filmstripfx__holes--b { bottom: 1vh; }
 @keyframes fsm-run { to { transform: translateX(-4.6vh); } }
-.filmstripfx__grain { position: absolute; inset: -10%; opacity: 0.1; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); animation: fsm-grain 0.5s steps(4) infinite; }
+.filmstripfx__grain { position: absolute; inset: -10%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); animation: fsm-grain 0.5s steps(4) infinite; }
 @keyframes fsm-grain { 0% { transform: translate(0, 0); } 25% { transform: translate(-3%, 2%); } 50% { transform: translate(2%, -3%); } 75% { transform: translate(-2%, -1%); } 100% { transform: translate(0, 0); } }
 .filmstripfx__gate { position: absolute; inset: 0; background: radial-gradient(120% 120% at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.55)); box-shadow: inset 0 0 0 1px rgba(232, 184, 115, 0.25); }
 .filmstripfx__edge { position: absolute; left: 1vw; top: calc(var(--sc-wt) + var(--sc-wh) + 1.2vh); font: 600 1.2vh 'Inter Variable', sans-serif; letter-spacing: 0.2em; color: rgba(232, 184, 115, 0.5); white-space: nowrap; }
 :root[data-calm] .filmstripfx *, :root[data-calm] .filmstripfx__holes::before { animation-play-state: paused; }
 :root[data-motion='off'] .filmstripfx * { animation: none !important; }
 :root[data-motion='off'] .filmstripfx__strip, :root[data-motion='off'] .filmstripfx__frames, :root[data-motion='off'] .scenewin, :root[data-motion='off'] .backdrop__stage { transition: none !important; }
-[data-vibe='filmstrip'] .scenewin { box-shadow: 0 0 0 0.5vh #070503, 0 0 0 calc(0.5vh + 1px) rgba(232, 184, 115, 0.35); }
-.scenewin__art span { font: 600 2.2vh/1 'Fraunces Variable', Georgia, serif; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fm-sepia); }
+.scenewin__art span { font: 600 2.2vh/1 'Fraunces Variable', Georgia, serif; letter-spacing: 0.3em; text-transform: uppercase; }
 
 /* ---------------- the card: a film-can label ---------------- */
 :root[data-vibe='filmstrip']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
@@ -90,20 +83,60 @@
 [data-vibe='filmstrip'] .stage--intertitle { display: flex; flex-direction: column; justify-content: center; }
 [data-vibe='filmstrip'] .sign--intertitle .sign__line { gap: 1.4vh; animation: fsm-cut 0.5s steps(1) 1; }
 @keyframes fsm-cut { 0% { opacity: 0; } 10% { opacity: 1; transform: translateX(0.6vw); } 20% { opacity: 0.4; } 30% { opacity: 1; transform: translateX(-0.3vw); } 100% { opacity: 1; transform: none; } }
-[data-vibe='filmstrip'] .sign--intertitle .sign__row { font-family: 'Fraunces Variable', Georgia, serif; font-weight: 600; font-size: min(3.3vw, 6vh); line-height: 1.18; letter-spacing: 0.06em; text-transform: uppercase; gap: 0 0.4em; }
-[data-vibe='filmstrip'] .sign--intertitle .sign__word { color: rgba(242, 230, 207, 0.25); }
-[data-vibe='filmstrip'] .sign--intertitle .sign__word.is-in { color: var(--fm-cream); text-shadow: 0 0 1.2vh rgba(232, 184, 115, 0.4); }
-[data-vibe='filmstrip'] .sign--intertitle .sign__word.is-now { color: #fff; text-shadow: 0 0 1.6vh rgba(232, 184, 115, 0.75); }
-[data-vibe='filmstrip'] .sign--intertitle .sign__next { font: 600 max(10.5px, min(1.7vw, 3vh)) / 1.2 'Fraunces Variable', Georgia, serif; font-style: italic; letter-spacing: 0.04em; color: rgba(242, 230, 207, 0.42); }
+[data-vibe='filmstrip'] .sign--intertitle .sign__row { gap: 0 0.4em; }
 [data-vibe='filmstrip'] .sign--intertitle .sign__refl { display: none; }
 :root[data-motion='off'] [data-vibe='filmstrip'] .sign--intertitle .sign__line { animation: none; }
 
 /* ---------------- other lyric states (same regions) ---------------- */
-[data-vibe='filmstrip'] .lyrics__notice { align-self: flex-start; background: transparent; border: 1px solid rgba(232, 184, 115, 0.6); border-radius: 0; color: var(--fm-sepia); font: 600 1.4vh/1.3 'Fraunces Variable', Georgia, serif; letter-spacing: 0.14em; text-transform: uppercase; }
+[data-vibe='filmstrip'] .lyrics__notice { align-self: flex-start; background: transparent; border: 1px solid rgba(232, 184, 115, 0.6); border-radius: 0; font: 600 1.4vh/1.3 'Fraunces Variable', Georgia, serif; letter-spacing: 0.14em; text-transform: uppercase; }
 [data-vibe='filmstrip'] .plain__stanza { font-family: 'Fraunces Variable', Georgia, serif; font-weight: 600; font-size: min(1.9vw, 3.4vh); line-height: 1.35; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fm-cream); }
 [data-vibe='filmstrip'] .lfb { align-items: flex-start; text-align: left; }
 [data-vibe='filmstrip'] .lfb__poster { display: none; }
 [data-vibe='filmstrip'] .lfb h3 { font-family: 'Fraunces Variable', Georgia, serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: clamp(22px, 3vw, 44px); color: var(--fm-cream); text-shadow: 0 0 1.4vh rgba(232, 184, 115, 0.5); }
-[data-vibe='filmstrip'] .lfb p, [data-vibe='filmstrip'] .lfb small { color: rgba(242, 230, 207, 0.85); font-style: italic; }
 [data-vibe='filmstrip'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='filmstrip'] .lfb__eq i { background: var(--fm-sepia); border-radius: 0; box-shadow: none; }
+
+/* ---- second pass, was p-filmstrip.css ---- */
+/* ==========================================================================
+   FILM STRIP, premium pass: a Kodak-yellow lab sheet.
+   The canvas is film-box yellow (the other film look is black and white and centred), a black strip carries the frame across the
+   top and advances as the song plays, the song is set in huge black editorial capitals under it, the card is a cream
+   film-can label. The edge is the strip's edge code: KODAK 5219 ▸ 12A scrolling along the bottom, the frame number counting
+   the lyric lines (edge-filmstrip.css). (Was: sepia on near-black, serif cream words.)
+   ========================================================================== */
+:root[data-vibe='filmstrip'] {
+  --rimc: #ffb400;
+  --fm-sepia: #ffb400;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 9vh);
+  --sc-lb: 9vh;
+  --sc-lbs: 9vh;
+}
+[data-vibe='filmstrip'] .shell { --accent: #14100a; --glow: rgba(20, 16, 10, 0.25); --glow-soft: rgba(20, 16, 10, 0.1); --fg: #14100a; --bg-0: #ffb400; }
+[data-vibe='filmstrip'] .backdrop .backdrop__field { background: radial-gradient(90% 80% at 30% 20%, #ffc933, #ffb400 55%, #e59a00); }
+.filmstripfx__grain { opacity: 0.16; mix-blend-mode: multiply; }
+.filmstripfx__strip { box-shadow: 0 1.2vh 3vh rgba(90, 50, 0, 0.45); }
+[data-vibe='filmstrip'] .scenewin { box-shadow: 0 0 0 0.5vh #070503, 0 0 0 calc(0.5vh + 1px) rgba(255, 180, 0, 0.5); }
+.scenewin__art span { color: #ffb400; }
+.filmstripfx__edge { display: none; }
+/* the song: huge black capitals */
+[data-vibe='filmstrip'] .sign--intertitle .sign__row { font-family: 'Unbounded Variable', 'Inter Variable', sans-serif; font-weight: 900; font-size: min(5.6vw, 10.4vh); line-height: 0.98; letter-spacing: -0.045em; text-transform: uppercase; justify-content: flex-start; }
+[data-vibe='filmstrip'] .sign--intertitle .sign__word { color: rgba(20, 16, 10, 0.2); text-shadow: none; }
+[data-vibe='filmstrip'] .sign--intertitle .sign__word.is-in { color: #14100a; text-shadow: none; }
+[data-vibe='filmstrip'] .sign--intertitle .sign__word.is-now { color: #14100a; text-shadow: none; background: linear-gradient(180deg, transparent 80%, #fff 80% 90%, transparent 90%); }
+[data-vibe='filmstrip'] .sign--intertitle .sign__next { font: 800 max(10.5px, min(1.8vw, 3.2vh)) / 1.2 'Unbounded Variable', sans-serif; font-style: normal; letter-spacing: 0.02em; text-transform: uppercase; color: rgba(20, 16, 10, 0.5); }
+[data-vibe='filmstrip'] .plain__stanza, [data-vibe='filmstrip'] .lfb h3 { color: #14100a; text-shadow: none; font-family: 'Unbounded Variable', sans-serif; font-weight: 900; letter-spacing: -0.03em; }
+[data-vibe='filmstrip'] .lfb p, [data-vibe='filmstrip'] .lfb small { color: rgba(20, 16, 10, 0.8); font-style: normal; }
+[data-vibe='filmstrip'] .lyrics__notice { color: #14100a; border-color: #14100a; }
+/* chrome text on yellow */
+[data-vibe='filmstrip'] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(20, 16, 10, 0.65) !important; text-shadow: none !important; }
+/* settings: a film box */
+:root[data-vibe='filmstrip'] .sidepanel { --panel: #ffb400; --fg: #14100a; --fg-2: rgba(20, 16, 10, 0.85); --fg-3: rgba(20, 16, 10, 0.65); --line: rgba(20, 16, 10, 0.3); --accent: #14100a; background: #ffb400; color: #14100a; border-radius: 0; box-shadow: inset 0 0 0 3px #14100a, 6px 6px 0 #14100a; }
+:root[data-vibe='filmstrip'] .sidepanel .settings section { background: rgba(20, 16, 10, 0.07); }
+:root[data-vibe='filmstrip'] .sidepanel h3, :root[data-vibe='filmstrip'] .sidepanel .settings h4 { font-family: 'Unbounded Variable', sans-serif; font-weight: 900; color: #14100a; text-transform: uppercase; letter-spacing: -0.02em; }
+:root[data-vibe='filmstrip'] .sidepanel .stabs button.is-on { background: #14100a; color: #ffb400; }
+:root[data-platform='android'][data-vibe='filmstrip'] .mini--phone { background: radial-gradient(90% 60% at 30% 10%, #ffc933, #ffb400 60%, #e59a00); color: #14100a; --fg: #14100a; --fg-2: rgba(20, 16, 10, 0.8); --fg-3: rgba(20, 16, 10, 0.6); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+@media (max-height: 800px) {
+  [data-vibe='filmstrip'] .sign--intertitle .sign__row { font-size: min(5.6vw, 7.4vh); }
+}

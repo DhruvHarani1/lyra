@@ -1,0 +1,1 @@
+Dusk Ridge, a 34th look: a star-filled sky over sunlit mountains. Every look has its own player dock, play button and progress bar on the phone, light looks no longer get a grey band behind the lyrics, and the home-screen widget has its own colours for every look. Fixes for clipped lyrics in several looks.

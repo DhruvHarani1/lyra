@@ -6,14 +6,28 @@
   <title>Lyra — lyrics that move with the music · Windows, Android · 34 looks</title>
   <meta name="description" content="Lyra shows word-by-word synced lyrics over the music video of whatever you play, in 34 hand-designed looks. Free, open source, no account. Windows and Android." />
   <meta name="theme-color" content="#06050a" />
+  <link rel="canonical" href="https://lyra-website-rho.vercel.app/" />
+  <meta property="og:site_name" content="Lyra" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lyra-website-rho.vercel.app/" />
   <meta property="og:title" content="Lyra — lyrics that move with the music" />
   <meta property="og:description" content="34 designed looks, word-by-word lyrics, music-video backgrounds. Free and open source." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/shots/sheet-vibes.jpg" />
-  <link rel="icon" href="assets/icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet" />
+  <meta property="og:image" content="https://lyra-website-rho.vercel.app/assets/shots/og.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A contact sheet of Lyra's 34 looks, each showing synced lyrics over a music video" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lyra — lyrics that move with the music" />
+  <meta name="twitter:description" content="34 designed looks, word-by-word lyrics, music-video backgrounds. Free and open source." />
+  <meta name="twitter:image" content="https://lyra-website-rho.vercel.app/assets/shots/og.jpg" />
+  <link rel="icon" href="favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" as="image" href="assets/shots/neon-full-800.webp" imagesrcset="assets/shots/neon-full-800.webp 800w, assets/shots/neon-full.webp 1600w" imagesizes="(max-width: 980px) 100vw, 900px" fetchpriority="high" />
   <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="demo.css" />
 </head>
@@ -25,9 +39,9 @@
   <a class="skip" href="#top">Skip to content</a>
 
   <header class="nv">
-    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="26" height="26" /> Lyra</a>
+    <a class="brand" href="./"><img src="assets/icon-64.png" alt="" width="26" height="26" /> Lyra</a>
     <nav>
-      <a href="#looks">34 looks</a>
+      <a href="#looks"><span data-looks>34</span> looks</a>
       <a href="#states">Every state</a>
       <a href="#cards">Cards</a>
       <a href="#demo">Try it</a>
@@ -39,7 +53,7 @@
     <button class="nv__burger" id="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
   </header>
   <div class="mnav" id="mnav" hidden>
-    <a href="#looks">34 looks</a><a href="#states">Every state</a><a href="#cards">Cards</a><a href="#demo">Try it</a><a href="#android">Android</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a class="btn btn--acc" href="#download">Download</a>
+    <a href="#looks"><span data-looks>34</span> looks</a><a href="#states">Every state</a><a href="#cards">Cards</a><a href="#demo">Try it</a><a href="#android">Android</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a class="btn btn--acc" href="#download">Download</a>
   </div>
 
   <main id="top">
@@ -47,11 +61,11 @@
     <section class="hx">
       <div class="hx__grid" aria-hidden="true"></div>
       <div class="hx__copy">
-        <p class="eyebrow reveal"><span class="dot"></span> Free · open source · no account · now with 34 looks</p>
+        <p class="eyebrow reveal"><span class="dot"></span><span>Free · open source · no account · now with <span data-looks>34</span> looks</span></p>
         <h1 id="hero-h1" aria-label="Lyrics that move with the music."><span class="w">Lyrics</span> <span class="w">that</span> <span class="w hot">move</span><br /><span class="w">with</span> <span class="w">the</span> <span class="w">music.</span></h1>
         <p class="lead reveal">Lyra reads what you play and shows it word by word, over the music video itself, in a look designed for the mood: neon tubes, a pencil sketchbook, a terminal, a stadium scoreboard, a film strip.</p>
         <div class="cta reveal">
-          <a class="btn btn--big btn--acc" id="cta-win" href="https://github.com/DhruvHarani1/lyra/releases/latest">
+          <a class="btn btn--big btn--acc" id="cta-win" href="https://github.com/DhruvHarani1/lyra/releases">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M3 5.5 10.5 4.4v7H3zM11.5 4.3 21 3v8.4h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>
             Download for Windows
           </a>
@@ -65,11 +79,11 @@
       </div>
 
       <div class="hx__stage" id="hx-stage">
-        <figure class="chip-float chip-float--b" style="margin:0"><img id="hx-card-a" src="assets/shots/card-sticker.jpg" alt="Share card in the Stickers look" loading="lazy" /></figure>
-        <div class="dev dev--win tilt"><span class="bar-dots"><i></i><i></i><i></i></span><img id="hx-full" src="assets/shots/neon-full.jpg" alt="Lyra fullscreen in the Neon look" width="1600" height="900" fetchpriority="high" /></div>
-        <div class="dev dev--phone"><img id="hx-phone" src="assets/shots/neon-phone.jpg" alt="Lyra on an Android phone" width="780" height="1688" /></div>
-        <div class="dev dev--mini"><img id="hx-mini" src="assets/shots/neon-mini.jpg" alt="Lyra mini player" width="840" height="1400" /></div>
-        <figure class="chip-float chip-float--a" style="margin:0"><img id="hx-card-b" src="assets/shots/card-neon.jpg" alt="Share card in the Neon look" loading="lazy" /></figure>
+        <figure class="chip-float chip-float--b"><img id="hx-card-a" src="assets/shots/card-sticker.webp" alt="Share card in the Stickers look" width="540" height="960" loading="lazy" /></figure>
+        <div class="dev dev--win tilt"><span class="bar-dots"><i></i><i></i><i></i></span><img id="hx-full" src="assets/shots/neon-full.webp" srcset="assets/shots/neon-full-800.webp 800w, assets/shots/neon-full.webp 1600w" sizes="(max-width: 980px) 100vw, 900px" alt="Lyra fullscreen in the Neon look" width="1600" height="900" fetchpriority="high" /></div>
+        <div class="dev dev--phone"><img id="hx-phone" src="assets/shots/neon-phone.webp" alt="Lyra on an Android phone" width="780" height="1688" /></div>
+        <div class="dev dev--mini"><img id="hx-mini" src="assets/shots/neon-mini.webp" alt="Lyra mini player" width="840" height="1400" /></div>
+        <figure class="chip-float chip-float--a"><img id="hx-card-b" src="assets/shots/card-neon.webp" alt="Share card in the Neon look" width="540" height="960" loading="lazy" /></figure>
       </div>
       <div class="hx__glow" aria-hidden="true"></div>
     </section>
@@ -79,30 +93,30 @@
     <div class="tick tick--rev" aria-hidden="true"><div class="tick__track" id="tick2"></div></div>
 
     <!-- THE WALL -->
-    <section class="wallx" id="wall" aria-label="All 34 looks, one tap to open">
-      <div class="wallx__head"><p class="mono reveal">All 34, at once</p><h2 class="reveal">A whole <em>wall</em> of looks.</h2><p class="lead reveal">Every tile is a real screenshot of Lyra. Tap one to open it below.</p></div>
+    <section class="wallx" id="wall" aria-label="All 34 looks, one tap to open" data-label-looks="All {n} looks, one tap to open">
+      <div class="wallx__head"><p class="mono reveal">All <span data-looks>34</span>, at once</p><h2 class="reveal">A whole <em>wall</em> of looks.</h2><p class="lead reveal">Every tile is a real screenshot of Lyra. Tap one to open it below.</p></div>
       <div class="wallx__stage" id="wall-stage"></div>
     </section>
 
     <!-- STATS -->
-    <section class="sx" style="padding-top:60px">
+    <section class="sx sx--stats">
       <div class="stats reveal">
-        <div><b data-count="34">34</b><span>hand-designed looks, each with its own type, colour and motion</span></div>
+        <div><b data-count="34" data-looks-count>34</b><span>hand-designed looks, each with its own type, colour and motion</span></div>
         <div><b data-count="4">4</b><span>screens designed for every look: synced, unsynced, no lyrics, video</span></div>
         <div><b data-count="3">3</b><span>sizes: full screen, mini player, Android phone and tablet</span></div>
         <div><b>0</b><span>accounts, trackers or ads. Open source, MIT licence</span></div>
       </div>
     </section>
 
-    <!-- 20 LOOKS -->
-    <section class="sx" id="looks">
+        <section class="sx" id="looks">
       <div class="sx__head">
         <p class="mono reveal">01 · The looks</p>
-        <h2 class="reveal">One song.<br /><em>Thirty-three</em> ways to see it.</h2>
+        <h2 class="reveal">One song.<br /><em data-looks-words>Thirty-four</em> ways to see it.</h2>
         <p class="lead reveal">A look is not a theme colour. It changes the type, the way each word arrives, the background, the player card, the cover frame, the Settings panel and even the card you share. Pick a favourite, cycle with one key, or let Lyra choose by the song.</p>
       </div>
       <div class="show">
         <div class="show__list" id="show-list" role="group" aria-label="Looks"></div>
+        <noscript><div class="nojs"><p>The looks, one by one (each links to a full-screen screenshot). The interactive showcase needs JavaScript.</p><!--looks:start--><ul class="nojs-list"><li><a href="assets/shots/none-full.webp">Artwork</a>: A gallery wall lit in the colours of the cover</li><li><a href="assets/shots/neon-full.webp">Neon</a>: Rain alley, neon signs</li><li><a href="assets/shots/chrome-full.webp">Chrome</a>: Y2K liquid metal</li><li><a href="assets/shots/dream-full.webp">Dream</a>: Pastel star map</li><li><a href="assets/shots/crt-full.webp">Terminal</a>: tmux panes, a lyric log, a status bar</li><li><a href="assets/shots/sticker-full.webp">Stickers</a>: Die-cut pop</li><li><a href="assets/shots/chat-full.webp">DM</a>: The song texts you</li><li><a href="assets/shots/paper-full.webp">Diary</a>: A cosy night corner, a polaroid, handwriting</li><li><a href="assets/shots/journal-full.webp">Journal</a>: A ruled page, a taped polaroid, marker highlights</li><li><a href="assets/shots/doodle-full.webp">Doodle</a>: Fat marker, bright shapes, scribbles that draw themselves</li><li><a href="assets/shots/arcade-full.webp">Arcade</a>: 8-bit cabinet</li><li><a href="assets/shots/noir-full.webp">Cinema</a>: Subtitles in black & white</li><li><a href="assets/shots/sunset-full.webp">Sunset Drive</a>: Golden hour, warm glow</li><li><a href="assets/shots/dusk-full.webp">Dusk Ridge</a>: A star-filled sky over sunlit mountains</li><li><a href="assets/shots/blocks-full.webp">Blocks</a>: A sandbox with a chat log</li><li><a href="assets/shots/stadium-full.webp">Stadium</a>: Live broadcast scoreboard</li><li><a href="assets/shots/cassette-full.webp">Cassette</a>: Tape deck, label-maker strips</li><li><a href="assets/shots/trailer-full.webp">Trailer</a>: Movie title cards</li><li><a href="assets/shots/sketch-full.webp">Sketchbook</a>: Written by hand in ink and pencil</li><li><a href="assets/shots/glitch-full.webp">Glitch</a>: Signal lost: static, tears, colour split</li><li><a href="assets/shots/comic-full.webp">Pop Comic</a>: Halftone page, speech bubbles, POW</li><li><a href="assets/shots/stencil-full.webp">Stencil</a>: Sprayed on a concrete wall</li><li><a href="assets/shots/film-full.webp">Film Reel</a>: Running film stock, silent-film titles</li><li><a href="assets/shots/filmstrip-full.webp">Film Strip</a>: The film advances frame by frame</li><li><a href="assets/shots/lock-full.webp">Lock Screen</a>: Each line arrives as a notification</li><li><a href="assets/shots/wallet-full.webp">Wallet</a>: The song as a run of payments</li><li><a href="assets/shots/route-full.webp">Route</a>: A pin for every line on a map</li><li><a href="assets/shots/editor-full.webp">Editor</a>: The lyric as code in an editor</li><li><a href="assets/shots/metro-full.webp">Metro</a>: A transit line, a station per word</li><li><a href="assets/shots/web-full.webp">Web</a>: Every line spun on a web</li><li><a href="assets/shots/lens-full.webp">Lens</a>: Words bulge through a glass lens</li><li><a href="assets/shots/picto-full.webp">Picto</a>: A small icon beside the words that have one</li><li><a href="assets/shots/wall-full.webp">Drift Wall</a>: Words land on a wall that drifts in 3D</li><li><a href="assets/shots/flap-full.webp">Split-flap</a>: An airport board, every letter flips</li></ul><!--looks:end--><p><a href="vibes">Open the gallery</a></p></div></noscript>
         <div class="show__stage reveal">
           <div class="show__bar">
             <button class="shuf" id="show-shuffle" type="button">Shuffle ⟳</button>
@@ -116,7 +130,7 @@
               <button data-vid="0">Without</button>
             </div>
           </div>
-          <div class="show__canvas" id="show-canvas" data-dev="full"><img id="show-img" src="assets/shots/neon-full.jpg" alt="Neon look, full screen" width="1600" height="900" /></div>
+          <div class="show__canvas" id="show-canvas" data-dev="full"><img id="show-img" src="assets/shots/neon-full.webp" srcset="assets/shots/neon-full-800.webp 800w, assets/shots/neon-full.webp 1600w" sizes="(max-width: 980px) 94vw, 880px" alt="Neon look, full screen" width="1600" height="900" /></div>
           <div class="show__info"><div><h3 id="show-name">Neon</h3><div class="tags" id="show-tags"></div></div><p id="show-tag">Synthwave tubes</p></div>
         </div>
       </div>
@@ -136,7 +150,7 @@
           <div class="story__step" data-s="nolyrics"><i>STATE 03</i><h3>No lyrics found</h3><p>A designed screen instead of an error: the reason in plain words, a live retry countdown, and ways out: search again, pick a match, paste your own.</p></div>
           <div class="story__step" data-s="full-novideo"><i>STATE 04</i><h3>No video available</h3><p>The look carries the scene on its own, so a missing video never leaves a hole.</p></div>
         </div>
-        <div class="story__art"><div class="story__bar" aria-hidden="true"><i></i><i></i><i></i><span id="story-count">01 / 04</span></div><div class="story__stack"><img id="story-img" src="assets/shots/sketch-full.jpg" alt="Lyra in the Sketchbook look, showing the selected state" width="1600" height="900" /><img id="story-img2" src="assets/shots/sketch-full.jpg" alt="" aria-hidden="true" width="1600" height="900" /></div></div>
+        <div class="story__art"><div class="story__bar" aria-hidden="true"><i></i><i></i><i></i><span id="story-count">01 / 04</span></div><div class="story__stack"><img id="story-img" src="assets/shots/sketch-full.webp" alt="Lyra in the Sketchbook look, showing the selected state" width="1600" height="900" /><img id="story-img2" src="assets/shots/sketch-full.webp" alt="" aria-hidden="true" width="1600" height="900" /></div></div>
       </div>
     </section>
 
@@ -148,6 +162,7 @@
         <p class="lead reveal">Tap a lyric to make a story-size card. It wears the look you are in: hand-drawn doodle marks on a stencil, a terminal printout, a sticker, a diary page, a scoreboard. Everything is drawn on your device.</p>
       </div>
       <div class="rail reveal" id="rail-cards"></div>
+      <noscript><p class="nojs">Every look has its own share card and Settings panel: see <a href="vibes">the gallery</a> for each one.</p></noscript>
     </section>
 
     <!-- SETTINGS + POSTERS -->
@@ -193,7 +208,7 @@
         <button role="tab" data-clip="barsaat">Barsaat · Hindi</button>
         <button role="tab" data-clip="widget">Widget</button>
       </div>
-      <div class="reel reveal" id="reel-box"><video id="reel-video" muted loop playsinline autoplay preload="metadata" poster="assets/poster-blinding.jpg"><source src="assets/clip-blinding.mp4" type="video/mp4" /></video></div>
+      <div class="reel reveal" id="reel-box"><video id="reel-video" muted loop playsinline preload="none" poster="assets/poster-blinding.webp"><source src="assets/clip-blinding.mp4" type="video/mp4" /></video></div>
     </section>
 
     <section class="sx sx--center" id="song">
@@ -202,7 +217,7 @@
         <h2 class="reveal">Press play. <em>Turn it up.</em></h2>
         <p class="lead reveal">Barsaat by Banjaare, start to finish, with the Hindi lyrics lighting up word by word over the video.</p>
       </div>
-      <div class="song reveal"><video id="song-video" controls playsinline preload="metadata" poster="assets/poster-song.jpg"><source src="assets/song-barsaat.mp4" type="video/mp4" /></video></div>
+      <div class="song reveal"><video id="song-video" controls playsinline preload="none" poster="assets/poster-song.webp"><source src="assets/song-barsaat.mp4" type="video/mp4" /></video></div>
       <p class="song__note reveal">The song and the video belong to Banjaare and Sony Music. They are shown here only to demo Lyra.</p>
     </section>
 
@@ -231,8 +246,8 @@
       <div class="split">
         <div>
           <p class="mono reveal">09 · Android</p>
-          <h2 class="reveal" style="margin-top:18px">Your phone,<br /><em>on the desk.</em></h2>
-          <p class="lead reveal" style="margin-top:22px">Works with any player that shows a media card. The phone layout puts the lyrics first, tablets and unfolded foldables get a two-pane screen, and ambient mode turns the screen into a calm lyrics clock on the charger.</p>
+          <h2 class="reveal split__h">Your phone,<br /><em>on the desk.</em></h2>
+          <p class="lead reveal split__lead">Works with any player that shows a media card. The phone layout puts the lyrics first, tablets and unfolded foldables get a two-pane screen, and ambient mode turns the screen into a calm lyrics clock on the charger.</p>
           <ul class="ticks reveal">
             <li>A home-screen widget in the colours of your look</li>
             <li>Lyrics on the lock screen and in the notification</li>
@@ -240,7 +255,7 @@
             <li>Floating lyrics over other apps, Quick Settings tile, app shortcut</li>
           </ul>
         </div>
-        <div class="split__art reveal"><div class="stack"><img src="assets/shots/sketch-phone.jpg" alt="Lyra on Android in the Sketchbook look" loading="lazy" /><img src="assets/shots/glitch-phone.jpg" alt="Lyra on Android in the Glitch look" loading="lazy" /></div></div>
+        <div class="split__art reveal"><div class="stack"><img src="assets/shots/sketch-phone.webp" alt="Lyra on Android in the Sketchbook look" width="780" height="1688" loading="lazy" /><img src="assets/shots/glitch-phone.webp" alt="Lyra on Android in the Glitch look" width="780" height="1688" loading="lazy" /></div></div>
       </div>
     </section>
 
@@ -251,13 +266,13 @@
         <h2 class="reveal">Meet <em>Vega.</em><br /><span class="mute">Your own music app.</span></h2>
         <p class="lead reveal">Lyra shows lyrics for what Spotify plays. Vega is the other half: a complete music app that plays your own library and the open web, with Lyra’s lyrics player built in. No Spotify needed.</p>
       </div>
-      <div class="cta reveal" style="justify-content:center">
+      <div class="cta cta--center reveal">
         <a class="btn btn--big btn--acc" href="https://vega-musicv1.vercel.app" target="_blank" rel="noopener">Open in your browser</a>
         <a class="btn btn--big btn--ghost" id="vega-win" href="https://github.com/DhruvHarani1/vega/releases/latest">Download for Windows</a>
         <a class="btn btn--big btn--ghost" id="vega-and" href="https://github.com/DhruvHarani1/vega/releases/latest">Download for Android</a>
       </div>
-      <p class="hx__meta reveal" id="vega-meta" style="margin-top:16px">Free · open source · no account needed</p>
-      <figure class="vshot reveal"><img src="assets/vega-home.jpg" alt="Vega home screen" width="1600" height="1000" loading="lazy" /></figure>
+      <p class="hx__meta hx__meta--vega reveal" id="vega-meta">Free · open source · no account needed</p>
+      <figure class="vshot reveal"><img src="assets/vega-home.webp" alt="Vega home screen" width="1600" height="1000" loading="lazy" /></figure>
       <div class="vgrid">
         <article class="vcard reveal"><i>01</i><h3>Search anything</h3><p>One search over your files, Audius, Jamendo and more. <kbd>Ctrl</kbd>+<kbd>K</kbd> jumps anywhere.</p></article>
         <article class="vcard reveal"><i>02</i><h3>Your library</h3><p>Point it at a music folder. Tags, covers and durations are read for you, and it works offline.</p></article>
@@ -274,12 +289,13 @@
         <p class="mono reveal">10 · Get it</p>
         <h2 class="reveal">Get <em>Lyra.</em></h2>
         <p class="lead reveal">Free forever. Pick your device.</p>
+        <noscript><p class="nojs">Windows: open <a href="https://github.com/DhruvHarani1/lyra/releases">the releases</a> and pick the newest one named <code>v0.x</code> (the <code>.exe</code> installer). Android: the newest one named <code>android-v0.x</code> (the <code>.apk</code>).</p></noscript>
       </div>
       <div class="dl">
         <article class="dl__card reveal">
           <h3>Windows</h3>
           <p class="dl__v" id="dl-win-v">Windows 10 / 11</p>
-          <a class="btn btn--big btn--acc" id="dl-win" href="https://github.com/DhruvHarani1/lyra/releases/latest">Download installer</a>
+          <a class="btn btn--big btn--acc" id="dl-win" href="https://github.com/DhruvHarani1/lyra/releases">Download installer</a>
           <ol>
             <li>Install the <b>Spotify desktop app</b> and play a song.</li>
             <li>Run the installer. Lyra opens as a small floating widget.</li>
@@ -304,8 +320,8 @@
 
   <footer class="ft">
     <div class="ft__in">
-      <div><p class="ft__big">Lyra.</p><p class="lead" style="font-size:15px">Lyrics that move with the music. Free and open source.</p></div>
-      <div><h4>Explore</h4><a href="#looks">34 looks</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a href="#demo">Live demo</a></div>
+      <div><p class="ft__big">Lyra.</p><p class="lead ft__lead">Lyrics that move with the music. Free and open source.</p></div>
+      <div><h4>Explore</h4><a href="#looks"><span data-looks>34</span> looks</a><a href="vibes">Gallery</a><a href="whats-new">What’s new</a><a href="#demo">Live demo</a></div>
       <div><h4>Get it</h4><a href="#download">Windows</a><a href="#download">Android</a><a href="#vega">Vega</a></div>
       <div><h4>Project</h4><a href="https://github.com/DhruvHarani1/lyra" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/DhruvHarani1/lyra/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy</a><a href="https://github.com/DhruvHarani1/lyra/issues" target="_blank" rel="noopener">Report a bug</a></div>
     </div>

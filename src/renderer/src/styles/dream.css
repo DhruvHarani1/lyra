@@ -12,15 +12,9 @@
   --sc-ww: 100vw;
   --sc-wh: 100vh;
   --sc-wr: 0px;
-  --sc-cw: min(30vw, 400px);
-  --sc-cl: calc(50vw - var(--sc-cw) / 2);
-  --sc-cb: 4vh;
-  --sc-ct: auto;
   --sc-ll: 8vw;
   --sc-lt: 8vh;
   --sc-lw: 84vw;
-  --sc-lb: 44vh;
-  --sc-lbs: 44vh;
   --sc-art-bg: radial-gradient(70% 60% at 30% 30%, rgba(255, 143, 208, 0.7), transparent 70%), radial-gradient(70% 60% at 75% 70%, rgba(143, 155, 255, 0.7), transparent 70%), #1c1040;
   --sc-art-fg: #fff;
   --sc-eq: #ffd0f4;
@@ -30,7 +24,7 @@
 [data-vibe='dream'] .backdrop .backdrop__field { background: radial-gradient(120% 90% at 50% 0%, #2c1760, #120a28 70%); }
 :root[data-vibe='dream'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
 /* the video, blurred into colour and light */
-:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { filter: blur(30px) saturate(1.5) brightness(0.8); scale: 1.14; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { scale: 1.14; }
 .dreamfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .dreamfx .vibefx__orb { opacity: 0.45; mix-blend-mode: screen; }
 .scenewin__art span, .scenewin__eq { display: none; }
@@ -46,27 +40,17 @@
 
 /* ---------------- the card: an orb ---------------- */
 :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
-  align-items: center;
-  gap: 1.4vh;
-  padding: 2vh 2.4vh 2.2vh !important;
-  border-radius: 4vh !important;
-  background: rgba(255, 255, 255, 0.12) !important;
-  -webkit-backdrop-filter: blur(26px) saturate(1.5);
-  backdrop-filter: blur(26px) saturate(1.5);
   border: 0 !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 3vh 8vh rgba(40, 10, 80, 0.4), 0 0 8vh rgba(255, 180, 236, 0.25) !important;
 }
 :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork {
-  width: 16vh !important;
   border-radius: 50% !important;
   box-shadow: 0 0 0 0.5vh rgba(255, 255, 255, 0.5), 0 0 5vh rgba(255, 180, 236, 0.6);
 }
 :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { align-items: stretch; width: 100%; }
 :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { justify-content: center; text-align: center; }
-:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font-family: 'Fraunces Variable', Georgia, serif; font-style: italic; font-weight: 500; font-size: 2.6vh; letter-spacing: 0; color: #fff; text-shadow: 0 0 1.6vh rgba(255, 180, 236, 0.6); }
-:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.5vh); color: rgba(255, 255, 255, 0.78); }
-:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #ffd0f4, #b9c4ff); }
-:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: rgba(255, 255, 255, 0.92) !important; color: #3a1d6e !important; box-shadow: 0 0 3vh rgba(255, 180, 236, 0.7) !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font-family: 'Fraunces Variable', Georgia, serif; font-style: italic; font-weight: 500; letter-spacing: 0; text-shadow: 0 0 1.6vh rgba(255, 180, 236, 0.6); }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.5vh); }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { box-shadow: 0 0 3vh rgba(255, 180, 236, 0.7) !important; }
 
 /* ---------------- other lyric states (same regions) ---------------- */
 :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .lfb { align-items: center; text-align: center; }
@@ -78,3 +62,56 @@
   :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 11vh !important; }
   :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { padding: 1.4vh 2vh !important; }
 }
+
+/* ---- second pass, was recomp1.css ---- */
+/* ===== DREAM: the video behind frosted fog, constellation lyrics, the card a floating moon disc ===== */
+:root[data-vibe='dream'] {
+  --sc-cw: 33vh;
+  --sc-cl: auto;
+  --sc-cr: 7vw;
+  --sc-cb: 5vh;
+  --sc-ct: auto;
+  --sc-lb: 38vh;
+  --sc-lbs: 38vh;
+}
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { filter: blur(16px) saturate(1.45) brightness(0.78); }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dreamfx::before, :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dreamfx::after { content: ''; position: absolute; inset: -20% -30%; pointer-events: none; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dreamfx::before { background: radial-gradient(40% 24% at 22% 78%, rgba(255, 255, 255, 0.34), transparent 70%), radial-gradient(36% 22% at 70% 62%, rgba(255, 225, 250, 0.3), transparent 70%), radial-gradient(46% 26% at 50% 100%, rgba(255, 255, 255, 0.38), transparent 70%); animation: rc-fog 38s ease-in-out infinite alternate; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dreamfx::after { background: radial-gradient(34% 20% at 78% 22%, rgba(220, 230, 255, 0.3), transparent 70%), radial-gradient(40% 24% at 28% 36%, rgba(255, 255, 255, 0.2), transparent 70%); animation: rc-fog 52s ease-in-out infinite alternate-reverse; }
+@keyframes rc-fog { from { transform: translateX(-6vw); } to { transform: translateX(8vw); } }
+:root[data-motion='off'] .dreamfx::before, :root[data-motion='off'] .dreamfx::after { animation: none; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  --fg: #2b1a52;
+  --fg-2: #4b3680;
+  --fg-3: #6a58a0;
+  width: 33vh !important;
+  height: 33vh !important;
+  aspect-ratio: 1;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6vh;
+  padding: 3vh 3.6vh !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 34% 28%, #ffffff 0, #fff3ff 22%, #e3d2fa 62%, #b9a2ea 100%) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: inset -1.2vh -1.6vh 3vh rgba(110, 80, 180, 0.35), inset 0 0 0 0.3vh rgba(255, 255, 255, 0.7), 0 0 4vh rgba(255, 235, 255, 0.7), 0 0 14vh rgba(255, 180, 236, 0.45) !important;
+  animation: rc-moon 8s ease-in-out infinite;
+}
+@keyframes rc-moon { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.4vh; } }
+:root[data-motion='off'] :root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { animation: none !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; background: radial-gradient(circle at 70% 70%, rgba(150, 120, 210, 0.1) 0 5%, transparent 5.5%), radial-gradient(circle at 24% 66%, rgba(150, 120, 210, 0.08) 0 7%, transparent 7.5%), radial-gradient(circle at 62% 22%, rgba(150, 120, 210, 0.07) 0 4%, transparent 4.5%); }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 8.6vh !important; flex: none; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { color: #2b1a52 !important; -webkit-text-fill-color: #2b1a52; font-size: 2.2vh !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { color: #4b3680 !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(75, 54, 128, 0.22) !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #6a4cc0 !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #2b1a52; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #2b1a52 !important; color: #fff !important; }
+:root[data-vibe='dream']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__time { color: #4b3680 !important; }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* ---------- Dream in the mini window: a smaller moon disc so the constellation words stay clear of it ---------- */
+:root[data-vibe='dream'][data-mode='mini']:not([data-platform='android']) .full.full[data-arch='scene'] .full__side { width: 26vh !important; height: 26vh !important; }
+:root[data-vibe='dream'][data-mode='mini']:not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 6vh !important; }

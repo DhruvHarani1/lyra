@@ -26,25 +26,25 @@
 [data-vibe='wall'] .backdrop .backdrop__field { background: #17171c; }
 [data-vibe='wall'] .scenewin { box-shadow: 0 0 0 0.8vh #ff9f43, 1.6vh 1.6vh 0 0.8vh #0b0b0e; }
 :root[data-vibe='wall'][data-rim='on']::after { display: none; }
-.wlfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; display: none; }
+.wafx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; display: none; }
 /* the slabs are opaque: cut a hole where the video window is */
-:root[data-vibe='wall'] .wlfx { clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--sc-wl) var(--sc-wt), calc(var(--sc-wl) + var(--sc-ww)) var(--sc-wt), calc(var(--sc-wl) + var(--sc-ww)) calc(var(--sc-wt) + var(--sc-wh)), var(--sc-wl) calc(var(--sc-wt) + var(--sc-wh)), var(--sc-wl) var(--sc-wt)); }
-:root[data-vibe='wall']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .wlfx { display: block; }
-.wlfx__row { position: absolute; left: -40vw; width: 240vw; height: 26vh; }
-.wlfx__row i { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #202027 0 19vw, #26262e 19vw 38vw, #1c1c22 38vw 52vw, #2a2a33 52vw 71vw); box-shadow: inset 0 0.3vh 0 rgba(255, 255, 255, 0.05), inset 0 -0.3vh 0 rgba(0, 0, 0, 0.5); }
-.wlfx__row--0 { top: 0; } .wlfx__row--1 { top: 25vh; } .wlfx__row--2 { top: 50vh; } .wlfx__row--3 { top: 75vh; }
-.wlfx__row--0 i { animation: wl-slide 90s linear infinite; }
-.wlfx__row--1 i { animation: wl-slide 60s linear infinite reverse; background-position: 11vw 0; }
-.wlfx__row--2 i { animation: wl-slide 75s linear infinite; background-position: 27vw 0; }
-.wlfx__row--3 i { animation: wl-slide 50s linear infinite reverse; background-position: 5vw 0; }
-.wlfx__row::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 0.8vh; background: #0b0b0e; }
+:root[data-vibe='wall'] .wafx { clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--sc-wl) var(--sc-wt), calc(var(--sc-wl) + var(--sc-ww)) var(--sc-wt), calc(var(--sc-wl) + var(--sc-ww)) calc(var(--sc-wt) + var(--sc-wh)), var(--sc-wl) calc(var(--sc-wt) + var(--sc-wh)), var(--sc-wl) var(--sc-wt)); }
+:root[data-vibe='wall']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .wafx { display: block; }
+.wafx__row { position: absolute; left: -40vw; width: 240vw; height: 26vh; }
+.wafx__row i { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #202027 0 19vw, #26262e 19vw 38vw, #1c1c22 38vw 52vw, #2a2a33 52vw 71vw); box-shadow: inset 0 0.3vh 0 rgba(255, 255, 255, 0.05), inset 0 -0.3vh 0 rgba(0, 0, 0, 0.5); }
+.wafx__row--0 { top: 0; } .wafx__row--1 { top: 25vh; } .wafx__row--2 { top: 50vh; } .wafx__row--3 { top: 75vh; }
+.wafx__row--0 i { animation: wl-slide 90s linear infinite; }
+.wafx__row--1 i { animation: wl-slide 60s linear infinite reverse; background-position: 11vw 0; }
+.wafx__row--2 i { animation: wl-slide 75s linear infinite; background-position: 27vw 0; }
+.wafx__row--3 i { animation: wl-slide 50s linear infinite reverse; background-position: 5vw 0; }
+.wafx__row::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 0.8vh; background: #0b0b0e; }
 /* a few accent slabs, very quiet */
-.wlfx__row--1::before, .wlfx__row--3::before { content: ''; position: absolute; top: 3vh; bottom: 3vh; left: 70vw; width: 26vw; background: rgba(255, 159, 67, 0.16); }
-.wlfx__row--3::before { left: 120vw; background: rgba(77, 208, 225, 0.14); }
+.wafx__row--1::before, .wafx__row--3::before { content: ''; position: absolute; top: 3vh; bottom: 3vh; left: 70vw; width: 26vw; background: rgba(255, 159, 67, 0.16); }
+.wafx__row--3::before { left: 120vw; background: rgba(77, 208, 225, 0.14); }
 @keyframes wl-slide { to { transform: translateX(-71vw); } }
-.wlfx__tag { position: absolute; right: 5vw; bottom: 16vh; font: 900 max(10.5px, 1.3vh) 'Unbounded Variable', sans-serif; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); }
-:root[data-motion='off'] .wlfx * { animation: none !important; }
-:root[data-calm] .wlfx * { animation-play-state: paused !important; }
+.wafx__tag { position: absolute; right: 5vw; bottom: 16vh; font: 900 max(10.5px, 1.3vh) 'Unbounded Variable', sans-serif; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); }
+:root[data-motion='off'] .wafx * { animation: none !important; }
+:root[data-calm] .wafx * { animation-play-state: paused !important; }
 /* the card: a price-tag strip */
 :root[data-vibe='wall']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { padding: 1.1vh 2vh 1.1vh 1.1vh !important; border-left: 1.2vh solid #ff9f43 !important; }
 :root[data-vibe='wall']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 8.6vh !important; border-radius: 0.4vh !important; box-shadow: 0 0 0 0.3vh #ff9f43; }

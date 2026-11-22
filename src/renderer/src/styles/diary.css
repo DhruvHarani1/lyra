@@ -10,24 +10,10 @@
   --dy-cream: #fff1d8;
   --dy-kraft: #c9a46a;
   /* scene geometry (styles/scene.css): the polaroid on the left, the words on the right, a tag under the words */
-  --sc-ww: min(34vw, 54vh);
-  --sc-wl: 8vw;
-  --sc-wt: 15vh;
-  --sc-wr: 0.4vh;
-  --sc-ll: calc(8vw + var(--sc-ww) + 7vw);
-  --sc-lt: 14vh;
-  --sc-lw: calc(94vw - var(--sc-ww) - 8vw - 7vw);
-  --sc-lb: 28vh;
-  --sc-lbs: 26vh;
-  --sc-cl: var(--sc-ll);
-  --sc-cb: 7vh;
-  --sc-ct: auto;
-  --sc-cw: min(40vw, 520px);
   --sc-art-bg: radial-gradient(circle at 50% 40%, #4a3322, #2a1c12);
   --sc-art-fg: #fff1d8;
   --sc-eq: #ffc27a;
 }
-:root[data-vibe='paper'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(36vw, 58vh); }
 :root[data-vibe='paper'][data-rim='on']::after { display: none; }
 [data-vibe='paper'] .shell {
   --accent: #ffc27a;
@@ -77,7 +63,6 @@
 .diaryfx__polaroid-shadow { display: none; }
 .diaryfx__caption { display: none; }
 :root[data-vibe='paper']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .diaryfx__caption { display: block; position: absolute; left: calc(var(--sc-wl) - 1.8vh); top: calc(var(--sc-wt) + var(--sc-wh) + 2vh); width: calc(var(--sc-ww) + 3.6vh); text-align: center; font: 700 4vh/1 'Caveat', cursive; color: #3a2a1c; transform: rotate(-1.2deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 2vh; }
-[data-vibe='paper'] .scenewin { box-shadow: inset 0 0 3vh rgba(0, 0, 0, 0.35); }
 .scenewin__art span { font: 700 3.2vh/1 'Caveat', cursive; letter-spacing: 0; text-transform: none; color: #fff1d8; }
 .scenewin__eq { display: none; }
 
@@ -90,7 +75,6 @@
   align-items: center;
   gap: 2vh;
   padding: 1.3vh 2vh 1.3vh 4.4vh !important;
-  border-radius: 0.8vh 2.4vh 2.4vh 0.8vh !important;
   background: var(--dy-kraft) !important;
   border: 0 !important;
   box-shadow: inset 0 0 0 0.3vh rgba(60, 40, 20, 0.35), 0.5vh 1.2vh 2.4vh rgba(0, 0, 0, 0.5) !important;
@@ -113,9 +97,9 @@
 
 /* ---------------- lyrics: soft handwriting on the wall (stage 'note') ---------------- */
 .stage--note { display: flex; flex-direction: column; justify-content: center; }
-.sign--note .sign__line { gap: 1.6vh; rotate: -1deg; animation: dy-in 0.6s ease-out 1; }
+.sign--note .sign__line { gap: 1.6vh; animation: dy-in 0.6s ease-out 1; }
 @keyframes dy-in { from { opacity: 0; transform: translateY(1.4vh); } to { opacity: 1; transform: none; } }
-.sign--note .sign__row { font-family: 'Caveat', cursive; font-weight: 700; font-size: min(6vw, 10.4vh); line-height: 1; letter-spacing: 0; gap: 0 0.22em; }
+.sign--note .sign__row { font-family: 'Caveat', cursive; font-weight: 700; line-height: 1; letter-spacing: 0; gap: 0 0.22em; }
 .sign--note .sign__word { color: rgba(255, 241, 216, 0.3); transition: color 0.4s ease; }
 .sign--note .sign__word.is-in { color: var(--dy-cream); text-shadow: 0 0 1.4vh rgba(255, 194, 122, 0.45); }
 .sign--note .sign__word.is-now { color: #fff; background: linear-gradient(180deg, transparent 58%, rgba(255, 194, 122, 0.55) 58%, rgba(255, 194, 122, 0.55) 92%, transparent 92%); text-shadow: 0 0 1.6vh rgba(255, 194, 122, 0.7); }
@@ -132,3 +116,67 @@
 [data-vibe='paper'] .lfb p, [data-vibe='paper'] .lfb small { color: rgba(255, 241, 216, 0.88); font-family: 'Inter Variable', system-ui, sans-serif; }
 [data-vibe='paper'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='paper'] .lfb__eq i { background: var(--dy-warm); box-shadow: none; }
+
+/* ---- second pass, was x-paper.css ---- */
+/* ==========================================================================
+   DIARY, premium pass: the view from a cosy room at night. The video is a big wooden WINDOW in the middle of the wall (cross
+   mullions, a sill), the polaroid is gone, fairy lights hang along the top edge and light up with the song, the words are written
+   centred below the window like a letter, the card is a small kraft tag in the corner, a lamp throws warm light from the corner.
+   Settings: a cork-brown board with kraft tags. Phone: the dock is a kraft tag.
+   ========================================================================== */
+:root[data-vibe='paper'] {
+  --sc-ww: min(38vw, 54vh);
+  --sc-wl: calc(50vw - var(--sc-ww) / 2);
+  --sc-wt: 9vh;
+  --sc-wr: 0.6vh;
+  --sc-ll: 12vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 6vh);
+  --sc-lw: 76vw;
+  --sc-lb: 15vh;
+  --sc-lbs: 14vh;
+  --sc-cl: calc(94vw - var(--sc-cw));
+  --sc-cb: 4vh;
+  --sc-ct: auto;
+  --sc-cw: min(36vw, 470px);
+}
+:root[data-vibe='paper'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(40vw, 58vh); }
+/* the polaroid is gone: the window frame replaces it */
+:root[data-vibe='paper'] :is(.diaryfx__polaroid, .diaryfx__caption) { display: none !important; }
+[data-vibe='paper'] .scenewin {
+  box-shadow: 0 0 0 1.1vh #6b4a2b, 0 0 0 1.4vh #3a2615, 0 0 0 1.7vh #8a6339, 0 2.4vh 6vh rgba(0, 0, 0, 0.6), inset 0 0 5vh rgba(0, 0, 0, 0.45);
+}
+:root[data-vibe='paper']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(#4a3019, #4a3019) 50% 0 / 0.9vh 100% no-repeat, linear-gradient(#4a3019, #4a3019) 0 50% / 100% 0.9vh no-repeat;
+  box-shadow: inset 0 0 0 0.35vh rgba(255, 220, 170, 0.18);
+}
+:root[data-vibe='paper']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin::before {
+  content: ''; position: absolute; left: -2.4vh; right: -2.4vh; bottom: -2.6vh; height: 1.6vh; border-radius: 0.4vh; background: linear-gradient(#a37a46, #6a4824); box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.5); z-index: 1;
+}
+/* a lamp in the corner: warm light, slowly breathing */
+.diaryfx::after { content: ''; position: absolute; right: -10vw; top: -20vh; width: 70vw; height: 90vh; background: radial-gradient(closest-side, rgba(255, 190, 110, 0.28), transparent 72%); animation: dy-lamp 7s ease-in-out infinite alternate; pointer-events: none; }
+@keyframes dy-lamp { to { opacity: 0.55; transform: scale(1.06); } }
+:root[data-motion='off'] .diaryfx::after { animation: none; }
+/* the words, centred like a letter under the window */
+.sign--note .sign__line { text-align: center; align-items: center; rotate: 0deg; }
+.sign--note .sign__row { justify-content: center; font-size: min(5vw, 8.4vh); }
+.sign--note .sign__next { text-align: center; }
+:root[data-vibe='paper'] .stage--note { justify-content: flex-start; }
+/* the card: a kraft tag in the corner */
+:root[data-vibe='paper']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { border-radius: 0.8vh 2.4vh 2.4vh 0.8vh !important; rotate: -1.4deg; }
+/* settings: a dark wood board, kraft edges */
+:root[data-vibe='paper'] .sidepanel { --panel: #24170e; --accent: #ffc27a; --fg: #fff1d8; --fg-2: rgba(255, 241, 216, 0.8); --fg-3: rgba(255, 241, 216, 0.62); --line: rgba(255, 241, 216, 0.18); background: linear-gradient(180deg, #2f2012, #1d140c); border: 0; border-radius: 8px; box-shadow: 0 0 0 0.6vh #6b4a2b, 0 0 0 0.9vh #3a2615, 0 30px 70px rgba(0, 0, 0, 0.6); }
+:root[data-vibe='paper'] .sidepanel .settings section { background: rgba(201, 164, 106, 0.1); box-shadow: inset 4px 0 0 #c9a46a; border-radius: 4px 14px 14px 4px; }
+:root[data-vibe='paper'] .sidepanel h3 { font-family: 'Caveat', cursive; font-size: 1.7em; color: #fff1d8; }
+:root[data-vibe='paper'] .sidepanel .stabs button.is-on { background: #c9a46a; color: #2a1c12; }
+/* phone */
+:root[data-platform='android'][data-vibe='paper'] .phone__dock { --fg: #2a1c12; --fg-2: #4a3322; --fg-3: #6a4c34; background: #c9a46a !important; color: #2a1c12; border-radius: 6px 24px 24px 6px !important; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45); }
+:root[data-platform='android'][data-vibe='paper'] .phone__bar { background: linear-gradient(180deg, rgba(255, 194, 122, 0.16), transparent); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* Diary (night corner): the old cream-card rules for unsynced / no-lyrics over a video made cream text on a cream card */
+:root[data-vibe='paper'][data-bg-media] :is(.lyrics__scroller--plain, .lfb), :root[data-vibe='paper'] :is(.lyrics__scroller--plain, .lfb) { background: transparent; box-shadow: none; border-radius: 0; color: #fff1d8; --fg: #fff1d8; --fg-2: rgba(255, 241, 216, 0.78); --fg-3: rgba(255, 241, 216, 0.55); }
+:root[data-vibe='paper'][data-bg-media] .lyrics__stage:has(.lyrics__scroller--plain)::before, :root[data-vibe='paper'][data-bg-media] .lfb::before { display: none; }
+:root[data-vibe='paper'][data-bg-media] .lyrics__notice, :root[data-vibe='paper'] .lyrics__notice { background: rgba(255, 241, 216, 0.1); border-color: rgba(255, 241, 216, 0.4); color: #fff1d8; }
+:root[data-vibe='paper'] .plain__stanza { color: #fff1d8; }
+:root[data-vibe='paper'] .lfb h3 { color: #fff1d8; background: none; }

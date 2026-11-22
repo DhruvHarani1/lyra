@@ -30,7 +30,11 @@ Word-by-word synced lyrics over the music video of what you play. For Windows an
 - **Export a lyric video.** One button makes a finished MP4 of the chorus or the whole song, from what is playing or from your own audio file (faster than real time) (Reels 9:16, 4:5, square or 16:9 up to 1440p) with the music, word-by-word lyrics and a small Lyra badge. The official YouTube video can play behind the lyrics. Windows.
 - **Share a lyric card.** Tap the share icon on any line to make a story-sized image with the song, the cover colours and your lines.
 - **Listen together.** Share a room link and friends see your synced lyrics live in any browser. Friends with Lyra can join and keep their own player in sync with yours.
-- **TV mode and Jam nearby.** Put big lyrics on a TV or phone over your Wi-Fi, and optionally stream the PC's sound there too.
+- **Lyra Connect (Windows, off by default).** *Settings → Connect → Devices* pairs other screens on your Wi-Fi with a QR code or a short code. Each device gets its own token and a role (viewer, or controller that can play, pause, skip and change the look), and you can disconnect any of them. A device that follows you shows the same song, lyrics, video and look in time. Party mode shares one viewer-only code with a group, an OBS overlay link gives streamers a transparent lyrics page, and any browser can be a viewer (it can be installed as a web app). Connect is plain unencrypted LAN traffic: pair on a network you trust ([PRIVACY.md](PRIVACY.md)). Sound is never streamed: each device plays its own music.
+- **34 looks, each its own screen.** Neon, Cinema, DM, Terminal, Editor, Journal, Split-flap, Dusk Ridge and more: every look has its own lyric style, video window, player card, window edge, mini player and share card. Lyra can pick one for you per song, or you can pin one.
+- **Smarter picks, remembered.** Synced lyrics always outrank plain ones, videos are ranked (official first), what you pick by hand is remembered per song, and a persistent cache means a song you played before starts instantly. *Settings → Clear cache* wipes it.
+- **Karaoke and recording.** A karaoke screen with a count-in and word-by-word fill; lyric-video recording picks a preset for your PC and uses less memory.
+- **More on Android.** Phone and tablet layouts for every look, eight home-screen widgets, a lock-screen card, an always-on lyrics screen, a car mode for passengers, a screen saver, an Android TV screen with D-pad control, and an in-app updater for the GitHub APK (it verifies SHA-256 and the signing certificate). Honest status: much of this was built and tested in a browser harness, unit tests and CI only. TV pairing with a PC and the TV screen itself were never run on a real TV or emulator, and the widgets, car mode, always-on screen and updater are verified by compile, unit tests and the browser harness rather than on every device (a TV pairing redesign is in progress).
 - **Private.** No account, no ads, no analytics. Everything runs on your device. See [PRIVACY.md](PRIVACY.md).
 
 <p align="center">
@@ -61,7 +65,7 @@ Requirements: Node 20+, the **Spotify desktop app** (not the web player).
 npm install
 node node_modules/electron/install.js   # only if you get "Electron uninstall"
 npm run dev        # development
-npm test           # LRC parser tests
+npm test           # unit tests (vitest)
 npm run typecheck
 npm run build && npm start   # production build preview
 npm run dist       # Windows NSIS installer in ./release
@@ -87,7 +91,7 @@ How the default works: a tiny native helper (`resources/lyra-media.exe`, ~14 KB,
 Tokens are encrypted with Windows DPAPI (`safeStorage`); passwords are never seen. The API source polls (3 s playing / 6 s paused / 5–15 s idle, honours `Retry-After`).
 
 ## Lyrics
-**LRCLIB** (free, keyless, timestamped LRC; descriptive User-Agent; no scraping). Line-synced; word-level timing is supported by the engine (enhanced LRC) but LRCLIB rarely has it — the demo shows it. Results are cached on disk. Plain-only lyrics are shown unsynced, with a notice. Use the `−`/`+` footer (or `[` `]`) to nudge sync. Providers are pluggable: implement `LyricsProvider` in `src/main/lyrics/provider.ts`, add it to the chain in `service.ts`.
+**LRCLIB** (free, keyless, timestamped LRC; descriptive User-Agent; no scraping). Line-synced; word-level timing is supported by the engine (enhanced LRC) but LRCLIB rarely has it — the demo shows it. Results are cached on disk. Plain-only lyrics are shown unsynced, with a notice. Use the `−`/`+` footer (or `[` `]`) to nudge sync. Providers are pluggable: implement `LyricsProvider` in `src/core/lyrics/provider.ts`, add it to the chain in `src/core/lyrics/service.ts` (today: LRCLIB, then a public-domain fallback).
 
 ## Animated backgrounds (cinematic mode)
 Spotify's own looping "Canvas" videos have no public API, so Lyra offers three legitimate sources, all optional (Settings → Background, one on/off switch):
@@ -98,24 +102,7 @@ Spotify's own looping "Canvas" videos have no public API, so Lyra offers three l
 Auto order: your per-song file → your global file → a free 30 s Apple music-video preview when one exists → YouTube (only if you added a key) → living artwork. Videos pause while the window is hidden or reduce-motion is on.
 
 ## Android
-Lyra also runs on Android (8.0+). It is the same UI and the same shared core (`src/core`), inside a small Kotlin shell (`android/`).
-
-- **Install:** F-Droid packaging is prepared (see [docs/FDROID.md](docs/FDROID.md)); until it is listed, download `Lyra-Android-<version>.apk` from the [Releases](../../releases) page (look for tags named `android-v…`) and open it. Android will ask you to allow installs from your browser or file manager the first time.
-- **If Google Play Protect says "App blocked to protect your device":** Google blocks apps that ask for *Notification access* (Lyra needs it to see what is playing) when they are installed straight from a browser or file manager, and that dialog has no "install anyway" button. Lyra is open source and has no tracking; to install it anyway use one of these:
-  1. **Turn Play Protect scanning off for a minute:** Play Store → your profile picture → *Play Protect* → the gear → switch off *Scan apps with Play Protect*, install Lyra, then switch it back on.
-  2. **Install from a computer:** with USB or wireless debugging on, run `adb install Lyra-Android-<version>.apk`.
-  3. **Use an app store instead of the browser:** [Obtainium](https://github.com/ImranR98/Obtainium) can install and update Lyra straight from the GitHub releases; F-Droid / IzzyOnDroid listings are being prepared.
-- **What it does:** reads what any music app (Spotify, YouTube Music…) is playing from Android's media sessions, shows synced lyrics with word-by-word highlighting, and plays the Apple / YouTube / your own video behind them. The title and controls fade away after a few seconds and the lyrics grow into the space; touch brings them back.
-- **One permission to grant:** *Notification access*. Lyra only reads the now-playing card (title, artist, position). It never reads your notifications.
-- **Optional (Settings → Phone):** keep the screen on while a song plays, keep Lyra running in the background, a floating lyrics widget over other apps ("Display over other apps"), your own video/GIF per song or for all songs, and a YouTube API key (stored encrypted in the Android Keystore).
-- **Build it yourself:** install JDK 17 and the Android SDK (platform 36), then:
-  ```bash
-  npm ci
-  npm run build:android-ui         # builds the web UI into android/app/src/main/assets/ui
-  cd android && ./gradlew assembleDebug
-  ```
-  Release APKs are built and signed by the **Android** GitHub workflow when a tag like `android-v0.1.0` is pushed (secrets: `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`). Without those secrets (a fork) it signs with the debug key instead.
-- **Architecture:** `src/android-web` implements `window.lyra` for the phone (the same interface the Windows app uses); `android/app/src/main/java/dev/lyra/android` has the media-session reader, the origin-restricted bridge (`Rpc.kt`), the floating widget and the Keystore storage. Contributions welcome.
+Lyra also runs on Android (8.0+). It is the same UI and the same shared core (`src/core`), inside a small Kotlin shell (`android/`). Current: Android 0.10.1. Details: `docs/android-*.md`, `docs/DISTRIBUTION.md`.
 
 ## Notes & limits
 - Windows can't blur the desktop behind a transparent window, so "glass" = translucent panel + blurred artwork layer, not true acrylic.
@@ -124,19 +111,25 @@ Lyra also runs on Android (8.0+). It is the same UI and the same shared core (`s
 
 ## Layout
 ```
-src/shared     types, IPC contract, LRC parser (+tests), shortcut list
-src/main       window (modes, tween, drag, monitors) · tray · shortcuts · settings
-               smtc/ (Windows media bridge) · spotify/ (PKCE API) · lyrics/ · demo/ · artwork · ipc
+src/shared     types, IPC contract, LRC parser (+tests), shortcut list, vibes.ts (the 34 looks), lyraFeed
+src/core       platform-free engine (shared with Android): lyrics/ (providers, ranking, romanize), background/ (video choice),
+               cache/ (persistent cache), connect/ (protocol, pairing, clock sync), karaoke/, clock.ts, userChoices.ts, resilience.ts
+src/main       window (modes, tween, drag, monitors) · tray · shortcuts · settings · updater
+               smtc/ (Windows media bridge) · spotify/ (PKCE API) · connect/ (Lyra Connect host: http + WebSocket, mDNS, viewer, OBS overlay)
+               lyrics/ · background/ · meta/ · demo/ · artwork · studio (lyric-video export) · ipc
 src/preload    typed contextBridge API
-src/renderer   store/ · hooks/ · components/ · styles/
+src/renderer   store/ · hooks/ · components/ (incl. fx/, EdgeFx, DevicesPanel) · styles/ (one set of CSS files per look)
+src/android-web  the Android side of window.lyra, TV / car / ambient entries
+android/       Kotlin shell: media session, notification, widgets, recorder, ambient/always-on, car/, tv/, update/ (in-app updater)
+scripts        browser harness + Playwright UI tests, gen-cards.py, make-site-shots.mjs
+docs           design notes; docs/handoff/ is the pack for a new maintainer; CONTEXT.md is the first thing to read
 ```
-
 ## Keys
 Global: Ctrl+Alt+Space play/pause · Ctrl+Alt+←/→ prev/next · Ctrl+Alt+L expand · Ctrl+Alt+F fullscreen · Ctrl+Alt+H show/hide.
 In-app: Space, ←/→ seek, Shift+←/→ tracks, ↑/↓ volume (API source), F, Esc, D (distraction-free), `[` `]` lyric offset.
 
 ## Roadmap
-Free replacements for the account-free gaps (see issues), configurable shortcuts, installer icon + autostart polish, history dashboard, audio-reactive visualiser, lyric translation, moments export.
+Open work lives in the GitHub issues and `docs/roadmap.md`. Not built yet: word-level timing from LRCLIB (the engine supports it, the data rarely exists), romanization for Chinese/Japanese/Korean (Hindi and Punjabi are done), Chromecast, macOS (not supported), a signed Windows installer (it is unsigned today), encrypted Connect traffic, and a redesigned TV pairing (in progress).
 
 ## Legal & privacy
 MIT licensed ([LICENSE](LICENSE)). See [PRIVACY.md](PRIVACY.md) for exactly what leaves your PC and [THIRD_PARTY.md](THIRD_PARTY.md) for credits. Lyra is not affiliated with Spotify; Spotify is a trademark of Spotify AB.

@@ -133,7 +133,7 @@ RPC (Kotlin <-> page), all small and versioned:
 
 ## 6. Test plan
 
-- **Smoothness and sound:** pull the MP4 and run `scripts/analyze-video.js` (constant fps, p99 gap < 1.5x, loudness -14 +/- 1, peak < -1 dB). A script `scripts/android-render-bench.sh` drives the flow over `adb` (own-file render, then a mic take with a played test track), pulls and analyzes, so every build is judged by numbers.
+- **Smoothness and sound:** pull the MP4 and run `scripts/analyze-video.js` (constant fps, p99 gap < 1.5x, loudness -14 +/- 1, peak < -1 dB). A script a planned script, android-render-bench.sh (not written yet), drives the flow over `adb` (own-file render, then a mic take with a played test track), pulls and analyzes, so every build is judged by numbers.
 - **Audio/video offset:** a test track with a click every second and a flash in the scene; offset must be under 40 ms.
 - **Unit tests (JVM/Vitest):** loudness estimate, ceiling, fades, high-pass, timeline interpolation, PCM chunking.
 - **Interruption tests (manual checklist):** call, lock, headphones in/out, low storage, kill during render, rotate.

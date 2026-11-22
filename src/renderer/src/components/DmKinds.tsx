@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useMemo, type ReactNode } from 'react'
 
 /**
  * DM look: the lyric thread is made to read like a real messenger. Every lyric line is one message, and which KIND of message it is
@@ -61,7 +61,7 @@ export function Meta({ index, out, read }: { index: number; out: boolean; read: 
 }
 
 function Wave({ index, fill }: { index: number; fill: number }) {
-  const bars = Array.from({ length: 26 }, (_, i) => 22 + (hash(index * 31 + i) % 78))
+  const bars = useMemo(() => Array.from({ length: 26 }, (_, i) => 22 + (hash(index * 31 + i) % 78)), [index])
   return (
     <span className="bk-wave" aria-hidden="true">
       {bars.map((h, i) => (

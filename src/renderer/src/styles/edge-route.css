@@ -6,4 +6,3 @@
 :root[data-vibe='route'] .edge__b::before { content: ''; position: fixed; left: 0; top: 0; width: 6vh; height: 6vh; margin: -3vh 0 0 -3vh; border-radius: 50%; border: 0.4vh solid #4da3ff; offset-path: inset(1.1vh round 2.4vh); offset-distance: calc(var(--ts, 0) / 180 * 100%); transform: scale(var(--lp, 0)); opacity: calc((1 - var(--lp, 0)) * var(--lv, 0)); }
 
 /* the settings panel (z 21) and its scrim sit over the edge */
-:root[data-vibe='route']:has(.sidepanel) .edge { z-index: 19; }

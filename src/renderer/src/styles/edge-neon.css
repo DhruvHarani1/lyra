@@ -36,7 +36,6 @@
 :root[data-vibe='neon'] .edge__b::after { top: 0; height: clamp(0%, calc((var(--lp, 0) - 0.25) * 400%), 100%); }
 :root[data-vibe='neon'] .edge__c::after { right: 0; width: clamp(0%, calc((var(--lp, 0) - 0.5) * 400%), 100%); }
 :root[data-vibe='neon'] .edge__d::after { bottom: 0; height: clamp(0%, calc((var(--lp, 0) - 0.75) * 400%), 100%); }
-:root[data-vibe='neon'] .edge__c::before, :root[data-vibe='neon'] .edge__c::after { }
 @keyframes edge-neon-buzz { 0%, 61%, 64%, 100% { opacity: 1; } 62% { opacity: 0.55; } 63% { opacity: 0.9; } 87% { opacity: 0.7; } 88% { opacity: 1; } }
 :root[data-vibe='neon'] .edge__b::after { animation-delay: -2s; }
 :root[data-vibe='neon'] .edge__c::after { animation-delay: -4s; }

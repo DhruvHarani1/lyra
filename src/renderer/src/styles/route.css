@@ -68,6 +68,20 @@
 :root[data-vibe='route']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #fff; height: 0.7vh; border-radius: 1vh; }
 :root[data-vibe='route']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { height: 0.7vh; border-radius: 1vh; }
 
+.feed--route { position: relative; }
+
+.feed--route::before { content: ''; position: absolute; top: 0; bottom: 0; border-radius: 1vh; }
+
+.feed--route .feed__row { position: relative; display: flex; align-items: center; gap: 1.6vh; }
+
+.feed--route .feed__row::before { content: ''; position: absolute; top: 50%; animation: rt-drop 0.4s cubic-bezier(0.2, 1.6, 0.4, 1) 1; }
+
+.feed--route .feed__txt { flex: 1; min-width: 0; }
+
+.feed--route .feed__time { order: 3; font: 600 max(10px, 1.4vh)/1 'Inter Variable', sans-serif; font-variant-numeric: tabular-nums; }
+
+@keyframes rt-drop { from { translate: 0 -3vh; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+
 /* ---------------- lyrics: the stops, in a light sheet (stage 'route', a feed) ---------------- */
 .feed--route { justify-content: flex-start; flex-direction: column-reverse; gap: 0; padding-left: 5.4vh; }
 .feed--route::before { left: 2.1vh; width: 0.6vh; background: linear-gradient(180deg, #1a73e8, rgba(26, 115, 232, 0.2)); box-shadow: none; }

@@ -6,9 +6,12 @@ import { lyricsService } from '@core/lyrics/service'
 import { trackKey } from '@core/songKey'
 import { userChoices } from '@core/userChoices'
 import type { CommandBody, ViewInfo } from '@core/connect/protocol'
-import { Pairing, type Device } from '@core/connect/pairing'
+import { Pairing } from '@core/connect/pairing'
 import { createLogger } from '../logger'
-import { JsonStore } from '../jsonStore'
+import { DeviceStore } from './deviceStore'
+import { safeStorageCipher } from '../platform'
+import { app } from 'electron'
+import { join } from 'node:path'
 import { settings } from '../settings'
 import { ConnectHub } from './hub'
 import { MdnsAdvertiser } from './mdns'
@@ -24,7 +27,7 @@ const log = createLogger('connect')
  * per-song choices, the vibe / video the renderer reports, and the commands paired controllers may send.
  */
 class ConnectService {
-  private store: JsonStore<{ devices: Device[] }> | null = null
+  private store: DeviceStore | null = null
   private hubInstance: ConnectHub | null = null
   private lastSong = ''
   private lyricsTimer: NodeJS.Timeout | null = null
@@ -33,7 +36,7 @@ class ConnectService {
 
   private get hub(): ConnectHub {
     if (this.hubInstance) return this.hubInstance
-    this.store = new JsonStore<{ devices: Device[] }>('connect-devices.json', { devices: [] })
+    this.store = new DeviceStore(join(app.getPath('userData'), 'connect-devices.json'), safeStorageCipher, (...a) => log.warn(...a))
     const pairing = new Pairing(
       { now: Date.now, randomHex: (n) => randomBytes(n).toString('hex'), randomBytes: (n) => new Uint8Array(randomBytes(n)) },
       this.store.get().devices,

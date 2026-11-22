@@ -45,3 +45,15 @@ export function originAllowed(origin: string | undefined, hostHeader: string | u
   if (!hostHeader) return false
   return origin === `http://${hostHeader}`
 }
+
+/**
+ * DNS-rebinding guard: the Host header must name this server (the LAN IP, localhost or 127.0.0.1, with or without our
+ * port). A rebinding page reaches us under its own hostname, which is never one of these. Missing Host is refused.
+ */
+export function hostAllowed(hostHeader: string | undefined, ip: string | null, port: number): boolean {
+  if (!hostHeader) return false
+  const h = hostHeader.toLowerCase()
+  const names = ['localhost', '127.0.0.1']
+  if (ip) names.push(ip.toLowerCase())
+  return names.some((n) => h === n || h === `${n}:${port}`)
+}

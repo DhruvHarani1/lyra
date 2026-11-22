@@ -7,17 +7,6 @@
 :root[data-vibe='chrome'] {
   --rimc: #8fd1ff;
   /* scene geometry (styles/scene.css) */
-  --sc-wl: 31vw;
-  --sc-wt: 9vh;
-  --sc-ww: min(46vw, 72vh);
-  --sc-wr: 2.6vh;
-  --sc-cl: 5vw;
-  --sc-ct: calc(64px + 3vh);
-  --sc-cw: clamp(190px, 20vw, 290px);
-  --sc-ll: 31vw;
-  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 4.5vh);
-  --sc-lw: 64vw;
-  --sc-lb: 15vh;
   --sc-art-bg: radial-gradient(circle at 50% 35%, rgba(143, 209, 255, 0.3), transparent 65%), #0b1646;
   --sc-eq: linear-gradient(180deg, #fff, #8fd1ff 55%, #5a72b8);
 }
@@ -135,33 +124,23 @@
 
 /* ---------------- the card: brushed metal, dark ink ---------------- */
 :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
-  --fg: #0b1220;
   --fg-2: #2a3446;
   --fg-3: #495570;
   color: #0b1220;
-  border-radius: 3vh !important;
-  background: linear-gradient(180deg, #f7f9fe 0%, #c4cfe3 52%, #eef2fb 100%) !important;
   border: 0 !important;
-  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.5), 0 3vh 7vh rgba(0, 0, 20, 0.5) !important;
-  animation: chrome-bob 7s ease-in-out infinite;
 }
 @keyframes chrome-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.8vh); } }
 :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork {
   border: 0.5vh solid #0b1220;
-  border-radius: 1.8vh !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1vh 2.4vh rgba(0, 0, 30, 0.35);
 }
 :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 {
   font-family: 'Unbounded Variable', 'Inter Variable', sans-serif;
-  font-size: 2vh;
-  font-weight: 800;
   letter-spacing: -0.03em;
   color: #0b1220;
   text-shadow: none;
 }
 :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.5vh); color: #3a4660; }
 :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #0b1220 !important; color: #fff !important; box-shadow: 0 0.8vh 2vh rgba(10, 18, 64, 0.5) !important; }
-:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #2f55c8; }
 
 /* ---------------- lyrics: liquid metal (stage 'liquid') ---------------- */
 .stage--liquid { display: flex; flex-direction: column; justify-content: center; }
@@ -233,3 +212,52 @@
 
 /* ---------------- mini player / phone: blobs and light only ---------------- */
 :root[data-vibe='chrome'][data-mode='mini'] .chromefx__edge, :root[data-vibe='chrome'][data-platform='android'] .chromefx__edge { display: none; }
+
+/* ---- second pass, was recomp1.css ---- */
+/* ===== CHROME: a showroom: the video big and centred in its bezel, embossed 3D type below, the card a glossy pod ===== */
+:root[data-vibe='chrome'] {
+  --sc-ww: min(46vw, 66vh);
+  --sc-wl: calc(50vw - var(--sc-ww) / 2);
+  --sc-wt: 6vh;
+  --sc-wr: 2.2vh;
+  --sc-cw: clamp(320px, 36vw, 500px);
+  --sc-cl: calc(50vw - var(--sc-cw) / 2);
+  --sc-ct: auto;
+  --sc-cb: 4vh;
+  --sc-ll: 10vw;
+  --sc-lw: 80vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 3.6vh);
+  --sc-lb: 19vh;
+  --sc-lbs: 19vh;
+}
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  --fg: #0b1220;
+  flex-direction: row;
+  align-items: center;
+  gap: 2vh;
+  padding: 1vh 3vh 1vh 1vh !important;
+  border-radius: 99px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #d9e5ff 46%, #8da7e6 54%, #dfe9ff 100%) !important;
+  box-shadow: 0 0 0 0.3vh #fff, inset 0 0.3vh 0.5vh #fff, inset 0 -0.6vh 1vh rgba(30, 50, 120, 0.35), 0 3vh 5vh rgba(0, 0, 40, 0.5), 0 0 6vh rgba(143, 209, 255, 0.45) !important;
+  animation: rc-float 6s ease-in-out infinite;
+}
+@keyframes rc-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -0.8vh; } }
+:root[data-motion='off'] :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { animation: none !important; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before, :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::after { display: none !important; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 8.6vh !important; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child, :root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { border-radius: 50% !important; box-shadow: 0 0 0 0.4vh #fff, 0 0 0 0.7vh #5a72b8 !important; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font-size: 2.2vh; font-style: italic; font-weight: 900; }
+:root[data-vibe='chrome']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #5a72b8, #1b2f8f) !important; }
+/* lyrics: embossed, extruded chrome type, centred */
+:root[data-vibe='chrome'] .stage--liquid { text-align: center; }
+:root[data-vibe='chrome'] .sign--liquid .sign__row { font-style: normal; font-weight: 900; justify-content: center; font-size: min(5vw, 9vh); letter-spacing: -0.02em; gap: 0 0.2em; padding-inline-end: 0; }
+:root[data-vibe='chrome'] .sign--liquid .sign__word { background: none; -webkit-text-fill-color: rgba(200, 215, 255, 0.24); -webkit-text-stroke: 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 0 rgba(60, 80, 150, 0.45); }
+:root[data-vibe='chrome'] .sign--liquid .sign__word.is-in { background: none; -webkit-text-fill-color: #eef3ff; -webkit-text-stroke: 0; filter: none; text-shadow: 0 1px 0 #fff, 0 2px 0 #c5d4f6, 0 3px 0 #98b0e8, 0 4px 0 #7592d6, 0 5px 0 #5670bc, 0 6px 0 #3e569c, 0 7px 0 #2b4084, 0 10px 14px rgba(0, 0, 30, 0.6); }
+:root[data-vibe='chrome'] .sign--liquid .sign__word.is-now { background: none; -webkit-text-fill-color: #fff2fd; text-shadow: 0 1px 0 #fff, 0 2px 0 #ffd1f5, 0 3px 0 #f09ee0, 0 4px 0 #d070c4, 0 5px 0 #a8489c, 0 6px 0 #7e2e74, 0 7px 0 #5a1d55, 0 10px 14px rgba(40, 0, 40, 0.6), 0 0 2.6vh rgba(255, 150, 240, 0.6); }
+:root[data-vibe='chrome'] .sign--liquid .sign__next { text-align: center; font-style: normal; font-weight: 700; letter-spacing: 0.02em; }
+:root[data-vibe='chrome'] .sign--liquid .sign__refl { display: none; }

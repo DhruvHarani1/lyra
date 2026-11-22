@@ -29,7 +29,8 @@
 /* the wall */
 [data-vibe='none'] .backdrop .backdrop__field { filter: saturate(1.05) brightness(0.82); }
 .nonefx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.nonefx__wall { position: absolute; inset: 0; background: radial-gradient(90% 80% at 30% 38%, transparent 40%, rgba(0, 0, 0, 0.42)), linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.38) 82%, rgba(0, 0, 0, 0.6)); }
+/* the last layer is the scrim behind the words: a flat dark tone so a light cover (or a slow first paint, before the lyric lines have faded in) never leaves white lyrics on a pale wall */
+.nonefx__wall { position: absolute; inset: 0; background: radial-gradient(90% 80% at 30% 38%, transparent 40%, rgba(0, 0, 0, 0.42)), linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.38) 82%, rgba(0, 0, 0, 0.6)), rgba(10, 7, 12, 0.34); }
 /* the wall never darkens the video: it has a hole where the window is */
 :root[data-vibe='none']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .nonefx__wall {
   clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--sc-wl) var(--sc-wt), calc(var(--sc-wl) + var(--sc-ww)) var(--sc-wt), calc(var(--sc-wl) + var(--sc-ww)) calc(var(--sc-wt) + var(--sc-wh)), var(--sc-wl) calc(var(--sc-wt) + var(--sc-wh)), var(--sc-wl) var(--sc-wt));

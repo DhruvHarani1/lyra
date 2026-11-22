@@ -1,0 +1,1 @@
+Every look is now a different screen, with its own edge that moves with the song. New looks: Journal (a ruled diary page) and Doodle (marker on dot-grid paper). Editor shows real syntax-highlighted code, Journal marks lyrics like a pen, DM is a real chat. Fixes for clipped or overlapping lyrics on small windows and tablets.

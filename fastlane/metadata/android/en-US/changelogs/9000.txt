@@ -1,0 +1,1 @@
+30 looks, each with its own screen: video window, lyric style, player card and edge, in every state. Ten new looks: Lock Screen, Wallet, Route, Editor, Metro, Web, Lens, Picto, Drift Wall and Split-flap. The cover wears the look. Synced lyrics rank above plain ones, and your manual picks are remembered per song. Simpler Settings with search.

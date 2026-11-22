@@ -12,7 +12,7 @@ Android: see the Android section of the [README](README.md) (`npm run build:andr
 
 ## Where things live
 - `src/core` – platform-neutral logic (lyrics, backgrounds). Shared by Windows and Android.
-- `src/main` – Electron main process (Windows): media controls, windows, updater, TV mode.
+- `src/main` – Electron main process (Windows): media controls, windows, updater, Lyra Connect.
 - `src/renderer` – the React UI, shared by both apps. `src/android-web` adapts it for the phone.
 - `android/` – the Kotlin shell for Android.
 - `website/` – the static site (deployed on Vercel).

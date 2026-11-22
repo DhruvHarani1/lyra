@@ -4,12 +4,12 @@
 ```
 src/
   shared/        types, vibes catalogue, LRC parsing, word timing, ipc channel names (used by every side)
-  core/          pure logic with unit tests: lyrics service + providers, background resolver (video), resilience, songKey, startGate
-  main/          Electron main process: window, tray, shortcuts, Spotify/SMTC source, lyrics + background services, settings, updater, LAN room, studio export
+  core/          pure logic with unit tests: lyrics service + providers, background resolver (video), persistent cache, user choices, Connect protocol, karaoke, clock, resilience, songKey, startGate
+  main/          Electron main process: window, tray, shortcuts, Spotify/SMTC source, lyrics + background services, settings, updater, Lyra Connect host (`main/connect/`), studio export
   preload/       contextBridge API (window.lyra) -> ipc
   renderer/src/  React UI (components/, hooks/, store/, styles/, lib/)
   android-web/   Android entry: same React UI + a JS implementation of window.lyra backed by the Kotlin bridge (api.ts, rpc.ts)
-android/         Kotlin app: MediaMonitor, LyricsNotifier, LyraWidget, RecordService, AmbientActivity, WebView host
+android/         Kotlin app: MediaMonitor, LyricsNotifier, LyraWidget, RecordService, AmbientActivity, car/, tv/, update/ (in-app updater), WebView host
 native/          Windows helper (lyra-media.exe, SMTC/volume)
 website/         marketing site (static HTML/CSS/JS)
 scripts/         harness/ (browser mock app), ui-test/ (Playwright tests), make-site-shots.mjs, gen-cards.py, icon tools
@@ -44,3 +44,13 @@ Main: `JsonStore` files in userData (`settings.json`, `backgrounds.json`, lyrics
 * Settings are sanitised in `src/main/settings.ts` (`sanitize`) so corrupt files never break the UI.
 * The renderer must work in the browser harness with a mocked `window.lyra` (`scripts/harness/entry.ts`).
 * `src/shared` and `src/core` must stay free of Electron/DOM imports.
+
+## Subsystems added in 0.23 and 0.24
+* **Lyra Connect** (`src/core/connect` pure + tested, `src/main/connect` host, `renderer/.../DevicesPanel.tsx` UI, `store/connect.ts` publisher). The main process owns playback, so song, position, lyrics and art come from it; the vibe in effect, the resolved video id and the per-song offset are renderer knowledge and are reported over `connect:view` (see `src/shared/ipc.ts` for the `connect:*` channels). Spec: `docs/connect-protocol.md`; why and limits: `docs/connect-redesign.md`. Clients: the browser viewer (`viewerHtml.ts`, installable as a PWA via `pwa.ts`), the OBS overlay (`overlayPage.ts`, `shared/lyraFeed.ts`), the Android TV client (`android/.../tv/`; its pairing is being redesigned).
+* **Persistent cache and user choices** (`core/cache/persistentCache.ts`, `core/userChoices.ts`): see doc 5.
+* **EdgeFx** (`components/EdgeFx.tsx` + `styles/edge-<look>.css`): a fixed frame over the window that animates with the line being sung (five CSS variables written on `<html>`: `--lp` progress through the line, `--li` line index, `--lt` flips each new line, `--ts` song position in seconds, `--lv` 1 while a line is sung). One CSS file per look.
+* **fx components** (`components/fx/FourFx.tsx`, `Looks25.tsx`): the effect layers of the newer looks; `VibeFx.tsx` dispatches by look. `DmKinds.tsx` renders DM message kinds (voice note, poll, location, sticker, contact, photo, link preview, reply, reaction); `lib/codeGen.ts` turns lyrics into syntax-highlighted code for Editor; `lib/journalInk.ts` picks the Journal pens.
+* **Updater**: Windows uses electron-updater against GitHub Releases (`main/updater.ts`, checks on a timer). Android builds installed from GitHub use `android/.../update/` (`UpdateManager`: WorkManager check at most every 12 h, resumable download, SHA-256, same signing certificate, PackageInstaller); store builds do not run it. `src/renderer/src/components/UpdateRow.tsx` / `AndroidUpdateRow.tsx` are the Settings rows.
+* **TV** (`android/.../tv/`, `src/android-web/tv.ts`, `styles/tv.css`, `docs/android-tv.md`): one APK, `?tv=1` page boots the desktop full-screen mode, D-pad navigation, `TvDream` screen saver. Source: the TV's own media session, or paired with a PC. **Never run on a TV or emulator.**
+* **Car mode** (`CarMode.tsx`, `lib/car.ts`, `store/car.ts`, `android/.../car/`, `docs/android-car.md`): a passenger screen, opened by hand, never automatic. Lyra deliberately declares no Android Auto media app.
+* **Ambient / always-on** (`AmbientActivity`, `AodLyricsView`, `LyraDream`, `docs/android-ambient.md`): Android does not let third-party apps draw on the system always-on display; Lyra offers a native always-on lyrics screen and the lock-screen card instead.

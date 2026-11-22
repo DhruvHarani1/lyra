@@ -10,25 +10,10 @@
   --st-paper: #f2efe9;
   --st-ink: #161412;
   /* scene geometry (styles/scene.css): the poster on the left, the spray on the right, a sticker bottom right */
-  --sc-ww: min(36vw, 58vh);
-  --sc-wl: 6vw;
-  --sc-wt: 13vh;
-  --sc-wr: 0.2vh;
-  --sc-cl: auto;
-  --sc-cr: 5vw;
-  --sc-cb: 5vh;
-  --sc-ct: auto;
-  --sc-cw: min(44vw, 600px);
-  --sc-ll: calc(6vw + var(--sc-ww) + 5vw);
-  --sc-lt: 12vh;
-  --sc-lw: calc(95vw - var(--sc-ww) - 6vw - 5vw);
-  --sc-lb: 26vh;
-  --sc-lbs: 26vh;
   --sc-art-bg: radial-gradient(circle at 50% 40%, #fff, #e6dfce), #e6dfce;
   --sc-art-fg: #161412;
   --sc-eq: #ff6a00;
 }
-:root[data-vibe='stencil'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(42vw, 66vh); }
 :root[data-vibe='stencil'][data-rim='on']::after { display: none; }
 [data-vibe='stencil'] .shell { --accent: #ff6a00; --glow: rgba(255, 106, 0, 0.45); --glow-soft: rgba(255, 106, 0, 0.2); --font: 'Unbounded Variable', 'Inter Variable', system-ui, sans-serif; --fg: #f2efe9; --bg-0: #1d1b19; }
 
@@ -80,7 +65,7 @@
 /* ---------------- lyrics: sprayed on the wall (stage 'spray') ---------------- */
 .stage--spray { display: flex; flex-direction: column; justify-content: center; }
 .sign--spray .sign__line { gap: 2vh; }
-.sign--spray .sign__row { font-family: 'Unbounded Variable', sans-serif; font-weight: 900; font-size: min(4.6vw, 8.2vh); line-height: 1.05; letter-spacing: -0.04em; text-transform: uppercase; gap: 0 0.26em; }
+.sign--spray .sign__row { font-family: 'Unbounded Variable', sans-serif; font-weight: 900; text-transform: uppercase; gap: 0 0.26em; }
 .sign--spray .sign__word { position: relative; color: rgba(242, 239, 233, 0.2); }
 .sign--spray .sign__word.is-in { color: var(--st-orange); text-shadow: 0 0 0.1em rgba(255, 106, 0, 0.75), 0 0 0.45em rgba(255, 106, 0, 0.35), 0.03em 0.03em 0 rgba(0, 0, 0, 0.4); animation: st-spray 0.4s ease-out 1; }
 .sign--spray .sign__word.is-now { color: #ff8a3a; }
@@ -102,3 +87,51 @@
 [data-vibe='stencil'] .lfb p, [data-vibe='stencil'] .lfb small { color: rgba(242, 239, 233, 0.85); }
 [data-vibe='stencil'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='stencil'] .lfb__eq i { background: var(--st-orange); border-radius: 0; box-shadow: none; }
+
+/* ---- second pass, was p-stencil.css ---- */
+/* ==========================================================================
+   STENCIL, premium pass: a wall with a giant sprayed line.
+   The words take the whole wall, huge and cut like a stencil (a bridge cuts every letter), the video is a small wheat-pasted
+   poster stuck top right, and the card is a black sticker with orange tape top left. Orange paint runs down from the top edge
+   as each line is sung (edge-stencil.css). (Was: poster left, words right, sticker bottom right.)
+   ========================================================================== */
+:root[data-vibe='stencil'] {
+  --sc-ww: min(25vw, 40vh);
+  --sc-wl: calc(95vw - var(--sc-ww));
+  --sc-wt: 8vh;
+  --sc-wr: 0.2vh;
+  --sc-cl: 5vw;
+  --sc-cr: auto;
+  --sc-ct: 8vh;
+  --sc-cb: auto;
+  --sc-cw: min(40vw, 540px);
+  --sc-ll: 5vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 3vh);
+  --sc-lw: 90vw;
+  --sc-lb: 6vh;
+  --sc-lbs: 6vh;
+}
+:root[data-vibe='stencil'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(25vw, 40vh); }
+/* giant sprayed words with a stencil bridge */
+.sign--spray .sign__row { font-size: min(8.4vw, 15vh); line-height: 0.95; letter-spacing: -0.05em; }
+.sign--spray .sign__word.is-in { -webkit-mask: linear-gradient(180deg, #000 0 44%, transparent 44% 47%, #000 47% 100%); mask: linear-gradient(180deg, #000 0 44%, transparent 44% 47%, #000 47% 100%); }
+.sign--spray .sign__next { font-size: max(10.5px, min(2.6vw, 4.4vh)); }
+/* registration cross marks painted on the wall */
+.stencilfx::before, .stencilfx::after { content: '+'; position: absolute; font: 300 6vh/1 'Unbounded Variable', sans-serif; color: rgba(242, 239, 233, 0.16); }
+.stencilfx::before { left: 3.2vw; top: 46vh; }
+.stencilfx::after { right: 2.4vw; top: 46vh; }
+/* the sticker gets a strip of orange tape */
+:root[data-vibe='stencil']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { content: ''; position: absolute; left: 2vh; top: -1.5vh; width: 9vh; height: 2.6vh; background: var(--st-orange); opacity: 0.92; transform: rotate(-4deg); clip-path: polygon(0 12%, 6% 0, 12% 14%, 100% 0, 96% 50%, 100% 100%, 8% 90%, 0 100%, 4% 50%); }
+/* settings: spray-stencil headings on concrete */
+:root[data-vibe='stencil'] .sidepanel h3, :root[data-vibe='stencil'] .sidepanel .settings h4 { font-family: 'Unbounded Variable', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; color: #ff6a00; -webkit-mask: linear-gradient(180deg, #000 0 44%, transparent 44% 52%, #000 52%); mask: linear-gradient(180deg, #000 0 44%, transparent 44% 52%, #000 52%); }
+:root[data-vibe='stencil'] .sidepanel { border-radius: 0; box-shadow: inset 0 0 0 2px #ff6a00; }
+:root[data-platform='android'][data-vibe='stencil'] .mini--phone { background-image: radial-gradient(120% 60% at 50% 0%, rgba(255, 106, 0, 0.12), transparent 70%); }
+.stencilfx__drip { display: none !important; }
+:root[data-vibe='stencil'][data-mode='mini']:not([data-platform='android']) .sign--spray .sign__row { font-size: min(5.6vw, 11vh); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+@media (min-width: 900px) and (max-height: 900px) {
+  :root[data-platform='android'][data-vibe='stencil'] .sign--spray .sign__row { font-size: min(4.3vw, 9vh); }
+}
+/* ---------- Stencil on the phone: the widest word (WATCHING) must fit the stage width ---------- */
+@media (max-width: 600px) { :root[data-platform='android'][data-vibe='stencil'] .stage--spray .sign__row { font-size: min(6.8vw, 9vh); } }

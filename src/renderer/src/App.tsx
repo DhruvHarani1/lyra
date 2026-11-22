@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
-import { vibeInfo } from '@shared/vibes'
-import { useEffectiveVibe } from '@/hooks/useVibe'
 import { Backdrop } from '@/components/Backdrop'
 import { VibeFx } from '@/components/VibeFx'
 import { EdgeFx } from '@/components/EdgeFx'
@@ -212,7 +210,6 @@ export default function App() {
   const car = useCar((s) => s.on)
   const settings = useSettings((s) => s.settings)
   const reduced = useReducedMotion()
-  const sceneLook = vibeInfo(useEffectiveVibe().vibe).layout === 'scene'
   const [faded, setFaded] = useState(false)
   useThemeVars()
   useVibeConductor()
@@ -255,7 +252,7 @@ export default function App() {
         style={{ ['--alpha' as string]: mode === 'full' ? 1 : settings.opacity }}
       >
         <motion.div className="shell" style={{ x: shell.x, y: shell.y, width: shell.width, height: shell.height }}>
-          <Backdrop rich={mode === 'full'} animated={mode === 'full' || (mode === 'mini' && (settings.backgroundInMini || sceneLook))} />
+          <Backdrop rich={mode === 'full'} animated={mode === 'full' || mode === 'mini'} />
           <VibeFx />
           <EdgeFx />
           <AnimatePresence mode="wait" initial={false}>

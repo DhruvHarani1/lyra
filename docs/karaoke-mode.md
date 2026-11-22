@@ -1,6 +1,6 @@
 # Lyra Karaoke: sing along to the backing track, with the lyrics
 
-Status: **K1 + K2 built in Windows 0.16.0** (karaoke screen, karaoke-video source A, microphone, timing + tuning score, practice nudge). Local vocal separation (C), pitch-vs-melody score, export of the performance and Android are still to do. Owner: Dhruv. Written 2026-10-23 against Lyra Windows 0.15 / Android 0.3.7.
+Status (2026-11-23): K1 + K2 shipped in 0.16.0; 0.23 added a count-in, word-by-word fill and smarter karaoke-version ranking (`core/karaoke/`, `core/background/rank.ts` `rankKaraoke`). Not built: local vocal separation, pitch-vs-melody score, export of the performance, Android, a TV view. Original status: **K1 + K2 built in Windows 0.16.0** (karaoke screen, karaoke-video source A, microphone, timing + tuning score, practice nudge). Local vocal separation (C), pitch-vs-melody score, export of the performance and Android are still to do. Owner: Dhruv. Written 2026-10-23 against Lyra Windows 0.15 / Android 0.3.7.
 
 **Short answer: yes, it is possible, but the hard part is not the lyrics or the microphone. It is getting a backing track without the vocals.** Spotify does not offer one, and nobody can take the voice out of Spotify's stream for you. This document says where a backing track *can* come from, what each source gives you, and how to build the mode in steps that each work on their own.
 
@@ -84,7 +84,7 @@ Constraints: solo maintainer, free and open source, one test PC and one phone, n
 
 ### 4.4 The karaoke screen
 - Reuse the lyric view components in a new "stage" layout: current line huge, next line below, a progress bar per line (a ball/underline that sweeps), a 3-2-1 count-in before the first line and before every restart, instrumental-break dots, optional Roman line.
-- Safe to use in full screen on a TV via the existing TV mode page (read-only lyrics, controls on the phone): a later bonus.
+- Safe to use in full screen on a TV via Lyra Connect (the old TV mode page was replaced; a Connect viewer shows lyrics, not the karaoke screen, so this is still a later bonus).
 
 ### 4.5 Microphone, latency, scoring
 - `getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } })`, input level meter; **ask for headphones** (speakers feed the backing track back into the microphone and ruin pitch detection and the recording).
@@ -140,7 +140,7 @@ Stored in the app's settings/data folder; deleted from Settings -> Karaoke -> "R
 | **K3 Local separation (source C)** (1-2 weeks) | Optional model download, worker, progress, cache, own-file picker (reuse Studio file input), playback engine, vocal F0 reference | A file turns into music + vocals in about 1-3 minutes and plays in sync |
 | **K4 Pitch score** (1 week) | F0 matching with octave tolerance, per-line feedback | Same song scored by two singers gives believable numbers |
 | **K5 Export performance** (1 week) | Mix voice + backing, loudness mastering, Studio lyric video of the take | The performance video passes the analyzer gates |
-| **K6 Polish** | TV mode view, Roman letters, speed control (time-stretch), Android layout, settings and cleanup | Checklist green |
+| **K6 Polish** | Connect/TV view, Roman letters, speed control (time-stretch), Android layout, settings and cleanup | Checklist green |
 
 ## 9. Risks and what to revisit
 - **Coverage of source A** may disappoint for regional songs; then C becomes the main path and the README says so plainly.

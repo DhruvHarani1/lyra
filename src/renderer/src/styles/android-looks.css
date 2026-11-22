@@ -13,10 +13,17 @@
 /* the dark scrim that makes lyrics readable over a full-screen video turned every light paper look (Journal, Doodle, Sketchbook,
    Cassette, Pop Comic, Film Strip) into a grey band; the dark looks keep it (their lyrics need it over the cover colours) */
 :root[data-platform='android']:is([data-vibe='journal'], [data-vibe='doodle'], [data-vibe='sketch'], [data-vibe='cassette'], [data-vibe='comic'], [data-vibe='filmstrip'])[data-arch='scene'] .mini--phone .mini__lyrics::before { display: none; }
-/* the bottom edge of a look must never sit on the navigation row: it shrinks to a hairline at the very bottom of the screen; the top
-   and the sides keep the full effect */
-:root[data-platform='android'] .edge__c { bottom: 0 !important; height: 4px !important; overflow: hidden; }
-:root[data-platform='android'] .edge__c::before, :root[data-platform='android'] .edge__c::after { max-height: 4px; }
+/* the bottom edge of a look must never sit on the navigation row: by default it shrinks to a hairline at the very bottom of the screen;
+   the top and the sides keep the full effect. The looks whose bottom edge IS the effect (horizon, ground, sent bar, card
+   line) keep a smaller version of it instead of a hairline. */
+:root[data-platform='android']:not([data-vibe='sunset'], [data-vibe='blocks'], [data-vibe='chat'], [data-vibe='wallet']) .edge__c { bottom: 0 !important; height: 4px !important; overflow: hidden; }
+:root[data-platform='android']:not([data-vibe='sunset'], [data-vibe='blocks'], [data-vibe='chat'], [data-vibe='wallet']) .edge__c::before,
+:root[data-platform='android']:not([data-vibe='sunset'], [data-vibe='blocks'], [data-vibe='chat'], [data-vibe='wallet']) .edge__c::after { max-height: 4px; }
+:root[data-platform='android'][data-vibe='sunset'] .edge__c { bottom: 0; height: 8vh; }
+:root[data-platform='android'][data-vibe='blocks'] .edge__c { bottom: 0; height: 1.3vh; background-size: 1.3vh 1.3vh; }
+:root[data-platform='android'][data-vibe='blocks'] .edge__c::after { width: 1.3vh; }
+:root[data-platform='android'][data-vibe='chat'] .edge__c { bottom: 0; height: 6px; }
+:root[data-platform='android'][data-vibe='wallet'] .edge__c { bottom: 0; }
 
 /* ---------------- the play button, the progress bar and the action row, per look ---------------- */
 :root[data-platform='android'][data-vibe='none'] .phone__dock .playbtn { background: #2a2418 !important; color: #efe7d4 !important; }

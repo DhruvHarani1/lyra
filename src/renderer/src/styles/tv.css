@@ -41,12 +41,15 @@
 :root[data-platform='tv'] .full[data-arch='scene'] :is(.full__album, .progress__time) { font-size: calc(28px / var(--tv-zoom)); }
 :root[data-platform='tv'] .full[data-arch='scene'] .full__controls button { min-width: 44px; min-height: 44px; }
 :root[data-platform='tv'] .full[data-arch='scene'] .full__titlerow > button { min-width: 40px; min-height: 40px; }
-/* the plain Artwork look (card left, lyrics right) is not zoomed: its artwork is already sized from the screen */
-:root[data-platform='tv'] .full[data-arch='side'] .full__titles h1 { font-size: 46px; line-height: 1.1; }
-:root[data-platform='tv'] .full[data-arch='side'] .full__artist { font-size: 32px; }
-:root[data-platform='tv'] .full[data-arch='side'] :is(.full__album, .progress__time) { font-size: 28px; }
-:root[data-platform='tv'] .full[data-arch='side'] .full__controls button { min-width: 72px; min-height: 72px; }
-:root[data-platform='tv'] .full[data-arch='side'] .full__titlerow > button { min-width: 64px; min-height: 64px; }
+/* Artwork (look 'none') is a scene look whose card is a small museum plaque placed in vh next to the picture, so it is not zoomed (zoom would
+   push the plaque off the bottom edge); it is sized for 10 feet directly instead */
+:root[data-platform='tv'][data-vibe='none'] { --tv-zoom: 1; }
+:root[data-platform='tv'][data-vibe='none']:is([data-mode='full'], [data-mode='mini']) .full.full[data-arch='scene'] .full__side { padding: 2vh 3vh 2vh 2vh !important; gap: 2vh; }
+:root[data-platform='tv'][data-vibe='none']:is([data-mode='full'], [data-mode='mini']) .full.full[data-arch='scene'] .full__side .artwork { width: 11.5vh !important; }
+:root[data-platform='tv'][data-vibe='none']:is([data-mode='full'], [data-mode='mini']) .full.full[data-arch='scene'] .full__chrome { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'titles titles' 'progress controls'; column-gap: 2vh; }
+:root[data-platform='tv'][data-vibe='none']:is([data-mode='full'], [data-mode='mini']) .full.full[data-arch='scene'] .full__titles h1 { font-size: max(26px, 3.7vh); line-height: 1.12; }
+:root[data-platform='tv'][data-vibe='none']:is([data-mode='full'], [data-mode='mini']) .full.full[data-arch='scene'] .full__artist { font-size: max(22px, 2.4vh); }
+:root[data-platform='tv'][data-vibe='none']:is([data-mode='full'], [data-mode='mini']) .full.full[data-arch='scene'] :is(.full__album, .progress__time) { font-size: max(22px, 2.4vh); }
 /* !important: scene.css deliberately keeps the card up on the desktop; on a TV it is the overlay */
 :root[data-platform='tv'] .full.is-idle[data-arch='scene'] .full__side { opacity: 0 !important; translate: 0 2vh; pointer-events: none !important; }
 :root[data-platform='tv'] .full.is-idle .full__side .full__controls { pointer-events: none; }
@@ -156,8 +159,6 @@
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid rgba(255, 255, 255, 0.1);
 }
-:root[data-platform='tv'] .tvsetup__qr { flex: none; padding: 1.6vh; border-radius: calc(20 * var(--u)); background: #fff; }
-:root[data-platform='tv'] .tvsetup__qr img { display: block; width: min(34vh, 24vw); height: min(34vh, 24vw); image-rendering: pixelated; }
 :root[data-platform='tv'] .tvsetup__how { display: flex; flex-direction: column; gap: 2vh; align-items: flex-start; min-width: 0; }
 :root[data-platform='tv'] .tvsetup__step { margin: 0; font-size: calc(30 * var(--u)); }
 :root[data-platform='tv'] .tvsetup__code { margin: 0; white-space: nowrap; font: 800 calc(84 * var(--u))/1 'JetBrains Mono', ui-monospace, Consolas, monospace; letter-spacing: 0.12em; }

@@ -120,3 +120,10 @@
 
 /* a small window and a phone: the file is the whole screen, the preview is the video window */
 @media (max-aspect-ratio: 1/1) { :root[data-vibe='editor'] :is(.edfx__title, .edfx__tabs) { display: none; } }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* ---------- Editor on the phone: a narrow line-number gutter so the code gets the width; long lines wrap inside the pane ---------- */
+:root[data-platform='android'][data-vibe='editor'] .code__gut { width: 38px; padding-right: 6px; gap: 2px; }
+:root[data-platform='android'][data-vibe='editor'] .code__gut .code__fold { display: none; }
+:root[data-platform='android'][data-vibe='editor'] .code__src { overflow-wrap: anywhere; word-break: break-word; }
+:root[data-platform='android'][data-vibe='editor'] .code { padding-right: 4px; box-sizing: border-box; }

@@ -6,9 +6,27 @@
   <title>What’s new · Lyra</title>
   <meta name="description" content="Release notes for Lyra for Windows and Android." />
   <meta name="theme-color" content="#06050a" />
-  <link rel="icon" href="assets/icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="canonical" href="https://lyra-website-rho.vercel.app/whats-new" />
+  <meta property="og:site_name" content="Lyra" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lyra-website-rho.vercel.app/whats-new" />
+  <meta property="og:title" content="What’s new · Lyra" />
+  <meta property="og:description" content="Release notes for Lyra for Windows and Android: new looks, Android, Lyra Connect and fixes." />
+  <meta property="og:image" content="https://lyra-website-rho.vercel.app/assets/shots/og.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A contact sheet of Lyra looks, each showing synced lyrics over a music video" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="What’s new · Lyra" />
+  <meta name="twitter:description" content="Release notes for Lyra for Windows and Android: new looks, Android, Lyra Connect and fixes." />
+  <meta name="twitter:image" content="https://lyra-website-rho.vercel.app/assets/shots/og.jpg" />
+  <link rel="icon" href="favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="site.css" />
   <link rel="stylesheet" href="pages.css" />
 </head>
@@ -16,7 +34,7 @@
   <a class="skip" href="#log">Skip to the release notes</a>
   <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="grain" aria-hidden="true"></div><div class="spot" id="spot" aria-hidden="true"></div>
   <header class="nv">
-    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="26" height="26" /> Lyra</a>
+    <a class="brand" href="./"><img src="assets/icon-64.png" alt="" width="26" height="26" /> Lyra</a>
     <nav><a href="./#looks">Looks</a><a href="./#states">Every state</a><a href="./#demo">Try it</a><a href="vibes">Gallery</a><a href="whats-new" aria-current="page">What’s new</a></nav>
     <a class="btn btn--sm btn--acc" href="./#download">Download</a>
   </header>
@@ -24,13 +42,21 @@
     <section class="wn__hero rv">
       <p class="mono">Release notes</p>
       <h1>What’s <em>new.</em></h1>
-      <p class="lead" style="margin-top:22px">Windows and Android releases share a story. Full notes for every release are on <a href="https://github.com/DhruvHarani1/lyra/releases" style="text-decoration:underline">GitHub</a>.</p>
-      <nav class="wn__jump" aria-label="Jump to a release"><a href="#v0-24-1">0.24.1</a><a href="#v0-24">0.24</a><a href="#v0-23">0.23</a><a href="#v0-22">0.22</a><a href="#v0-21">0.21</a><a href="#v0-20">0.20</a><a href="#v0-19">0.19</a><a href="#v0-18">0.18</a></nav>
+      <p class="lead u-mt22">Windows and Android releases share a story. Full notes for every release are on <a class="u-link" href="https://github.com/DhruvHarani1/lyra/releases">GitHub</a>.</p>
+      <nav class="wn__jump" aria-label="Jump to a release"><a href="#v0-25">0.25</a><a href="#v0-24-1">0.24.1</a><a href="#v0-24">0.24</a><a href="#v0-23">0.23</a><a href="#v0-22">0.22</a><a href="#v0-21">0.21</a><a href="#v0-20">0.20</a><a href="#v0-19">0.19</a><a href="#v0-18">0.18</a></nav>
     </section>
     <div class="log" id="log">
+      <article class="rel rv" id="v0-25"><div><h3>0.25</h3><small>Windows 0.25 · Android 0.11</small></div><ul>
+        <li><b>Wallet shows its whole screen again.</b> Its card stack and video window had been hidden by a style clash with Drift Wall.</li>
+        <li><b>Lyra Connect is safer.</b> The host only answers requests addressed to your PC's own network address, device tokens are encrypted on disk where Windows allows it, and a device that disconnects now leaves the list straight away.</li>
+        <li><b>Android TV can pair with your PC.</b> Type the 8-character code from the Devices panel, or pick your computer from the list. It has not been tried on a real TV yet.</li>
+        <li><b>Lighter edges.</b> The animated screen edge no longer works when it is hidden, paused or switched off, so it uses less battery.</li>
+        <li><b>Easier to read on small windows.</b> Plain, unsynced lyrics and the small notice above them keep a readable size on phones and in the mini player. Artwork lyrics sit on a darker backdrop.</li>
+        <li><b>Smarter look picks, steadier updates.</b> The smart pick no longer matches words inside other words, and the releases are now only built from a commit whose checks passed.</li>
+      </ul></article>
       <article class="rel rv" id="v0-24-1"><div><h3>0.24.1</h3><small>Windows 0.24.1 · Android 0.10.1</small></div><ul>
-        <li><b>Dusk Ridge.</b> A 34th look: a star-filled sky over sunlit mountain ranges, with shooting stars and its own glowing edge.</li>
-        <li><b>A mini player with a look of its own.</b> Twelve looks now arrange the small window differently: a cinema screen with curtains, a sunset panorama, a framed print, a taped polaroid, a viewfinder, a street-view inset, a code preview pane, a dewdrop and more.</li>
+        <li><b>A mini player with a look of its own.</b> Twelve looks now arrange the small window differently: a cinema screen with curtains, a sunset panorama, a framed print, a taped polaroid, a viewfinder, a street-view inset, a code preview pane, a dewdrop, a pasted poster, a hero frame and more. Picto’s icon frieze and Artwork’s lyric size were adjusted to fit.</li>
+        <li><b>The player card wears the look in ten more looks.</b> Stencil, Film Reel, Film Strip, Lock Screen, Wallet, Web, Lens, Picto, Drift Wall and Split-flap now dress the mini player card and the phone dock in their own colours, borders and type.</li>
         <li><b>Android, look by look.</b> Every look now has its own player dock, play button and progress bar on the phone, the video status pill no longer covers the header, light looks no longer get a grey band behind the lyrics, and the edge effect stays off the navigation row. The home-screen widget has its own colours for every look.</li>
         <li><b>Fixes.</b> Lyrics that clipped in the mini window and on phones (DM, Terminal, Stadium, Dream, Stencil, Editor).</li>
       </ul></article>
@@ -43,7 +69,7 @@
         <li><b>Fixes.</b> Lyrics that clipped or overlapped on small windows and tablets, unreadable text in a few looks with unsynced lyrics, and leftover rules that dimmed Cinema and others.</li>
       </ul></article>
       <article class="rel rv" id="v0-23"><div><h3>0.23</h3><small>Windows 0.23 · Android 0.9</small></div><ul>
-        <li><b>30 looks, each its own screen.</b> Every look now has its own video window, lyric style, player card and edge effect, in every state (video, no video, synced, plain, nothing playing). Ten new looks: Lock Screen, Wallet, Route, Editor, Metro, Web, Lens, Picto, Drift Wall and Split-flap.</li>
+        <li><b>31 looks, each its own screen.</b> Every look now has its own video window, lyric style, player card and edge effect, in every state (video, no video, synced, plain, nothing playing). Eleven new looks: Film Strip, Lock Screen, Wallet, Route, Editor, Metro, Web, Lens, Picto, Drift Wall and Split-flap.</li>
         <li><b>The cover wears the look.</b> Doodles and a picture treatment per look on the player card, and on the share card too.</li>
         <li><b>Lyra Connect.</b> Pair devices with a QR code and share the song clock, lyrics, video, look and your choices. Remote control, follow-me and party mode.</li>
         <li><b>Smarter picks.</b> Synced lyrics always rank above plain ones, videos are ranked better, your manual picks are remembered per song, and everything is cached so a song you played before starts instantly.</li>
@@ -85,7 +111,7 @@
       </ul></article>
     </div>
   </main>
-  <footer class="ft"><div class="ft__fine"><span>© Lyra · MIT licence</span><span><a href="./" style="display:inline">Home</a> · <a href="vibes" style="display:inline">Gallery</a> · <a href="https://github.com/DhruvHarani1/lyra" style="display:inline">GitHub</a></span></div></footer>
+  <footer class="ft"><div class="ft__fine"><span>© Lyra · MIT licence</span><span><a href="./">Home</a> · <a href="vibes">Gallery</a> · <a href="https://github.com/DhruvHarani1/lyra">GitHub</a></span></div></footer>
   <script src="pages.js" defer></script>
 </body>
 </html>

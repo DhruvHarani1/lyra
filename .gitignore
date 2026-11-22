@@ -13,3 +13,8 @@ release-test/
 release_old_*/
 brag-output/
 ui-test-out/
+
+# agent worktrees and browser-tool scratch (generated, never commit)
+.claude/worktrees/
+.claude/settings.local.json
+.playwright-mcp/

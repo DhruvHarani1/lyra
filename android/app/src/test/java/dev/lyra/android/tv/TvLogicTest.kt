@@ -2,44 +2,52 @@ package dev.lyra.android.tv
 
 import android.view.KeyEvent
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.util.Random
 
 class TvLogicTest {
-    @Test fun codesUseOnlyUnambiguousCharacters() {
-        val rnd = Random(7)
-        repeat(500) {
-            val c = PairingCode.generate(rnd)
-            assertEquals(PairingCode.LENGTH, c.length)
-            assertTrue(c.all { it in PairingCode.ALPHABET })
-            assertTrue(c.none { it in "01OIL" })
-        }
+    @Test fun codeAlphabetIsCrockfordBase32() {
+        assertEquals(32, PairingCode.ALPHABET.length)
+        assertEquals(8, PairingCode.LENGTH)
+        assertTrue("I, L, O, U are not in the alphabet", PairingCode.ALPHABET.none { it in "ILOU" })
     }
 
     @Test fun codeIsShownInTwoGroups() {
-        assertEquals("K7M-2QX", PairingCode.format("K7M2QX"))
-        assertEquals("K7M", PairingCode.format("K7M")) // not a full code: left alone
+        assertEquals("ABCD-EFGH", PairingCode.format("ABCDEFGH"))
+        assertEquals("ABC", PairingCode.format("ABC")) // typed so far: no dash yet
+        assertEquals("ABCD-E", PairingCode.format("ABCDE"))
     }
 
     @Test fun typedCodesAreForgiving() {
-        assertEquals("K7M2QX", PairingCode.normalize("k7m-2qx"))
-        assertEquals("K7M2QX", PairingCode.normalize(" K7M 2QX "))
-        assertNull(PairingCode.normalize("K7M2Q")) // too short
-        assertNull(PairingCode.normalize("K7M2QO")) // O is not in the alphabet
+        assertEquals("ABCDEFGH", PairingCode.normalize("abcd-efgh"))
+        assertEquals("ABCDEFGH", PairingCode.normalize(" ABCD EFGH "))
+        assertEquals("0123456T", PairingCode.normalize("oi23 456t")) // O -> 0, I -> 1
+        assertEquals("11234567", PairingCode.normalize("l1234567")) // L -> 1
+        assertNull(PairingCode.normalize("ABCDEFG")) // too short
+        assertNull(PairingCode.normalize("ABCDEFGHJ")) // too long
+        assertNull(PairingCode.normalize("ABCDEFGU")) // U is not in the alphabet
+        assertNull(PairingCode.normalize("ABCD#EFG"))
     }
 
-    @Test fun generatedCodesRoundTrip() {
-        val c = PairingCode.generate(Random(1))
-        assertEquals(c, PairingCode.normalize(PairingCode.format(c)))
+    @Test fun partialEntryKeepsOnlyCodeCharactersAndStopsAtEight() {
+        assertEquals("AB0C", PairingCode.partial("aB oC"))
+        assertEquals("ABCDEFGH", PairingCode.partial("ABCDEFGHJKM"))
     }
 
-    @Test fun qrLinkCarriesCodeAndEncodedName() {
-        assertEquals("lyra://pair?c=K7M2QX&n=Living%20Room%20TV", PairingCode.link("K7M2QX", "Living Room TV"))
-        assertEquals("lyra://pair?c=K7M2QX&n=Tom%26Jerry%27s", PairingCode.link("K7M2QX", "Tom&Jerry's"))
+    @Test fun hostLinkAndTypedAddressesParse() {
+        val link = PairingCode.parseLink("http://192.168.1.5:47813/#p=abcd-efgh")!!
+        assertEquals(HostAddress("192.168.1.5", 47813), link.first)
+        assertEquals("ABCDEFGH", link.second)
+        assertNull(PairingCode.parseLink("http://192.168.1.5:47813/")!!.second)
+        assertNull(PairingCode.parseLink("lyra://pair?c=K7M2QX")) // the old placeholder scheme is gone
+        assertEquals(HostAddress("192.168.1.5", 47813), PairingCode.parseAddress("192.168.1.5"))
+        assertEquals(HostAddress("10.0.0.7", 50000), PairingCode.parseAddress(" 10.0.0.7:50000 "))
+        assertEquals(HostAddress("my-pc.local", 47813), PairingCode.parseAddress("my-pc.local"))
+        assertNull(PairingCode.parseAddress("192.168.1.5:99999"))
+        assertNull(PairingCode.parseAddress("192.168 .1.5"))
+        assertNull(PairingCode.parseAddress(""))
     }
 
     @Test fun mediaKeysAreForwardedToThePage() {
@@ -58,15 +66,8 @@ class TvLogicTest {
         }
     }
 
-    @Test fun stubTransportNeverConnects() {
-        val states = mutableListOf<LinkState>()
-        val t = StubConnectTransport()
-        t.connect("K7M2QX", "TV", object : ConnectTransport.Listener {
-            override fun onState(state: LinkState) { states += state }
-            override fun onSnapshot(json: String) = Unit
-        })
-        assertEquals(listOf(LinkState.WAITING), states)
-        assertFalse(t.send("{\"type\":\"toggle\"}"))
+    @Test fun realTransportIsCreated() {
         assertNotNull(TvTransports.create())
+        assertEquals("viewer", TvTransports.create().role)
     }
 }

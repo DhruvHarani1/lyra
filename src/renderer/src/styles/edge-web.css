@@ -7,6 +7,5 @@
 :root[data-vibe='web'] .edge__d { left: 0; bottom: 0; top: auto; right: auto; transform-origin: 0 100%; background: repeating-conic-gradient(from 0deg at 0 100%, rgba(207, 220, 255, 0.6) 0 0.45deg, transparent 0.45deg 11.25deg), repeating-radial-gradient(circle at 0 100%, transparent 0 4.4vh, rgba(207, 220, 255, 0.4) 4.4vh calc(4.4vh + 1px)); -webkit-mask-image: radial-gradient(circle at 0 100%, #000 30%, transparent 98%); mask-image: radial-gradient(circle at 0 100%, #000 30%, transparent 98%); transform: rotate(calc(sin(calc(var(--lp, 0) * 42 + 3)) * (1 - var(--lp, 0)) * (1 - var(--lp, 0)) * -3.4deg * var(--lv, 0))); }
 
 /* the settings panel (z 21) and its scrim sit over the edge */
-:root[data-vibe='web']:has(.sidepanel) .edge { z-index: 19; }
 @media (max-aspect-ratio: 1/1) { :root[data-vibe='web'] :is(.edge__a, .edge__b, .edge__c, .edge__d) { width: 20vh; height: 20vh; } }
 :root[data-platform='android'][data-vibe='web'] :is(.edge__a, .edge__b, .edge__c, .edge__d) { width: 20vh; height: 20vh; }

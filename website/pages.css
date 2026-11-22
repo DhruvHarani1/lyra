@@ -52,12 +52,13 @@
 .pgx__card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .4s; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--vc) 26%, transparent), transparent 62%); }
 .pgx__card:hover { border-color: color-mix(in srgb, var(--vc) 65%, transparent); box-shadow: 0 50px 100px -40px var(--vc); }
 .pgx__card:hover::after { opacity: 1; }
-.pgx__card:focus-visible { outline: 2px solid var(--vc); outline-offset: 4px; }
+.pgx__open { color: inherit; }
+.pgx__open:focus-visible { outline: 2px solid var(--vc); outline-offset: 3px; border-radius: 4px; }
 .pgx__shot { position: relative; border-radius: 19px; overflow: hidden; aspect-ratio: 16 / 9; background: #000; }
 .pgx__shot > img:first-child { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease), filter .5s; }
 .pgx__card:hover .pgx__shot > img:first-child { transform: scale(1.06); filter: saturate(1.12); }
 .pgx__phone { position: absolute; right: 12px; bottom: -46%; width: 25%; height: auto; border-radius: 14px; border: 2px solid rgba(255, 255, 255, .85); box-shadow: 0 20px 40px rgba(0, 0, 0, .6); transform: rotate(5deg); transition: bottom .7s var(--ease), transform .7s var(--ease); }
-.pgx__card:hover .pgx__phone, .pgx__card:focus-visible .pgx__phone { bottom: -14%; transform: rotate(-3deg); }
+.pgx__card:hover .pgx__phone, .pgx__card:has(:focus-visible) .pgx__phone { bottom: -14%; transform: rotate(-3deg); }
 .pgx__meta { position: relative; z-index: 1; display: grid; grid-template-columns: auto 1fr auto; column-gap: 12px; align-items: center; padding: 14px 10px 16px; }
 .pgx__n { grid-row: 1 / 3; font: 500 12px var(--mono); color: var(--vc); opacity: .85; }
 .pgx__meta b { font: 700 18px/1.15 var(--display); letter-spacing: -.04em; }

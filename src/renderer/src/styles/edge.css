@@ -4,7 +4,7 @@
    (polish.css, ::after) is the fallback for looks that have no edge of their own; a look with its own edge hides it.
    Each look's edge lives in its own file (edge-<look>.css) so looks never share an edge.
    ========================================================================== */
-.edge { position: fixed; inset: 0; z-index: 61; pointer-events: none; display: none; }
+.edge { position: fixed; inset: 0; z-index: 61; pointer-events: none; display: none; contain: layout paint; }
 .edge > i { position: absolute; display: block; }
 .edge__a { left: 0; right: 0; top: 0; height: 0; }
 .edge__c { left: 0; right: 0; bottom: 0; height: 0; }
@@ -12,5 +12,26 @@
 .edge__d { top: 0; bottom: 0; left: 0; width: 0; }
 :root[data-rim='on'] .edge { display: block; }
 :root[data-platform='tv'] .edge { display: none; }
-:root[data-motion='off'] .edge * { animation: none !important; }
-:root[data-calm] .edge * { animation-play-state: paused !important; }
+/* full-window fills (vignettes, inner glows) must never tint the settings sheet, the welcome card or the share / record dialogs above them */
+:root:has(.sidepanel, .welcome, .sharecard) .edge { z-index: 19; }
+/* Motion guards cover .edge itself, its children and every pseudo-element (several looks animate ::before / ::after or flicker .edge). */
+:root[data-motion='off'] .edge,
+:root[data-motion='off'] .edge *,
+:root[data-motion='off'] .edge *::before,
+:root[data-motion='off'] .edge *::after,
+:root[data-perf='low'] .edge,
+:root[data-perf='low'] .edge *,
+:root[data-perf='low'] .edge *::before,
+:root[data-perf='low'] .edge *::after { animation: none !important; }
+:root[data-calm] .edge,
+:root[data-calm] .edge *,
+:root[data-calm] .edge *::before,
+:root[data-calm] .edge *::after { animation-play-state: paused !important; }
+
+/* The song variables EdgeFx writes on <html>. Registered with an initial value so a look that reads one without a fallback
+   (or an app whose edge is not running: rim light off, TV, nothing playing) always sees a clean 0 and never a stale value. */
+@property --lp { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --lv { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --li { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --lt { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --ts { syntax: '<number>'; inherits: true; initial-value: 0; }

@@ -1,13 +1,14 @@
 /* ==========================================================================
-   LAYOUT ARCHETYPES (fullscreen, with or without a video behind)
-   Every vibe picks one (see src/shared/vibes.ts): where the card, the lyrics and the controls go.
-   `.full[data-arch]` is set by FullscreenPlayer. The doubled `.full.full` outranks the cinema/side rules in player.css.
+   LAYOUT (fullscreen, with or without a video behind)
+   Every look is a 'scene' (see src/shared/vibes.ts): the base placement of the card, the lyrics and the controls.
+   `.full[data-arch='scene']` is set by FullscreenPlayer. The doubled `.full.full` outranks the cinema/side rules in player.css;
+   the repeated [data-arch='scene'] keeps the specificity the old :not([data-arch=...]) clauses gave these rules.
    ========================================================================== */
 
-/* ---------- shared: the card shrinks into a bar / pill / panel ---------- */
-:root:not([data-platform='android']) .full.full:not([data-arch='side']) .full__body { display: block; position: relative; padding: 0; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']) .full__lyrics { position: absolute; padding: 0; min-height: 0; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__side {
+/* ---------- the card shrinks into a bar / panel ---------- */
+:root:not([data-platform='android']) .full.full[data-arch='scene'] .full__body { display: block; position: relative; padding: 0; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'] .full__lyrics { position: absolute; padding: 0; min-height: 0; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__side {
   position: absolute;
   align-self: auto;
   justify-self: auto;
@@ -18,14 +19,14 @@
   margin: 0;
   z-index: 6;
 }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']) .full__side .artwork {
+:root:not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork {
   flex: none;
   width: var(--art, 72px) !important;
   height: var(--art, 72px) !important;
   aspect-ratio: auto;
   animation: none;
 }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__chrome {
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__chrome {
   flex: 1;
   min-width: 0;
   display: grid;
@@ -37,151 +38,24 @@
   opacity: 1;
   transform: none;
 }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__titlerow { grid-area: titles; min-width: 0; gap: 8px; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__controls { grid-area: controls; margin: 0; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__chrome > .progress { grid-area: progress; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']) .full__volume,
-:root:not([data-platform='android']) .full.full:not([data-arch='side']) .full__album,
-:root:not([data-platform='android']) .full.full:not([data-arch='side']) .full__titles::before { display: none; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__titles h1 { font-size: clamp(16px, 1.5vw, 22px); -webkit-line-clamp: 1; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .full__artist { font-size: 13px; margin: 0; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .playbtn { width: 46px !important; height: 46px !important; }
-:root:not([data-platform='android']) .full.full:not([data-arch='side']):not([data-arch='term']) .transport--lg { gap: 6px; }
-
-/* ---------- DOCK: a slim bar along the bottom, the lyrics own the stage ---------- */
-:root:not([data-platform='android']) .full.full[data-arch='dock'] { --dock-h: 104px; --art: clamp(54px, 8.5vh, 84px); }
-:root:not([data-platform='android']) .full.full[data-arch='dock'] .full__lyrics { left: 5vw; right: 5vw; top: 76px; bottom: calc(var(--dock-h) + 6.5vh); }
-:root:not([data-platform='android']) .full.full[data-arch='dock'] .full__side {
-  left: 50%;
-  bottom: 3.6vh;
-  transform: translateX(-50%);
-  width: min(1000px, 92vw);
-  padding: 12px 24px 12px 14px;
-  border-radius: 24px;
-}
-
-/* ---------- ORB: a small floating pill, the lyrics fill the screen ---------- */
-:root:not([data-platform='android']) .full.full[data-arch='orb'] { --art: 58px; }
-:root:not([data-platform='android']) .full.full[data-arch='orb'] .full__lyrics { left: 6vw; right: 6vw; top: 76px; bottom: 15vh; }
-:root:not([data-platform='android']) .full.full[data-arch='orb'] .full__side {
-  left: 3vw;
-  bottom: 3.5vh;
-  width: min(460px, 46vw);
-  padding: 9px 20px 9px 9px;
-  border-radius: 999px;
-}
-:root:not([data-platform='android']) .full.full[data-arch='orb'] .full__side .artwork { border-radius: 50% !important; }
-:root:not([data-platform='android']) .full.full[data-arch='orb'] .transport > :first-child,
-:root:not([data-platform='android']) .full.full[data-arch='orb'] .transport > :last-child,
-:root:not([data-platform='android']) .full.full[data-arch='chat'] .transport > :first-child,
-:root:not([data-platform='android']) .full.full[data-arch='chat'] .transport > :last-child,
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .transport > :first-child,
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .transport > :last-child { display: none; }
-:root:not([data-platform='android']) .full.full[data-arch='orb'] .likebtn,
-:root:not([data-platform='android']) .full.full[data-arch='chat'] .likebtn { display: none; }
-
-/* ---------- BAR: controls inside the bottom letterbox bar, lyrics as subtitles between the bars ---------- */
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__lyrics { left: 8vw; right: 8vw; top: 11.5%; bottom: 14%; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__side {
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: auto;
-  height: 11%;
-  min-height: 64px;
-  padding: 0 4vw;
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__side .artwork { display: none; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__chrome { grid-template-columns: 1fr auto 1fr; grid-template-areas: 'titles controls time'; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__titlerow { grid-area: titles; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__chrome > .progress { position: absolute; top: 0; left: 4vw; right: 4vw; grid-area: auto; height: 3px; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .progress__time { display: none; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__titles h1 { background: none; -webkit-text-fill-color: var(--fg); font-size: 14px; letter-spacing: 0.02em; }
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .playbtn { width: 40px !important; height: 40px !important; }
-/* the top letterbox bar holds the header */
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__top { height: 11%; min-height: 56px; position: relative; z-index: 6; }
-
-/* ---------- CHAT: one centred column; the controls are the message bar ---------- */
-:root:not([data-platform='android']) .full.full[data-arch='chat'] { --art: 48px; }
-:root:not([data-platform='android']) .full.full[data-arch='chat'] .full__lyrics { left: 50%; transform: translateX(-50%); width: min(560px, 92vw); top: 76px; bottom: calc(86px + 6.5vh); }
-:root:not([data-platform='android']) .full.full[data-arch='chat'] .full__side {
-  left: 50%;
-  bottom: 3.6vh;
-  transform: translateX(-50%);
-  width: min(560px, 92vw);
-  padding: 8px 18px 8px 8px;
-  border-radius: 999px;
-}
-:root:not([data-platform='android']) .full.full[data-arch='chat'] .full__side .artwork { border-radius: 50% !important; }
-
-/* ---------- TERMINAL: two framed panes ---------- */
-:root:not([data-platform='android']) .full.full[data-arch='term'] .full__body {
-  display: grid;
-  grid-template-columns: minmax(250px, 22vw) minmax(0, 1fr);
-  gap: 1.6vw;
-  padding: 0 4vw 4vh;
-}
-:root:not([data-platform='android']) .full.full[data-arch='term'] .full__lyrics {
-  position: relative;
-  padding: 18px 24px !important;
-  border: 1px solid var(--line-2);
-  background: rgba(0, 0, 0, 0.38);
-  box-shadow: inset 0 0 40px rgba(93, 255, 138, 0.06);
-}
-:root:not([data-platform='android']) .full.full[data-arch='term'] .full__lyrics::before { content: ' lyrics.log '; position: absolute; top: -9px; left: 16px; padding: 0 6px; background: #020a04; color: var(--accent); font: 14px 'VT323', monospace; }
-:root:not([data-platform='android']) .full.full[data-arch='term'] .full__side {
-  align-self: stretch;
-  justify-self: stretch;
-  width: auto;
-  height: auto;
-  position: relative;
-  justify-content: flex-start;
-  gap: 14px;
-  padding: 18px 16px;
-  border: 1px solid var(--line-2);
-  border-radius: 0;
-  background: rgba(0, 0, 0, 0.38);
-  box-shadow: inset 0 0 40px rgba(93, 255, 138, 0.06);
-  transform: none;
-}
-:root:not([data-platform='android']) .full.full[data-arch='term'] .full__side::before { content: ' now.playing '; position: absolute; top: -9px; left: 12px; padding: 0 6px; background: #020a04; color: var(--accent); font: 14px 'VT323', monospace; }
-:root:not([data-platform='android']) .full.full[data-arch='term'] .full__side .artwork { border-radius: 0 !important; image-rendering: pixelated; width: 100% !important; height: auto !important; aspect-ratio: 1; filter: grayscale(0.4) contrast(1.1); box-shadow: 0 0 0 1px var(--line-2); }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__titlerow { grid-area: titles; min-width: 0; gap: 8px; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'] .full__volume,
+:root:not([data-platform='android']) .full.full[data-arch='scene'] .full__album,
+:root:not([data-platform='android']) .full.full[data-arch='scene'] .full__titles::before { display: none; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__titles h1 { font-size: clamp(16px, 1.5vw, 22px); -webkit-line-clamp: 1; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .full__artist { font-size: 13px; margin: 0; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .playbtn { width: 46px !important; height: 46px !important; }
+:root:not([data-platform='android']) .full.full[data-arch='scene'][data-arch='scene'] .transport--lg { gap: 6px; }
 
 /* ---------- a video behind: the lyrics get their scrim, the card keeps its own place ---------- */
-:root:not([data-platform='android']) .full.full.is-cinema:not([data-arch='side']) .full__lyrics::before { inset: -2% -4%; }
-:root:not([data-platform='android']) .full.full.is-cinema:not([data-arch='side']) .full__side { background: rgba(8, 8, 12, 0.6); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
-:root:not([data-platform='android']) .full.full.is-cinema[data-arch='bar'] .full__side { background: transparent !important; }
-
-@media (max-width: 900px) {
-  /* narrow window: a dock stays a dock but loses the secondary controls */
-  :root:not([data-platform='android']) .full.full[data-arch='dock'] .transport > :first-child,
-  :root:not([data-platform='android']) .full.full[data-arch='dock'] .transport > :last-child { display: none; }
-}
-
-/* dock vibes: the stage is the whole width, so a phrase sits in the middle of it */
-:root:not([data-platform='android']) .full.full[data-arch='dock'] .kin { align-items: center; text-align: center; }
-:root:not([data-platform='android']) .full.full[data-arch='dock'] .kin__row { justify-content: center; }
-:root:not([data-platform='android']) .full.full[data-arch='dock'] .lt { align-items: stretch; }
+:root:not([data-platform='android']) .full.full.is-cinema[data-arch='scene'] .full__lyrics::before { inset: -2% -4%; }
+:root:not([data-platform='android']) .full.full.is-cinema[data-arch='scene'] .full__side { background: rgba(8, 8, 12, 0.6); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
 
 /* blocks: the hotbar and the XP bar sit on the right of the ground, clear of the inventory panel */
 [data-vibe='blocks'] .vibefx__hotbar { left: auto; right: 5vw; transform: none; }
 [data-vibe='blocks'] .vibefx__xp { left: auto; right: 5vw; transform: none; }
-
-/* bar: the thin progress line spans the bar between its margins (it must not be wider than its container) */
-:root:not([data-platform='android']) .full.full[data-arch='bar'] .full__chrome > .progress { width: auto; }
-
-/* terminal in a tall / narrow window: the panes stack */
-@media (max-aspect-ratio: 1/1) {
-  :root:not([data-platform='android']) .full.full[data-arch='term'] .full__body { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 16px; }
-  :root:not([data-platform='android']) .full.full[data-arch='term'] .full__side { flex-direction: row; align-items: center; flex-wrap: wrap; }
-  :root:not([data-platform='android']) .full.full[data-arch='term'] .full__side .artwork { width: 120px !important; }
-  :root:not([data-platform='android']) .full.full[data-arch='term'] .full__chrome { flex: 1; min-width: 200px; }
-}
 
 /* ==========================================================================
    Props that belong to the full screen only (scoreboard, radio, hotbar, cassette ...).

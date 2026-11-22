@@ -67,6 +67,14 @@
 :root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(0, 0, 0, 0.35); height: 0.6vh; border-radius: 1vh; }
 :root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #b8ffd9, #fff); height: 0.6vh; border-radius: 1vh; }
 
+.feed--wallet { flex-direction: column-reverse; justify-content: flex-end; }
+
+.feed--wallet .feed__txt { flex: 1; min-width: 0; }
+
+.feed--wallet .feed__amt { font-variant-numeric: tabular-nums; }
+
+.feed--wallet .feed__amt::after { opacity: 0.8; }
+
 /* ---------------- lyrics: payments that clear (stage 'wallet', a feed) ---------------- */
 .feed--wallet { gap: 0; }
 .feed--wallet .feed__row { position: relative; display: flex; align-items: center; gap: 2.2vh; padding: 1.7vh 1.2vh 1.7vh 0.4vh; border-radius: 0; background: transparent; box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.09); color: rgba(233, 255, 243, 0.78); opacity: calc(1 - var(--age) * 0.16); }

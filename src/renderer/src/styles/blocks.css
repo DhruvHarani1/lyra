@@ -11,24 +11,13 @@
   --bk-stone: #8b8b8b;
   --bk-ink: #2a2a2a;
   /* scene geometry (styles/scene.css): the painting on the right, the chat on the left, the hotbar along the bottom centre */
-  --sc-ww: min(44vw, 68vh);
-  --sc-wl: calc(95vw - var(--sc-ww));
-  --sc-wt: 10vh;
   --sc-wr: 0px;
-  --sc-cw: min(62vw, 760px);
   --sc-cl: calc(50vw - var(--sc-cw) / 2);
-  --sc-cb: 3.5vh;
   --sc-ct: auto;
-  --sc-ll: 5vw;
-  --sc-lt: 12vh;
-  --sc-lw: calc(95vw - var(--sc-ww) - 5vw - 5vw);
-  --sc-lb: 22vh;
-  --sc-lbs: 22vh;
   --sc-art-bg: repeating-conic-gradient(#9b9b9b 0 25%, #838383 0 50%) 0 0 / 4vh 4vh;
   --sc-art-fg: #1a1a1a;
   --sc-eq: #1a1a1a;
 }
-:root[data-vibe='blocks'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(48vw, 74vh); }
 :root[data-vibe='blocks'][data-rim='on']::after { display: none; }
 [data-vibe='blocks'] .shell { --accent: #7ccf4f; --glow: rgba(124, 207, 79, 0.5); --glow-soft: rgba(124, 207, 79, 0.2); --font: 'Press Start 2P', 'Courier New', monospace; --fg: #fff; --bg-0: #5aa7e8; }
 [data-vibe='blocks'] .backdrop .backdrop__field { background: linear-gradient(180deg, #5aa7e8 0 36%, #6fb6ef 36% 62%, #8ecbf5 62% 100%); }
@@ -58,35 +47,27 @@
 
 /* ---------------- the card: the inventory hotbar ---------------- */
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
-  --fg: #222;
-  --fg-2: #444;
-  --fg-3: #555;
   flex-direction: row;
   align-items: center;
   gap: 1.6vh;
-  padding: 1vh 1.8vh 1vh 1vh !important;
   border-radius: 0 !important;
-  background: #c6c6c6 !important;
   border: 0 !important;
-  box-shadow: inset -0.5vh -0.5vh 0 #555, inset 0.5vh 0.5vh 0 #fff, 0 0 0 0.5vh #2a2a2a, 1vh 1.2vh 0 0.5vh rgba(0, 0, 0, 0.35) !important;
-  color: #222;
 }
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 8vh !important; border-radius: 0 !important; image-rendering: pixelated; box-shadow: 0 0 0 0.5vh #fff, 0 0 0 1vh #2a2a2a; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 8vh !important; border-radius: 0 !important; image-rendering: pixelated; }
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 1.7vh/1.4 'Press Start 2P', monospace; letter-spacing: 0; text-transform: none; color: #222; text-shadow: 0.25vh 0.25vh 0 #bbb; }
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font: max(10.5px, 1.1vh)/1.5 'Press Start 2P', monospace; color: #444; }
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: #555; border-radius: 0; height: 1.2vh; box-shadow: inset 0.3vh 0.3vh 0 #2a2a2a; }
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: var(--bk-grass); border-radius: 0; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 1.7vh/1.4 'Press Start 2P', monospace; letter-spacing: 0; text-transform: none; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font: max(10.5px, 1.1vh)/1.5 'Press Start 2P', monospace; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { border-radius: 0; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { border-radius: 0; }
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #7ccf4f !important; color: #1a3a0a !important; border-radius: 0 !important; box-shadow: inset -0.4vh -0.4vh 0 #3e8a1e, inset 0.4vh 0.4vh 0 #b6f08a, 0 0 0 0.4vh #2a2a2a !important; }
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #222; border-radius: 0; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { border-radius: 0; }
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child,
 :root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
 
 /* ---------------- lyrics: the chat log (stage 'chatlog'), a little bigger ---------------- */
-:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .mc__row { font-size: max(10.5px, min(1.55vw, 2.9vh)); }
 
 /* ---------------- other lyric states (same regions) ---------------- */
 [data-vibe='blocks'] .lyrics__notice { align-self: flex-start; background: rgba(0, 0, 0, 0.6); border: 0; border-radius: 0; color: #ffd84a; font: 1.3vh/1.5 'Press Start 2P', monospace; text-transform: none; }
@@ -97,3 +78,57 @@
 [data-vibe='blocks'] .lfb p, [data-vibe='blocks'] .lfb small { font-family: 'Press Start 2P', monospace; font-size: max(10px, 1vw); line-height: 1.8; color: #fff; text-shadow: 0.2vh 0.2vh 0 #3f3f3f; }
 [data-vibe='blocks'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='blocks'] .lfb__eq i { background: var(--bk-grass); border-radius: 0; box-shadow: 0.3vh 0.3vh 0 #2a2a2a; }
+
+/* ---- second pass, was blocks-v2.css ---- */
+/* ==========================================================================
+   BLOCKS v2: the game screen, seen as a real HUD (fullscreen, mini and phone; mechanics in scene.css).
+   The painting hangs on the LEFT now, big; the chat log runs down the right under it like the in-game chat; the card is the dark
+   translucent hotbar with the cover in the selected slot and the progress as a segmented green experience bar. Torch light
+   flickers at the bottom corners. What is unique here: a HUD built from game furniture (hotbar, XP bar, chat) in flat pixel steps.
+   Edge (edge-blocks.css): a ground of blocks along the bottom edge that gets one more block for every lyric line.
+   ========================================================================== */
+:root[data-vibe='blocks'] {
+  --sc-ww: min(47vw, 72vh);
+  --sc-wl: 5vw;
+  --sc-wt: 9vh;
+  --sc-ll: calc(5vw + var(--sc-ww) + 5vw);
+  --sc-lt: 26vh;
+  --sc-lw: calc(95vw - var(--sc-ww) - 5vw - 5vw);
+  --sc-lb: 21vh;
+  --sc-lbs: 21vh;
+  --sc-cw: min(70vw, 860px);
+  --sc-cb: 5.4vh;
+}
+:root[data-vibe='blocks'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(47vw, 72vh); }
+/* the hotbar: dark glass slots, a bright selection frame round the cover, an XP bar for the progress */
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  --fg: #fff;
+  --fg-2: #e6e6e6;
+  --fg-3: #bdbdbd;
+  background: rgba(18, 18, 18, 0.78) !important;
+  box-shadow: 0 0 0 0.5vh #000, inset 0 0 0 0.4vh #8b8b8b, inset 0 0 0 0.8vh #2a2a2a, 1vh 1.2vh 0 0.5vh rgba(0, 0, 0, 0.3) !important;
+  color: #fff;
+  padding: 1.2vh 2vh 1.2vh 1.2vh !important;
+}
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { box-shadow: 0 0 0 0.5vh #fff, 0 0 0 1vh #000, 0 0 0 1.4vh #8b8b8b; margin: 0.6vh; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { color: #fff; -webkit-text-fill-color: #fff; text-shadow: 0.3vh 0.3vh 0 #3f3f3f; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { color: #ffff55; text-shadow: 0.25vh 0.25vh 0 #3f3f3f; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #fff; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { height: 1.1vh; background: repeating-linear-gradient(90deg, #1b3a0f 0 1.4vh, #000 1.4vh 1.6vh); box-shadow: 0 0 0 0.3vh #000; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { height: 1.1vh; background: repeating-linear-gradient(90deg, #7ef542 0 1.4vh, #3f9a1d 1.4vh 1.6vh); box-shadow: 0 0 1vh rgba(126, 245, 66, 0.6); }
+/* the chat: a little larger, the live line in yellow */
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .mc__row { font-size: max(10.5px, min(1.4vw, 2.6vh)); background: rgba(0, 0, 0, 0.55); }
+/* a square sun and torch light */
+.blocksfx__sun, .blocksfx__torch { display: none; }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .blocksfx__sun { display: block; position: absolute; right: 7vw; top: 8vh; width: 9vh; height: 9vh; background: #fff6a0; box-shadow: 0 0 0 1.2vh rgba(255, 246, 160, 0.4), 0 0 0 2.6vh rgba(255, 246, 160, 0.18); }
+:root[data-vibe='blocks']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .blocksfx__torch { display: block; position: absolute; bottom: 12vh; width: 1.6vh; height: 5vh; background: linear-gradient(180deg, #ffd84a 0 28%, #8a5a2c 28%); }
+.blocksfx__torch--l { left: 2.4vw; }
+.blocksfx__torch--r { right: 2.4vw; }
+.blocksfx__torch::before { content: ''; position: absolute; left: -9vh; top: -9vh; width: 20vh; height: 20vh; border-radius: 50%; background: radial-gradient(circle, rgba(255, 190, 70, 0.4), transparent 62%); animation: bk-torch 1.3s steps(5) infinite alternate; }
+@keyframes bk-torch { from { opacity: 0.55; transform: scale(0.94); } to { opacity: 1; transform: scale(1.05); } }
+:root[data-motion='off'] .blocksfx__torch::before { animation: none; }
+/* settings: a dark stone menu with a pixel title */
+:root[data-vibe='blocks'] .sidepanel { background: #3a3a3a; border: 0; border-radius: 0; box-shadow: inset 0 0 0 0.4vh #000, inset 0 0 0 0.9vh #8b8b8b, 1.2vh 1.4vh 0 rgba(0, 0, 0, 0.35); }
+:root[data-vibe='blocks'] .sidepanel h3 { font: 22px 'Press Start 2P', 'VT323', monospace; color: #ffff55; text-shadow: 3px 3px 0 #3f3f3f; }
+:root[data-vibe='blocks'] .sidepanel .stabs button.is-on { background: #7ef542; color: #123; border-radius: 0; box-shadow: inset -3px -3px 0 #3f9a1d, inset 3px 3px 0 #c5ffa0; }
+:root[data-vibe='blocks'] .mc { padding-bottom: 0 !important; }

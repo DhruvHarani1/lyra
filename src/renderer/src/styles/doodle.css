@@ -12,24 +12,10 @@
   --dd-yellow: #ffd84a;
   --dd-blue: #6ec5ff;
   --dd-green: #8fe3a1;
-  --sc-ww: min(36vw, 56vh);
-  --sc-wl: calc(94vw - var(--sc-ww));
-  --sc-wt: 15vh;
-  --sc-wr: 3vh 0.8vh 3.4vh 1vh / 1vh 3vh 0.8vh 3.4vh;
-  --sc-ll: 7vw;
-  --sc-lt: 13vh;
-  --sc-lw: calc(94vw - var(--sc-ww) - 7vw - 6vw);
-  --sc-lb: 30vh;
-  --sc-lbs: 28vh;
-  --sc-cl: var(--sc-ll);
-  --sc-cb: 7vh;
-  --sc-ct: auto;
-  --sc-cw: min(42vw, 540px);
   --sc-art-bg: radial-gradient(circle at 30% 35%, #ffd84a 0 18%, transparent 19%), radial-gradient(circle at 70% 65%, #ff8fb1 0 22%, transparent 23%), #fffdf4;
   --sc-art-fg: #14110f;
   --sc-eq: #ff5f7e;
 }
-:root[data-vibe='doodle'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(40vw, 62vh); }
 :root[data-vibe='doodle'][data-rim='on']::after { display: none; }
 [data-vibe='doodle'] .shell {
   --accent: #ff5f7e;
@@ -58,16 +44,16 @@
 .dfx__d .fill { stroke: none; fill: var(--dd-yellow); transform: translate(3px, 3px); }
 .dfx__d path:not(.fill), .dfx__d circle:not(.fill) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: dd-draw 11s ease-in-out infinite; animation-delay: var(--d, 0s); }
 @keyframes dd-draw { 0% { stroke-dashoffset: 1; } 25%, 75% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
-.dfx__sun { width: 13vh; height: 13vh; left: 3.5vw; top: 4vh; --d: 0s; animation: dd-bob 6s ease-in-out infinite; }
-.dfx__cloud { width: 20vh; height: 11.4vh; left: 30vw; top: 4vh; --d: 1.2s; }
+.dfx__sun { width: 13vh; height: 13vh; --d: 0s; animation: dd-bob 6s ease-in-out infinite; }
+.dfx__cloud { width: 20vh; height: 11.4vh; --d: 1.2s; }
 .dfx__cloud .fill { fill: var(--dd-blue); }
 .dfx__star { width: 7vh; height: 7vh; }
-.dfx__star--a { left: 60vw; bottom: 7vh; rotate: 12deg; --d: 2.4s; }
+.dfx__star--a { rotate: 12deg; --d: 2.4s; }
 .dfx__star--b { left: 4vw; bottom: 16vh; rotate: -14deg; --d: 3.4s; }
 .dfx__star--b .fill { fill: var(--dd-pink); }
-.dfx__spiral { width: 9vh; height: 9vh; right: 3vw; bottom: 9vh; --d: 4.4s; stroke: #ff5f7e; }
-.dfx__arrow { width: 12vh; height: 7vh; left: calc(var(--sc-wl) - 14vh); top: calc(var(--sc-wt) + 3vh); --d: 5.2s; }
-.dfx__zig { width: 16vh; height: 3vh; left: calc(var(--sc-wl) + 2vh); top: calc(var(--sc-wt) + var(--sc-wh) + 6.6vh); --d: 6s; stroke: #2f8cff; }
+.dfx__spiral { width: 9vh; height: 9vh; --d: 4.4s; stroke: #ff5f7e; }
+.dfx__arrow { width: 12vh; height: 7vh; --d: 5.2s; }
+.dfx__zig { width: 16vh; height: 3vh; --d: 6s; stroke: #2f8cff; }
 @keyframes dd-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(0.8vh) rotate(6deg); } }
 :root[data-calm] .dfx__d path, :root[data-calm] .dfx__d circle { animation: none; stroke-dashoffset: 0; }
 :root[data-calm] .dfx__sun { animation: none; }
@@ -80,14 +66,7 @@
 :root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame {
   display: block;
   position: absolute;
-  left: calc(var(--sc-wl) - 0.9vh);
-  top: calc(var(--sc-wt) - 0.9vh);
-  width: calc(var(--sc-ww) + 1.8vh);
-  height: calc(var(--sc-wh) + 1.8vh);
   box-sizing: border-box;
-  border: 0.8vh solid var(--dd-ink);
-  border-radius: 3.6vh 1.2vh 4vh 1.4vh / 1.4vh 3.6vh 1.2vh 4vh;
-  box-shadow: 1.6vh 1.8vh 0 var(--dd-pink);
   transition: width 0.7s, height 0.7s;
 }
 [data-vibe='doodle'] .scenewin { box-shadow: none; }
@@ -126,7 +105,7 @@
 /* ---------------- lyrics: marker lettering that bounces in (stage 'scrawl') ---------------- */
 .stage--scrawl { display: flex; flex-direction: column; justify-content: center; }
 .sign--scrawl .sign__line { gap: 1.4vh; }
-.sign--scrawl .sign__row { font-family: 'Nunito Variable', sans-serif; font-weight: 900; font-size: min(5.8vw, 10vh); line-height: 1.04; letter-spacing: -0.01em; gap: 0 0.24em; }
+.sign--scrawl .sign__row { font-family: 'Nunito Variable', sans-serif; font-weight: 900; line-height: 1.04; letter-spacing: -0.01em; gap: 0 0.24em; }
 .sign--scrawl .sign__word { position: relative; display: inline-block; color: rgba(20, 17, 15, 0.26); transition: color 0.3s ease; }
 .sign--scrawl .sign__word:nth-child(2n) { rotate: 1.6deg; }
 .sign--scrawl .sign__word:nth-child(2n + 1) { rotate: -1.4deg; }
@@ -152,3 +131,71 @@
 
 /* chrome text sits on paper: dark ink */
 [data-vibe="doodle"] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(20, 17, 15, 0.62) !important; text-shadow: none !important; }
+
+/* ---- second pass, was x-doodle.css ---- */
+/* ==========================================================================
+   DOODLE, premium pass: a drawing of a TV. The video is a hand-drawn television set in the bottom-right (pink body with a thick
+   marker outline, a knob panel, two antennas); the marker lettering fills the top-left of the page; the speech-bubble card sits at
+   the bottom-left; a scribbled marker border re-draws itself around the whole page, anticlockwise, in a new colour every lyric line.
+   Settings: a worksheet, every section has a marker outline and a yellow offset. Phone: the dock is a speech bubble.
+   ========================================================================== */
+:root[data-vibe='doodle'] {
+  --sc-ww: min(40vw, 62vh);
+  --sc-wl: calc(94vw - var(--sc-ww) - 9vh);
+  --sc-wt: calc(90vh - var(--sc-wh) - 4vh);
+  --sc-wr: 1.2vh;
+  --sc-ll: 6vw;
+  --sc-lt: 18vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 9vh - 6vw - 4vw);
+  --sc-lb: 30vh;
+  --sc-lbs: 28vh;
+  --sc-cl: 6vw;
+  --sc-cb: 6vh;
+  --sc-ct: auto;
+  --sc-cw: min(40vw, 520px);
+}
+:root[data-vibe='doodle'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(42vw, 64vh); }
+/* the television: pink body, marker outline, knob panel on the right, antennas on top */
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame {
+  left: calc(var(--sc-wl) - 2.2vh);
+  top: calc(var(--sc-wt) - 2.2vh);
+  width: calc(var(--sc-ww) + 2.2vh + 11.2vh);
+  height: calc(var(--sc-wh) + 4.4vh);
+  border: 2.2vh solid var(--dd-pink);
+  border-right-width: 11.2vh;
+  border-radius: 4.2vh 3vh 4.6vh 3.2vh / 3.2vh 4.4vh 3vh 4.6vh;
+  box-shadow: 0 0 0 0.7vh #14110f, inset 0 0 0 0.7vh #14110f, 1.8vh 2vh 0 0.7vh #14110f;
+}
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame::before {
+  content: ''; position: absolute; right: -10.4vh; top: 50%; width: 9vh; height: 20vh; margin-top: -10vh;
+  background:
+    radial-gradient(circle, var(--dd-yellow) 0 2.6vh, #14110f 2.7vh 3.3vh, transparent 3.4vh) 50% 0 / 9vh 9vh no-repeat,
+    radial-gradient(circle, var(--dd-blue) 0 2.6vh, #14110f 2.7vh 3.3vh, transparent 3.4vh) 50% 100% / 9vh 9vh no-repeat,
+    repeating-linear-gradient(180deg, #14110f 0 0.5vh, transparent 0.5vh 1.3vh) 50% 50% / 5vh 3.4vh no-repeat;
+}
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame::after {
+  content: ''; position: absolute; left: 40%; top: -9.6vh; width: 7vh; height: 7vh; border-right: 0.8vh solid #14110f; border-bottom: 0.8vh solid #14110f; border-radius: 0 0 1vh 0; rotate: 45deg; transform-origin: 50% 50%;
+}
+.dfx__arrow { left: calc(var(--sc-wl) - 18vh); top: calc(var(--sc-wt) + 6vh); transform: scaleX(-1) rotate(-20deg); }
+.dfx__zig { left: calc(var(--sc-wl) + 3vh); top: calc(var(--sc-wt) - 7vh); }
+.dfx__sun { left: auto; right: 4vw; top: 5vh; }
+.dfx__cloud { left: 38vw; top: 5vh; }
+.dfx__star--a { left: 46vw; bottom: 12vh; }
+.dfx__spiral { right: auto; left: 46vw; bottom: 27vh; }
+/* the words: bigger, bolder, tilted a touch like drawn letters */
+.sign--scrawl .sign__row { font-size: min(6.8vw, 11.6vh); }
+/* settings: a worksheet */
+:root[data-vibe='doodle'] .sidepanel { background-image: radial-gradient(rgba(20, 17, 15, 0.16) 1.4px, transparent 1.6px); background-size: 20px 20px; }
+:root[data-vibe='doodle'] .sidepanel .settings section { background: #fff; box-shadow: 0 0 0 2.5px #14110f, 4px 5px 0 #ffd84a; border-radius: 14px; }
+:root[data-vibe='doodle'] .sidepanel h3 { font-weight: 900; text-decoration: underline wavy #ff5f7e 3px; text-underline-offset: 6px; }
+/* phone: a speech bubble dock */
+:root[data-platform='android'][data-vibe='doodle'] .phone__dock { --fg: #14110f; --fg-2: #3a332e; --fg-3: #4a423c; background: #fff !important; color: #14110f; border: 3px solid #14110f; border-radius: 26px 26px 26px 6px !important; box-shadow: 5px 6px 0 #ffd84a; }
+:root[data-platform='android'][data-vibe='doodle'] .phone__bar { background: transparent; }
+/* the small window: smaller marker lettering so the whole line fits */
+:root[data-vibe='doodle'][data-mode='mini'] .sign--scrawl .sign__row { font-size: min(5vw, 7.6vh); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* low windows: four stacked words must fit the region above the card */
+@media (max-height: 700px) {
+  :root[data-vibe='doodle'] .sign--scrawl .sign__row { font-size: min(6.8vw, 8.8vh); }
+}

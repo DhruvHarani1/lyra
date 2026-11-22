@@ -80,7 +80,7 @@ Rank = value for Lyra (quality x legality x cost x reliability).
 
 ## 7. Integration plan
 
-1. Add `src/core/background/musicbrainz.ts` (pure parsing plus a rate-limited fetch via `platform().fetch`), unit tests on recorded JSON fixtures, wired ahead of `search.list` behind a small `videoIdProvider` interface so more providers can plug in.
+1. Add a new module, core/background/musicbrainz.ts (not written yet), (pure parsing plus a rate-limited fetch via `platform().fetch`), unit tests on recorded JSON fixtures, wired ahead of `search.list` behind a small `videoIdProvider` interface so more providers can plug in.
 2. Key-optional playback: with a MusicBrainz hit and no key, play the embed directly and rely on the player's error events (101/150) to demote the id.
 3. Add a `generative` background kind (shader) as the last fallback and offline default, driven by the song clock.
 4. Optional stock provider (Pexels/Pixabay) with user keys in `platform().secret`, 24 h response cache, local cache of the chosen loop, visible credit.

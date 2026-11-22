@@ -24,7 +24,7 @@ import { CommandGate, Pairing, formatCode, type Device } from '@core/connect/pai
 import { SyncState } from '@core/connect/syncState'
 import { messageForRole } from '@core/connect/roleView'
 import { acceptUpgrade, type WsConn } from './ws'
-import { isLocalPeer, originAllowed } from './net'
+import { hostAllowed, isLocalPeer, originAllowed } from './net'
 import { buildManifest } from './pwa'
 
 /**
@@ -284,6 +284,11 @@ export class ConnectHub extends EventEmitter {
       res.writeHead(403).end()
       return
     }
+    // DNS rebinding: a page on an attacker's hostname that re-resolves to this IP still sends ITS hostname as Host
+    if (!hostAllowed(req.headers.host, this.ip, this.port)) {
+      res.writeHead(421, { 'Cache-Control': 'no-store' }).end()
+      return
+    }
     const path = (req.url ?? '/').split('?')[0]
     const common = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'X-Frame-Options': 'DENY' }
     if (req.method === 'GET' && path === '/') {
@@ -292,7 +297,7 @@ export class ConnectHub extends EventEmitter {
         'Content-Type': 'text/html; charset=utf-8',
         // the page may talk only to this host; art is inline or https; the optional video is a YouTube embed;
         // the manifest and icon (installable app) come from this host only
-        'Content-Security-Policy': "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' ws:; manifest-src 'self'; frame-src https://www.youtube-nocookie.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+        'Content-Security-Policy': `default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: https:; connect-src ${this.connectSrc(req.headers.host)}; manifest-src 'self'; frame-src https://www.youtube-nocookie.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`
       })
       res.end(this.d.viewerHtml)
       return
@@ -325,9 +330,18 @@ export class ConnectHub extends EventEmitter {
     res.writeHead(404, { 'Cache-Control': 'no-store' }).end()
   }
 
+  /**
+   * connect-src for the viewer: this server only. 'self' alone is enough in current browsers; Safari and older WebViews
+   * do not let 'self' cover ws://, so the exact ws origin (host:port, already validated against the allow-list) is named.
+   * Never the 'ws:' wildcard.
+   */
+  private connectSrc(hostHeader: string | undefined): string {
+    return hostHeader && hostAllowed(hostHeader, this.ip, this.port) ? `'self' ws://${hostHeader.toLowerCase()}` : "'self'"
+  }
+
   private upgrade(req: IncomingMessage, socket: Duplex): void {
     const addr = (socket as { remoteAddress?: string }).remoteAddress ?? ''
-    if (!isLocalPeer(addr) || (req.url ?? '').split('?')[0] !== '/ws' || !originAllowed(req.headers.origin, req.headers.host)) {
+    if (!isLocalPeer(addr) || (req.url ?? '').split('?')[0] !== '/ws' || !hostAllowed(req.headers.host, this.ip, this.port) || !originAllowed(req.headers.origin, req.headers.host)) {
       socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n')
       return
     }
@@ -345,10 +359,7 @@ export class ConnectHub extends EventEmitter {
     conn.on('message', (text) => this.onMessage(s, text))
     conn.on('close', () => {
       clearTimeout(timer)
-      if (this.sessions.delete(s) && s.device) {
-        this.emit('change')
-        this.broadcastDevices()
-      }
+      this.drop(s) // a no-op when the host already dropped it; otherwise the peer left: update the devices list
     })
   }
 
@@ -357,10 +368,19 @@ export class ConnectHub extends EventEmitter {
     if (close) this.drop(s)
   }
 
-  private drop(s: Session, why?: string): void {
+  /**
+   * The ONE place a session leaves the set (the socket's 'close' event finds it already gone and does nothing), so the
+   * devices list / online flag is refreshed for every cause: kick, revoke, dead-peer sweep, replacement, timeout, peer close.
+   * `quiet` is for a replaced session whose successor is about to announce itself anyway.
+   */
+  private drop(s: Session, why?: string, quiet = false): void {
+    const had = this.sessions.delete(s)
     if (why) s.conn.send(encode({ t: 'bye', why }))
     s.conn.close()
-    this.sessions.delete(s)
+    if (had && s.device && s.stage === 'ready' && !quiet) {
+      this.emit('change')
+      this.broadcastDevices()
+    }
   }
 
   private kick(deviceId: string, why: string): void {
@@ -420,7 +440,7 @@ export class ConnectHub extends EventEmitter {
 
   private ready(s: Session, device: Device, sessionKey: string): void {
     // one live session per device: a re-connect replaces the old socket
-    for (const o of [...this.sessions]) if (o !== s && o.device?.id === device.id) this.drop(o, 'Connected from somewhere else.')
+    for (const o of [...this.sessions]) if (o !== s && o.device?.id === device.id) this.drop(o, 'Connected from somewhere else.', true)
     s.stage = 'ready'
     s.device = device
     s.gate = new CommandGate(sessionKey)

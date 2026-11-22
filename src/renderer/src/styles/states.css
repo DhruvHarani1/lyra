@@ -68,7 +68,7 @@
 [data-vibe='paper'] .lfb__eq i { background: #2d2a3a; border-radius: 1px; width: 3px; }
 
 /* small covers (the dock next to the title, phone strips) keep a thin frame: a thick one would overlap the title beside it */
-:root .full.is-cinema .artwork--lift, :root .full:not([data-arch='side']) .artwork--lift, :root .mini__dock .artwork--lift, :root .phone__dock .artwork--lift { outline-width: 2px !important; outline-offset: 0 !important; box-shadow: 0 0 0 3px rgba(0,0,0,.55), 0 8px 20px -6px rgba(0,0,0,.6) !important; animation: none !important; }
+:root .full.is-cinema .artwork--lift, :root .full[data-arch='scene'] .artwork--lift, :root .mini__dock .artwork--lift, :root .phone__dock .artwork--lift { outline-width: 2px !important; outline-offset: 0 !important; box-shadow: 0 0 0 3px rgba(0,0,0,.55), 0 8px 20px -6px rgba(0,0,0,.6) !important; animation: none !important; }
 
 /* ===================== ARCADE ===================== */
 /* unsynced words: the high-score table: rows, a marker, no highlight that moves */

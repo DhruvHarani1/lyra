@@ -10,38 +10,22 @@
   --fm-cream: #f2e6cf;
   --fm-black: #0f0a06;
   /* scene geometry (styles/scene.css): one strip across the screen; the video frame, then the title-card frames */
-  --sc-ww: min(40vw, 62vh);
-  --sc-wl: 8vw;
-  --sc-wt: 16vh;
-  --sc-wr: 0.3vh;
-  --sc-cl: 8vw;
-  --sc-cb: 5vh;
-  --sc-ct: auto;
-  --sc-cw: var(--sc-ww);
-  --sc-ll: calc(8vw + var(--sc-ww) + 4vw);
-  --sc-lt: var(--sc-wt);
-  --sc-lw: calc(95vw - 8vw - var(--sc-ww) - 4vw);
-  --sc-lb: calc(100vh - var(--sc-wt) - var(--sc-wh));
-  --sc-lbs: 8vh;
   --sc-art-bg: radial-gradient(circle at 50% 40%, #3a2a18, #120c07 80%);
   --sc-art-fg: #e8b873;
   --sc-eq: #e8b873;
 }
-:root[data-vibe='film'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(44vw, 68vh); }
 :root[data-vibe='film'][data-rim='on']::after { display: none; }
 [data-vibe='film'] .shell { --accent: #e8b873; --glow: rgba(232, 184, 115, 0.45); --glow-soft: rgba(232, 184, 115, 0.2); --font: 'Fraunces Variable', Georgia, serif; --fg: #f2e6cf; --bg-0: #0f0a06; }
 
 /* ---------------- the projector room ---------------- */
-[data-vibe='film'] .backdrop .backdrop__field { background: radial-gradient(100% 90% at 50% 45%, #2a1c10, #0b0704 85%); }
 :root[data-vibe='film'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
 /* the video is graded like old stock */
-:root[data-vibe='film']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { filter: sepia(0.5) contrast(1.1) saturate(1.1) brightness(0.95); }
 .filmfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 /* the strip: black stock with a row of sprocket holes along both edges; the holes keep moving */
 .filmfx__strip { position: absolute; left: 0; right: 0; top: calc(var(--sc-wt) - 4.6vh); height: calc(var(--sc-wh) + 9.2vh); background: #070503; box-shadow: 0 0 0 1px rgba(232, 184, 115, 0.18), 0 2vh 5vh rgba(0, 0, 0, 0.6); }
 /* the strip is stock all round, but the frame where the video plays is open (the video is underneath) */
 .filmfx__strip { clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--sc-wl) 4.6vh, calc(var(--sc-wl) + var(--sc-ww)) 4.6vh, calc(var(--sc-wl) + var(--sc-ww)) calc(4.6vh + var(--sc-wh)), var(--sc-wl) calc(4.6vh + var(--sc-wh)), var(--sc-wl) 4.6vh); }
-.filmfx__holes { position: absolute; left: 0; right: 0; height: 2.4vh; background: repeating-linear-gradient(90deg, transparent 0 1vh, #2b1d10 1vh 3.4vh, transparent 3.4vh 4.6vh); -webkit-mask: repeating-linear-gradient(90deg, #000 0 3.4vh, transparent 3.4vh 4.6vh); mask: repeating-linear-gradient(90deg, #000 0 3.4vh, transparent 3.4vh 4.6vh); animation: fm-run 2.4s linear infinite; }
+.filmfx__holes { position: absolute; height: 2.4vh; background: repeating-linear-gradient(90deg, transparent 0 1vh, #2b1d10 1vh 3.4vh, transparent 3.4vh 4.6vh); -webkit-mask: repeating-linear-gradient(90deg, #000 0 3.4vh, transparent 3.4vh 4.6vh); mask: repeating-linear-gradient(90deg, #000 0 3.4vh, transparent 3.4vh 4.6vh); animation: fm-run 2.4s linear infinite; }
 .filmfx__holes::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #d8c9ad 0 2.4vh, transparent 2.4vh 4.6vh); border-radius: 0.3vh; opacity: 0.9; }
 .filmfx__holes--t { top: 1vh; } .filmfx__holes--b { bottom: 1vh; animation-duration: 2.4s; }
 @keyframes fm-run { to { background-position: -4.6vh 0; transform: translateX(-4.6vh); } }
@@ -64,7 +48,6 @@
 :root[data-calm] .filmfx *, :root[data-calm] .filmfx__holes { animation-play-state: paused; }
 :root[data-motion='off'] .filmfx * { animation: none !important; }
 :root[data-perf='low'] .filmfx__leak, :root[data-perf='low'] .filmfx__flicker { display: none; }
-[data-vibe='film'] .scenewin { box-shadow: 0 0 0 0.5vh #070503, 0 0 0 calc(0.5vh + 1px) rgba(232, 184, 115, 0.35); }
 .scenewin__art span { font: 600 2.2vh/1 'Fraunces Variable', Georgia, serif; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fm-sepia); }
 
 /* ---------------- the card: a film-can label ---------------- */
@@ -76,7 +59,6 @@
   align-items: center;
   gap: 2vh;
   padding: 1.2vh 2vh 1.2vh 1.2vh !important;
-  border-radius: 0.6vh !important;
   background: var(--fm-cream) !important;
   border: 0 !important;
   box-shadow: inset 0 0 0 0.35vh #1a120a, inset 0 0 0 0.6vh var(--fm-cream), inset 0 0 0 0.75vh rgba(26, 18, 10, 0.7), 0 1.6vh 4vh rgba(0, 0, 0, 0.6) !important;
@@ -100,10 +82,8 @@
 [data-vibe='film'] .stage--intertitle { display: flex; flex-direction: column; justify-content: center; }
 [data-vibe='film'] .sign--intertitle .sign__line { height: 100%; justify-content: center; align-items: center; text-align: center; padding: 3vh 2.4vw; border: 0.3vh solid rgba(232, 184, 115, 0.55); outline: 0.3vh solid rgba(232, 184, 115, 0.3); outline-offset: -1.2vh; background: radial-gradient(90% 90% at 50% 50%, #1a1208, #0b0704); animation: fm-cut 0.5s steps(1) 1; gap: 1.6vh; }
 @keyframes fm-cut { 0% { opacity: 0; } 10% { opacity: 1; transform: translateX(0.6vw); } 20% { opacity: 0.4; } 30% { opacity: 1; transform: translateX(-0.3vw); } 100% { opacity: 1; transform: none; } }
-[data-vibe='film'] .sign--intertitle .sign__row { justify-content: center; font-family: 'Fraunces Variable', Georgia, serif; font-weight: 600; font-size: min(2.7vw, 4.9vh); line-height: 1.22; letter-spacing: 0.1em; text-transform: uppercase; gap: 0 0.5em; padding-inline-end: 0; }
+[data-vibe='film'] .sign--intertitle .sign__row { justify-content: center; font-family: 'Fraunces Variable', Georgia, serif; font-weight: 600; line-height: 1.22; letter-spacing: 0.1em; text-transform: uppercase; gap: 0 0.5em; padding-inline-end: 0; }
 [data-vibe='film'] .sign--intertitle .sign__word { color: rgba(242, 230, 207, 0.25); }
-[data-vibe='film'] .sign--intertitle .sign__word.is-in { color: var(--fm-cream); text-shadow: 0 0 1.2vh rgba(232, 184, 115, 0.4); }
-[data-vibe='film'] .sign--intertitle .sign__word.is-now { color: #fff; text-shadow: 0 0 1.6vh rgba(232, 184, 115, 0.75); }
 [data-vibe='film'] .sign--intertitle .sign__next { display: none; }
 [data-vibe='film'] .sign--intertitle .sign__refl { display: none; }
 :root[data-motion='off'] [data-vibe='film'] .sign--intertitle .sign__line { animation: none; }
@@ -121,3 +101,55 @@
 [data-vibe='film'] .lfb p, [data-vibe='film'] .lfb small { color: rgba(242, 230, 207, 0.85); font-style: italic; }
 [data-vibe='film'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='film'] .lfb__eq i { background: var(--fm-sepia); border-radius: 0; box-shadow: none; }
+
+/* ---- second pass, was p-film.css ---- */
+/* ==========================================================================
+   FILM REEL, premium pass: a silent-film theatre.
+   Black and white, the picture is the one big centred screen, film rails with sprocket holes run down both sides of the whole
+   screen and advance a frame on every lyric line (edge-film.css), the song is a framed intertitle card under the screen, the card
+   is a small projectionist's ticket at the bottom left. (Was: a horizontal strip with the frame on the left.)
+   ========================================================================== */
+:root[data-vibe='film'] {
+  --sc-ww: min(58vw, 84vh);
+  --sc-wl: calc((100vw - var(--sc-ww)) / 2);
+  --sc-wt: 4vh;
+  --sc-wr: 0.3vh;
+  --sc-cl: calc(50vw - min(21vw, 300px));
+  --sc-cr: auto;
+  --sc-cb: 3vh;
+  --sc-ct: auto;
+  --sc-cw: min(42vw, 600px);
+  --sc-ll: 18vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 3vh);
+  --sc-lw: 64vw;
+  --sc-lb: 17vh;
+  --sc-lbs: 17vh;
+}
+:root[data-vibe='film'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(58vw, 84vh); }
+/* the horizontal strip gives way to the side rails */
+.filmfx__strip, .filmfx__edge { display: none; }
+:root[data-vibe='film']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage { filter: grayscale(1) contrast(1.18) brightness(0.95); }
+[data-vibe='film'] .backdrop .backdrop__field { background: radial-gradient(70% 60% at 50% 38%, #26231f, #070605 80%); }
+/* the projector throws a cone of light onto the screen */
+.filmfx::before { content: ''; position: absolute; left: 50%; bottom: -10vh; width: 70vw; height: 70vh; translate: -50% 0; background: conic-gradient(from 168deg at 50% 100%, transparent 0 4deg, rgba(255, 244, 220, 0.07) 4deg 12deg, transparent 12deg); filter: blur(1px); }
+[data-vibe='film'] .scenewin { box-shadow: 0 0 0 0.8vh #000, 0 0 0 calc(0.8vh + 1px) rgba(255, 244, 220, 0.35), 0 0 9vh rgba(255, 244, 220, 0.18); }
+/* the intertitle: a double-rule silent-film card, centred */
+[data-vibe='film'] .sign--intertitle .sign__row { font-size: min(3.1vw, 5.6vh); }
+[data-vibe='film'] .sign--intertitle .sign__word.is-in { color: #f4eee0; text-shadow: none; }
+[data-vibe='film'] .sign--intertitle .sign__word.is-now { color: #fff; text-shadow: 0 0 1.4vh rgba(255, 255, 255, 0.55); }
+/* the ticket */
+:root[data-vibe='film']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { border-radius: 0.4vh !important; }
+/* settings: a cinema programme */
+:root[data-vibe='film'] .sidepanel { border-radius: 0; box-shadow: inset 0 0 0 1px rgba(255, 244, 220, 0.4), inset 0 0 0 5px #0a0805, inset 0 0 0 6px rgba(255, 244, 220, 0.25); }
+:root[data-vibe='film'] .sidepanel h3, :root[data-vibe='film'] .sidepanel .settings h4 { font-family: 'Fraunces Variable', Georgia, serif; font-style: italic; letter-spacing: 0.02em; }
+:root[data-platform='android'][data-vibe='film'] .mini--phone { filter: grayscale(0.85); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+@media (max-height: 700px) {
+  :root[data-vibe='film'] { --sc-lb: 21vh; --sc-lbs: 21vh; }
+  [data-vibe='film'] .sign--intertitle .sign__row { font-size: min(3.1vw, 4.6vh); }
+}
+/* Film Reel: the lyric box was once as tall as the picture; it must end above the ticket */
+@media (min-aspect-ratio: 1/1) {
+  :root[data-vibe='film']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__lyrics { height: auto; }
+}

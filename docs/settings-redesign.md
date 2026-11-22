@@ -1,5 +1,7 @@
 # Settings redesign (desktop)
 
+> **Status (2026-11-23):** shipped in 0.19 / 0.20 and redesigned again in 0.23 (the page has search and wears the active look). Desktop tabs today: Look, Lyrics & video, Player, Connect, About (Android: Look, Lyrics, Video, Phone, Connect, About). The LAN settings in the audit table below were replaced by Lyra Connect.
+
 Goal: a calm page for ordinary people. Anything that only changes how the app looks is decided by the vibe, not by a
 setting. Functional options stay, in plain words, with a one-line helper under each.
 
@@ -27,7 +29,7 @@ setting. Functional options stay, in plain words, with a one-line helper under e
 | `launchAtStartup`, `trackNotifications`, `globalShortcuts` | keep | Player > Startup & keys |
 | `systemVolume` | keep, folded | Startup & keys > Advanced |
 | `shortcuts` (overrides) | keep, folded | Startup & keys > Advanced |
-| `lanViewer`, `lanAudio` (+ `lanPort`, `lanToken` internal) | keep | Connect > Nearby screens |
+| `lanViewer`, `lanAudio` (+ `lanPort`, `lanToken` internal) | **replaced by `connectEnabled` (off by default); sound streaming removed** (see `docs/connect-redesign.md`) | Connect > Devices (`DevicesPanel.tsx`) |
 | rooms (host/join) | keep | Connect |
 | about, update, diagnostics, reset, hide, quit | keep | About |
 | `keepScreenOn`, `keepRunning`, `ambient*` | keep (phone only, unchanged) | Phone tab on Android |

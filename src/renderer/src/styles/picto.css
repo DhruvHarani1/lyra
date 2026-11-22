@@ -75,4 +75,3 @@
 /* the small window: the player tile and the pictogram tile make way, the card goes under the video */
 :root[data-vibe='picto'][data-mode='mini'] { --sc-cl: 4vw; --sc-cw: 92vw; --sc-ct: auto; --sc-cb: 3vh; --sc-ll: 7vw; --sc-lw: 86vw; --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 3vh); --sc-lb: 21vh; --sc-lbs: 21vh; }
 :root[data-vibe='picto'][data-mode='mini'] :is(.pcfx__tile--player, .pcfx__tile--icon) { display: none; }
-:root[data-vibe='picto'][data-platform='android'] :is(.edge__c, .edge__b) { display: none; }

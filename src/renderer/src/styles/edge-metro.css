@@ -12,7 +12,6 @@
 :root[data-vibe='metro'] .edge__d { background: #ff3b6b; box-shadow: 0 0 1.4vh rgba(255, 59, 107, 0.5); }
 
 /* the settings panel (z 21) and its scrim sit over the edge */
-:root[data-vibe='metro']:has(.sidepanel) .edge { z-index: 19; }
 /* no platform sign (small window, phone): the lines run along the very top */
 @media (max-aspect-ratio: 1/1) { :root[data-vibe='metro'] .edge__a { top: 0; } }
 :root[data-platform='android'][data-vibe='metro'] .edge__a { top: 0; }

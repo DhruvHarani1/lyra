@@ -1,15 +1,15 @@
 import { EventEmitter } from 'node:events'
 import { ACCEL_PATTERN, GLOBAL_SHORTCUTS } from '@shared/shortcuts'
 import { ALL_VIBES } from '@shared/vibes'
-import { DEFAULT_SETTINGS, type Settings } from '@shared/types'
+import { DEFAULT_SETTINGS, LYRIC_STYLES, type Settings } from '@shared/types'
 import { JsonStore } from './jsonStore'
 
 const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, Number.isFinite(n) ? n : lo))
 
 /** Validate/normalise a settings object so corrupt files can't break the UI. */
-function sanitize(s: Settings): Settings {
+export function sanitize(s: Settings): Settings {
   const d = DEFAULT_SETTINGS
-  const pos = s.position
+  const pos = s && typeof s === 'object' ? s.position : null
   // Settings that were removed from the page (or renamed in an older Lyra) must never break loading: only keys that
   // still exist are kept, everything else in an old settings.json is dropped on the next save.
   const known = Object.fromEntries(Object.entries(s && typeof s === 'object' ? s : {}).filter(([k]) => k in d)) as Settings
@@ -27,7 +27,7 @@ function sanitize(s: Settings): Settings {
     reducedMotion: (['system', 'on', 'off'] as const).includes(s.reducedMotion) ? s.reducedMotion : d.reducedMotion,
     source: s.source === 'api' ? 'api' : 'local',
     opacity: clamp(s.opacity, 0.4, 1),
-    lyricStyle: (['classic', 'zoom', 'kinetic', 'constellation', 'sticker', 'chat', 'type', 'diary', 'subtitle', 'chatlog', 'lowerthird', 'sign', 'liquid', 'pixel', 'bloom', 'title', 'ink', 'glitch', 'bubble', 'spray', 'intertitle', 'log', 'note', 'jot', 'scrawl', 'label', 'lockscreen', 'wallet', 'route', 'editor', 'metro', 'weave', 'picto', 'wall', 'flap'] as const).includes(s.lyricStyle) ? s.lyricStyle : d.lyricStyle,
+    lyricStyle: (LYRIC_STYLES as readonly string[]).includes(s.lyricStyle) ? s.lyricStyle : d.lyricStyle,
     vibe: (ALL_VIBES as readonly string[]).includes(s.vibe) ? s.vibe : d.vibe,
     vibeMode: (['fixed', 'cycle', 'smart'] as const).includes(s.vibeMode) ? s.vibeMode : d.vibeMode,
     songVibes: Object.fromEntries(Object.entries(s.songVibes && typeof s.songVibes === 'object' ? s.songVibes : {}).filter(([, v]) => (ALL_VIBES as readonly string[]).includes(v as string)).slice(-300)),

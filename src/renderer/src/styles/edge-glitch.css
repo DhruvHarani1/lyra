@@ -18,3 +18,6 @@
 :root[data-vibe='glitch'] .edge__c::after { content: ''; position: absolute; left: 0.6vw; right: -0.6vw; top: -0.55vh; height: 0.4vh; background: rgba(38, 240, 255, 0.55); }
 :root[data-vibe='glitch'] .edge__c::before { content: ''; position: absolute; left: -0.6vw; right: 0.6vw; top: 0.55vh; height: 0.4vh; background: rgba(255, 42, 26, 0.55); }
 :root[data-vibe='glitch'][data-mode='mini']:not([data-platform='android']) .edge__a { height: 2.2vh; }
+
+/* the phone: used to live in p-glitch.css */
+:root[data-platform='android'][data-vibe='glitch'] .edge__d, :root[data-platform='android'][data-vibe='glitch'] .edge__b { width: 2.4vw; }

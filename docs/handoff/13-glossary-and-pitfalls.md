@@ -2,13 +2,16 @@
 
 ## Glossary
 * **Vibe / look**: a complete visual identity (see doc 3). Code says vibe, UI says "look" sometimes.
-* **Archetype / arch**: layout family of card + lyrics + controls (`side dock orb bar chat term`).
-* **Stage**: the lyric presentation style (`classic kinetic zoom constellation sticker chat type diary subtitle chatlog lowerthird`).
+* **Archetype / arch**: layout family of card + lyrics + controls (`side dock orb bar chat term`; since 0.24 every look is `scene`, where the look sets its own geometry).
+* **Stage**: the lyric presentation style (35 `LyricStyle` kinds, see doc 3).
+* **Edge**: the per-look window frame that animates with the sung line (`EdgeFx.tsx`, `edge-<look>.css`).
+* **Scene**: the layout archetype where the look composes its own screen (`scene.css`).
 * **Plate**: the designed player-card box (cover + title + controls) of a look.
 * **Poster / cover frame**: animated frame and doodles around the album art (`.artwork--lift` + `.artwork__deco--a/b/c`).
 * **Cinema mode / `is-cinema`**: fullscreen with a video behind: the card shrinks to a dock. (`is-video` for the terminal.)
 * **Calm**: `data-calm` - nothing playing or window hidden: endless animations pause.
-* **Moments**: saved lyric lines. **Room / Jam nearby**: LAN page `room.html` that shows lyrics on other devices.
+* **Moments**: saved lyric lines. **Room / Jam**: the internet "Listen together" feature over PeerJS (`store/room.ts`, `store/jam.ts`, `website/room.html`). **Lyra Connect**: the LAN feature for other screens (Devices panel). The old LAN "TV mode" and "Jam nearby" sound streaming were removed in 0.23.
+* **Viewer / controller / overlay**: Connect device roles. **Follow-me**: a paired device renders what the host sends against a shared clock. **Party**: one shared viewer-only code.
 * **Studio**: lyric-video export (WebCodecs) - Windows own-file export and live export; Android screen recording.
 * **LRCLIB**: free community lyrics database (first provider).
 * **Song identity**: normalised `artist|title` key (`songKey`).
@@ -34,3 +37,7 @@
 16. Parallel test runs on the same port kill each other: set `UI_PORT`.
 17. Never claim success of a release before checking the release page and assets.
 18. Do not reuse names/art from games, films or brands.
+19. A scene look's regions: do not fix one state by moving the card; the card, lyrics and video window keep the same regions in all states.
+20. `scene-check.mjs` measures layout only; `test:ui:quick` needs the lyric-stage selectors for any new stage; CI renders on Linux so contrast and clip numbers can differ from Windows. See `CONTEXT.md` section 9.
+21. `cards.css` is generated (`scripts/gen-cards.py`): never hand-edit it.
+22. Connect is plain ws/http: do not describe it as secure or encrypted anywhere (docs, UI, website). The overlay link is a bearer secret.

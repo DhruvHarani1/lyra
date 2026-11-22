@@ -11,24 +11,10 @@
   --sk-cyan: #4de3ff;
   --sk-yellow: #ffd84a;
   /* scene geometry (styles/scene.css): the big sticker top left, a label under it, the words on the right */
-  --sc-ww: min(38vw, 60vh);
-  --sc-wl: 6vw;
-  --sc-wt: 10vh;
-  --sc-wr: 2.6vh;
-  --sc-cl: 6vw;
-  --sc-cb: 6vh;
-  --sc-ct: auto;
-  --sc-cw: var(--sc-ww);
-  --sc-ll: calc(6vw + var(--sc-ww) + 4vw);
-  --sc-lt: 10vh;
-  --sc-lw: calc(94vw - var(--sc-ww) - 6vw - 4vw);
-  --sc-lb: 16vh;
-  --sc-lbs: 16vh;
   --sc-art-bg: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.5) 0 1.2vh, rgba(255, 255, 255, 0.25) 1.2vh 2.4vh), #ffd84a;
   --sc-art-fg: #15101f;
   --sc-eq: #15101f;
 }
-:root[data-vibe='sticker'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(42vw, 66vh); }
 :root[data-vibe='sticker'][data-rim='on']::after { display: none; }
 [data-vibe='sticker'] .backdrop .backdrop__field { background: radial-gradient(100% 80% at 80% 0%, #3b1f6e, #14101f 70%); }
 :root[data-vibe='sticker'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
@@ -48,10 +34,8 @@
 :root[data-motion='off'] .stickerfx * { animation: none !important; }
 :root[data-perf='low'] .stickerfx__loose:nth-child(2n) { display: none; }
 /* the video as a die-cut sticker: a thick white border and a soft shadow; one corner peels */
-[data-vibe='sticker'] .scenewin { box-shadow: 0 0 0 1.1vh #fff, 0.6vh 1.6vh 3vh 1.1vh rgba(0, 0, 0, 0.5); }
 .stickerfx__peel { position: absolute; right: calc(100vw - var(--sc-wl) - var(--sc-ww) - 1.1vh); bottom: calc(100vh - var(--sc-wt) - var(--sc-wh) - 1.1vh); width: 9vh; height: 9vh; background: linear-gradient(135deg, transparent 50%, #e9e4f5 50%, #bdb4d6); border-radius: 0 0 0 100%; clip-path: polygon(0 0, 100% 100%, 0 100%); filter: drop-shadow(-0.4vh -0.4vh 0.6vh rgba(0, 0, 0, 0.35)); }
 .stickerfx__peel, .stickerfx__peel--hide { display: none; }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .stickerfx__peel { display: block; }
 .scenewin__art span { font: 900 3vh/1 'Nunito Variable', sans-serif; letter-spacing: -0.02em; text-transform: uppercase; color: #15101f; background: #fff; padding: 0.9vh 1.6vh; border-radius: 1.4vh; rotate: -3deg; box-shadow: 0 0.5vh 0 rgba(0, 0, 0, 0.25); }
 .scenewin__eq { display: none; }
 
@@ -60,29 +44,15 @@
   --fg: #15101f;
   --fg-2: #3a2f55;
   --fg-3: #55486f;
-  flex-direction: row;
-  align-items: center;
-  gap: 2vh;
-  padding: 1.3vh 2vh 1.3vh 1.3vh !important;
-  border-radius: 2.2vh !important;
-  background: var(--sk-lime) !important;
   border: 0 !important;
-  box-shadow: 0 0 0 0.9vh #fff, 0.5vh 1.4vh 2.4vh 0.9vh rgba(0, 0, 0, 0.45) !important;
   color: #15101f;
 }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 9vh !important; border-radius: 1.4vh !important; box-shadow: 0 0 0 0.5vh #15101f; }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
 :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 900 2.3vh/1.1 'Nunito Variable', sans-serif; letter-spacing: -0.02em; color: #15101f; text-shadow: none; }
 :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.5vh); font-weight: 800; color: #3a2f55; }
 :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(21, 16, 31, 0.2); }
 :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #15101f; }
 :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #15101f !important; color: var(--sk-lime) !important; box-shadow: 0 0 0 0.4vh #fff !important; }
 :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #15101f; }
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child,
-:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
 
 /* ---------------- other lyric states (same regions) ---------------- */
 [data-vibe='sticker'] .lyrics__notice { align-self: flex-start; background: #fff; border: 0; border-radius: 99px; color: #15101f; font: 900 1.5vh/1.2 'Nunito Variable', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; box-shadow: 0 0.4vh 0 rgba(0, 0, 0, 0.3); }
@@ -96,3 +66,57 @@
 [data-vibe='sticker'] .lfb p, [data-vibe='sticker'] .lfb small { color: #fff; }
 [data-vibe='sticker'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='sticker'] .lfb__eq i { background: var(--sk-lime); border-radius: 99px; box-shadow: 0 0 0 0.2vh #fff; }
+
+/* ---- second pass, was recomp1.css ---- */
+/* ===== STICKERS: a collage board: a big tilted peeled-corner video sticker on a paper scrap, stacked word stickers, the card a sticker sheet ===== */
+:root[data-vibe='sticker'] {
+  --sc-ww: min(48vw, 76vh);
+  --sc-wl: 5vw;
+  --sc-wt: 9vh;
+  --sc-wr: 3vh;
+  --sc-cl: calc(5vw + var(--sc-ww) * 0.14);
+  --sc-cw: calc(var(--sc-ww) * 0.86);
+  --sc-cb: 5vh;
+  --sc-ct: auto;
+  --sc-ll: calc(5vw + var(--sc-ww) + 5vw);
+  --sc-lt: 7vh;
+  --sc-lw: calc(95vw - var(--sc-ll));
+  --sc-lb: 9vh;
+  --sc-lbs: 9vh;
+}
+:root[data-vibe='sticker'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(52vw, 80vh); }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop__stage, :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin { rotate: -2.4deg; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .stickerfx__peel { display: none; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin::after { content: ''; position: absolute; right: 0; bottom: 0; width: 11vh; height: 11vh; background: linear-gradient(135deg, transparent 50%, #20123e 50%); }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin::before { content: ''; position: absolute; right: 0; bottom: 0; width: 5.6vh; height: 5.6vh; z-index: 2; background: linear-gradient(315deg, #fff 50%, transparent 50%); filter: drop-shadow(-0.5vh -0.6vh 0.6vh rgba(0, 0, 0, 0.4)); }
+[data-vibe='sticker'] .scenewin { box-shadow: 0 0 0 1.1vh #fff, 0 0 0 3.6vh #fff4d8, 0.8vh 1.8vh 3vh 3.6vh rgba(0, 0, 0, 0.5); }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .stickerfx::after { content: ''; position: absolute; left: calc(var(--sc-wl) + var(--sc-ww) * 0.4); top: calc(var(--sc-wt) - 5.4vh); width: 14vh; height: 4vh; background: rgba(255, 216, 74, 0.8); rotate: -4deg; box-shadow: 0 0.3vh 0.6vh rgba(0, 0, 0, 0.3); }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  flex-direction: row;
+  align-items: center;
+  gap: 2vh;
+  padding: 1.6vh 2vh 1.6vh 1.6vh !important;
+  border-radius: 1.4vh !important;
+  background: radial-gradient(circle at 92% 18%, #ff6fb0 0 1.8vh, transparent 1.9vh), radial-gradient(circle at 96% 78%, #4de3ff 0 1.4vh, transparent 1.5vh), #fff7e3 !important;
+  outline: 0.4vh dashed rgba(21, 16, 31, 0.55);
+  outline-offset: -1vh;
+  box-shadow: 0 0 0 0.9vh #fff, 0.5vh 1.4vh 2.4vh 0.9vh rgba(0, 0, 0, 0.45) !important;
+  rotate: 1.4deg;
+}
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 9.4vh !important; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child, :root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { border-radius: 50% !important; box-shadow: 0 0 0 0.7vh #fff, 0 0 0 1.1vh #15101f !important; }
+/* the words: a stack of word stickers, folding into a second column when the line is long */
+:root[data-vibe='sticker'] .stk { place-items: center start; }
+:root[data-vibe='sticker'] .stk__words { flex-flow: column wrap; align-content: flex-start; justify-content: center; align-items: flex-start; height: 100%; gap: 0.22em 0.5em; padding: 0; font-size: calc(min(10cqw, 14cqh) * var(--k, 1)); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+:root[data-vibe='sticker'] .stk__words { padding: 1vh 1.6vh; box-sizing: border-box; }
+/* Stickers: the little cyan dot of the card sat on the time; move it to the middle of the right side */
+:root[data-vibe='sticker']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  background: radial-gradient(circle at 92% 14%, #ff6fb0 0 1.8vh, transparent 1.9vh), radial-gradient(circle at 99% 50%, #4de3ff 0 1.1vh, transparent 1.2vh), #fff7e3 !important;
+}

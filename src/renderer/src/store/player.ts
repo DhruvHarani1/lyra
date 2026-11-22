@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { CommandResult, ConnectionStatus, PlaybackSnapshot, PlayerCommand, QueueItem, RecentItem } from '@shared/types'
-import { estimatePositionMs } from '@core/clock'
+import { estimatePositionMs, type ClockAnchor } from '@core/clock'
 import { useUi } from './ui'
 
 interface PlayerStore {
@@ -20,10 +20,17 @@ interface PlayerStore {
 }
 
 /** Current playback position, interpolated from the last snapshot. Cheap; safe to call every frame. */
+const anchor: ClockAnchor = { positionMs: 0, sampledAt: 0, isPlaying: false }
 export function getPosition(): number {
   const s = usePlayer.getState().snapshot
   if (!s) return 0
-  return estimatePositionMs({ ...s, durationMs: s.track?.durationMs })
+  // one reused anchor instead of a fresh spread object per call (this runs every frame in several places)
+  anchor.positionMs = s.positionMs
+  anchor.sampledAt = s.sampledAt
+  anchor.isPlaying = s.isPlaying
+  anchor.isAdOrUnknown = s.isAdOrUnknown
+  anchor.durationMs = s.track?.durationMs
+  return estimatePositionMs(anchor)
 }
 
 export const usePlayer = create<PlayerStore>((set, get) => ({

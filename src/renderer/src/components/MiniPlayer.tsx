@@ -11,8 +11,7 @@ import { Artwork } from './Artwork'
 import { Icon, type IconName } from './Icon'
 import { VideoStatus } from './VideoStatus'
 import { IconButton, Transport, VolumeControl, useCaps } from './Controls'
-import { cycleVibe, useEffectiveVibe } from '@/hooks/useVibe'
-import { vibeInfo } from '@shared/vibes'
+import { cycleVibe } from '@/hooks/useVibe'
 import { FullscreenPlayer } from './FullscreenPlayer'
 import { LyricsView } from './LyricsView'
 import { KaraokeScreen } from './KaraokeScreen'
@@ -300,8 +299,7 @@ function MiniClassic() {
 
 /** The small window. Looks that compose their own screen (scene) use the same screen as fullscreen, laid out for a tall window. */
 export function MiniPlayer() {
-  const arch = vibeInfo(useEffectiveVibe().vibe).layout
   const phone = document.documentElement.dataset.platform === 'android'
-  if (!phone && arch === 'scene') return <FullscreenPlayer mini />
+  if (!phone) return <FullscreenPlayer mini />
   return <MiniClassic />
 }

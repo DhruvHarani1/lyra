@@ -117,6 +117,8 @@ class Conn extends EventEmitter implements WsConn {
         this.close(1002)
       }
     })
+    // http.Server sockets are half-open capable: a peer FIN fires 'end' but not 'close', so finish on both
+    socket.on('end', () => this.finish())
     socket.on('close', () => this.finish())
     socket.on('error', () => this.finish())
   }

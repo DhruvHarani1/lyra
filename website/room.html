@@ -5,9 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#050505" />
 <meta name="robots" content="noindex" />
-<link rel="icon" href="assets/icon.png" />
+  <meta property="og:site_name" content="Lyra" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Listening together · Lyra" />
+  <meta property="og:description" content="Follow the lyrics of the song your friend is playing, live, in your browser." />
+  <meta property="og:image" content="https://lyra-website-rho.vercel.app/assets/shots/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 <title>Listening together · Lyra</title>
 <style>
+  @font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(assets/fonts/inter-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
   :root { --a: #ff7a59; --b: #c64cff; --c: #3fd0ff; --ease: cubic-bezier(0.22, 1, 0.36, 1); }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: #050505; color: #f5f5f7; font-family: Inter, 'Segoe UI', system-ui, sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
@@ -53,13 +66,14 @@
 </style>
 </head>
 <body>
-<div class="top"><img src="assets/icon.png" alt="" /><span>Listening together</span><span class="st" id="who"></span><a href="/#download">Get Lyra</a></div>
+<div class="top"><img src="assets/icon-64.png" alt="" width="22" height="22" /><span>Listening together</span><span class="st" id="who"></span><a href="/#download">Get Lyra</a></div>
 <div class="bg plain" id="bg"></div><div class="shade"></div>
 <main>
   <div class="meta"><div class="art" id="art"></div><div><div class="t" id="t"></div><div class="ar" id="ar"></div></div><div class="bar"><b id="bar"></b></div></div>
   <div class="lyrics" id="box"><div class="col" id="col"></div></div>
 </main>
 <div class="msg" id="msg" role="status" aria-live="polite">Waiting for Lyra…</div>
+<noscript><div class="msg">This page shows live lyrics from your host and needs JavaScript. <a href="./">About Lyra</a></div></noscript>
 <div class="dot off" id="dot" title="connection" role="img" aria-label="Connection status"></div>
 <div class="play" id="play">Lyrics only. Play the same song on your own device to listen along.</div>
 <script src="assets/peerjs.min.js"></script>

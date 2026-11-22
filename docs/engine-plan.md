@@ -1,6 +1,8 @@
 # Engine plan: lyrics, video, start-up
 
-> **Status (0.20.0):** section 1 (synced first) done. Section 2: Apple clip disk cache, failure memory (renderer, 14 days) and fade-in done on Windows; pause/resume works on Windows, phone YouTube still plays while paused; no prefetch yet. Section 3 (smooth start) not started.
+> **Status (2026-11-23, 0.24.1):** all three sections are built. Since 0.20: next-song prefetch (0.21, Spotify queue), an optional start gate (0.22, off by default), a persistent cache for lyrics / YouTube picks / karaoke searches / Apple clip lookups with a Clear cache button, remembered manual choices per song (`core/userChoices.ts`), video ranking and black-bar trimming (0.23). Still open: Apple clip stutter and the "ready before the song" rate are not measured on a real PC (#74, #75), Android has no clip cache. See `docs/handoff/05-lyrics-video-engine.md`. The text below is the original plan and the 0.20.0 status.
+>
+> **Original status (0.20.0):** section 1 (synced first) done. Section 2: Apple clip disk cache, failure memory (renderer, 14 days) and fade-in done on Windows; pause/resume works on Windows, phone YouTube still plays while paused; no prefetch yet. Section 3 (smooth start) not started.
 
 ## 1. Lyrics: synced always wins
 Today `LyricsService.lookup` asks providers in order and returns the first `found`, even if it is plain text. Change:

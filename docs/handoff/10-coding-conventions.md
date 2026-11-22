@@ -11,7 +11,7 @@ TypeScript strict everywhere (`tsconfig.node.json` for main/core/shared, `tsconf
 * Comments explain **why** (a surprising constraint, a trap), not what. Doc comments on exported functions describe behaviour in plain words (they are written like short paragraphs).
 
 ## CSS patterns
-* Look-specific CSS is scoped with `[data-vibe='id']` or `:root[data-vibe='id']`; global rules never mention a vibe. Group by vibe with a banner comment (`/* ===== NEON ===== */`).
+* Look-specific CSS is scoped with `[data-vibe='id']` or `:root[data-vibe='id']`; global rules never mention a vibe. Since 0.24 each look has its own files (`<look>.css`, `edge-<look>.css`, sometimes `x-<look>.css` / `p-<look>.css`), imported in cascade order in `main.tsx`; do not put a look's rules in another look's file. Group by vibe with a banner comment (`/* ===== NEON ===== */`).
 * Tokens first: `--accent --glow --glow-soft --font --fg --fg-2 --fg-3 --line --glass --on-fg --word-dim --bg-0 --edge --rimc` are set on `[data-vibe] .shell`.
 * Use container query units inside stages (`cqw/cqh`), `clamp()` for type, `color-mix()` for tints.
 * Animations: `transform`/`opacity` only, name keyframes with a prefix (`pz-*` posters, `glitch-*`, `neon-*`), stop them for `:root[data-calm]` and reduced motion.
@@ -35,3 +35,7 @@ Small focused commits with a clear conventional-style subject (`feat(vibes): Neo
 
 ## Quality bar before saying "done"
 typecheck clean, vitest green, UI tests green for what you touched (quick + states + the vibe), screenshots looked at (not just test output), docs updated, and a plain statement of what was **not** run on real hardware.
+
+## Connect and security conventions
+* Anything that crosses the network in Lyra Connect is validated and size-capped in `core/connect/protocol.ts`; secrets never go in a URL query (the pairing code and the overlay credential live in the URL **fragment**); commands are signed (HMAC) with a replay counter and re-checked against the device role on every message; a role may only be narrowed, never widened. Read `docs/connect-redesign.md` section 4 before touching pairing.
+* A new off-device request must be added to `PRIVACY.md` in the same PR.

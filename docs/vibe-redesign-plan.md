@@ -1,5 +1,7 @@
 # Vibe redesign plan (fullscreen first, then mini player, Android last)
 
+> **Status (2026-11-23): done.** Every look was rebuilt as its own scene in 0.23 and 0.24 (34 looks, Windows 0.24.1), the mini player compositions and Android looks followed in 0.24.1 (`styles/mini-looks.css`, `styles/android-looks.css`). The table below is the original plan for the first 20 looks and is kept as history; the current list is `src/shared/vibes.ts` and `docs/handoff/03-vibes-and-design-language.md`. Journal, Doodle, Dusk Ridge, Lock Screen, Wallet, Route, Editor, Metro, Web, Lens, Picto, Drift Wall, Split-flap and Film Strip came after this plan. Per-vibe CSS ended up as several files per look (`<look>.css`, `edge-<look>.css`, sometimes `x-` / `p-` / `-v2`), not one.
+
 Owner decisions (2026-11-21): every vibe is a complete, unique scene. Different background, lyric motion, video treatment, player card and edge effect. Vibes that are near copies get rebuilt or removed. Every state of one vibe keeps the same regions (`docs/ui-state-matrix.md`), and the video position is decided per vibe. Work one vibe at a time: concept mockup in `docs/mockups/`, then build, then check in the browser harness. The full test suite runs once, after all vibes are done.
 
 ## Where each vibe puts the video (decided by Claude, owner approved the approach)
@@ -35,9 +37,8 @@ Rule of thumb: lyrics are the hero. A video goes in a framed window of the vibe'
 4. Check key states in the harness (`?mode=full`, `?vs=live`, `?ly=plain|none|offline`, `reducedMotion` off) and typecheck. Mini player, Settings skin and Android come in their later passes.
 
 ## Order and status (Claude decides the order; copies of one another go first)
-Done: **Neon** (Rain Alley), **Chrome** (liquid metal), **Arcade** (80s cabinet), **Trailer** (letterboxed titles), **Sunset Drive** (golden hour, remade after the first cartoon-like version).
-Next, in this order: Sketch, Glitch, Comic, Stencil, Film (the old orb/zoom family), then Dream, Terminal, Stickers, DM, Diary, Cinema, Blocks, Stadium, Cassette, and Artwork last.
+Historical status when written: done were Neon (Rain Alley), Chrome, Arcade, Trailer and Sunset Drive; planned next, in this order: Sketch, Glitch, Comic, Stencil, Film (the old orb/zoom family), then Dream, Terminal, Stickers, DM, Diary, Cinema, Blocks, Stadium, Cassette, and Artwork last.
 Each vibe is committed on its own. Shared mechanics live in `styles/scene.css` (scene layout variables, video window, card spot) and `LyricsStage.tsx` (stages).
 
-## Video fit (open task, decided by Claude)
-Scene windows are 16:9 (arcade 16:10, trailer 2.39:1 on purpose), so YouTube and Apple clips fill them. Videos are shown with `object-fit: cover` and black-bar detection, so a clip with baked-in bars is cropped to its picture. Odd shapes (vertical, square, 4:3, living art) are still cropped by `cover`. To do after the vibes: for sources that are not close to 16:9, show the whole picture with a blurred copy of it filling the rest of the window.
+## Video fit (done in 0.23, per the release notes)
+Scene windows are 16:9 (arcade 16:10, trailer 2.39:1 on purpose), so YouTube and Apple clips fill them. Videos are shown with `object-fit: cover` and black-bar detection, so a clip with baked-in bars is cropped to its picture. Odd shapes (vertical, square, 4:3, living art) are still cropped by `cover`. Done in 0.23 (`styles/videofit.css`; release notes): sources that are not close to 16:9 show the whole picture over a blurred copy of it. Not re-verified against the code for this edit.

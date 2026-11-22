@@ -11,9 +11,14 @@ on:
         description: 'Publish a release named android-v<versionName> (creates the tag). Leave off to just build the APK.'
         type: boolean
         default: false
+      force:
+        description: 'Publish even though the CI workflow has not succeeded for this commit (emergency override, see docs/DISTRIBUTION.md).'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
+  actions: read # the release gate reads the CI runs of this commit
 
 jobs:
   apk:
@@ -21,6 +26,40 @@ jobs:
     env:
       HAS_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
     steps:
+      # A release is published only for a commit whose CI run (typecheck, tests, build, UI checks) is green. This workflow
+      # runs on its own, so without this gate a tag or "Run workflow" could ship a commit CI had rejected (0.24.1 did).
+      # `force` is the documented override; a tag push cannot set it (re-run by hand with force to override).
+      - name: Release gate (CI must be green for this commit)
+        if: ${{ github.ref_type == 'tag' || inputs.publish }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          if [ "$FORCE" = "true" ]; then
+            echo "::warning::force=true: publishing ${GITHUB_SHA} without a successful CI run"
+            exit 0
+          fi
+          latest=$(gh run list --repo "${GITHUB_REPOSITORY}" --workflow ci.yml --commit "${GITHUB_SHA}" --limit 20 --json status,conclusion --jq '.[0] // empty | "\(.status) \(.conclusion)"')
+          if [ -z "$latest" ]; then
+            echo "::error::No CI run found for commit ${GITHUB_SHA}. Push it to main (or open a PR) and wait for CI, or re-run with force=true."
+            exit 1
+          fi
+          if [ "$latest" != "completed success" ]; then
+            echo "::error::The latest CI run for commit ${GITHUB_SHA} is '${latest}', not 'completed success'. Fix or wait for CI, or re-run with force=true."
+            exit 1
+          fi
+          echo "CI is green for ${GITHUB_SHA}"
+
+      # The in-app updater only installs an update signed with the same key as the installed app. A debug-signed APK
+      # (what the build falls back to without the secrets) would be refused by every later update, so never publish one.
+      - name: Refuse to publish without the signing key
+        if: ${{ (github.ref_type == 'tag' || inputs.publish) && env.HAS_KEY != 'true' }}
+        shell: bash
+        run: |
+          echo "::error::The ANDROID_KEYSTORE_BASE64 secret (and its password / alias secrets) is missing, so the APK would be debug-signed and the in-app updater would refuse every later update. Add the secrets (docs/DISTRIBUTION.md) and run again."
+          exit 1
+
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
@@ -61,11 +100,16 @@ jobs:
           echo "LYRA_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}" >> "$GITHUB_ENV"
           echo "LYRA_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> "$GITHUB_ENV"
 
-      - name: Build the APK
+      # the Kotlin unit tests (updater, TV / Connect client, Car, AOD, audio) had never run in CI
+      - name: Android unit tests and lint
         working-directory: android
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon --console=plain
+          ./gradlew testDebugUnitTest lintDebug --no-daemon --console=plain
+
+      - name: Build the APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon --console=plain
 
       - name: Name the APK
         shell: bash

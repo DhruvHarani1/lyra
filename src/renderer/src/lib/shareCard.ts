@@ -50,7 +50,7 @@ const DARK: CardTheme = {
 }
 
 /** One card per vibe, so the card you share looks like the screen you were looking at. */
-const THEMES: Record<string, Partial<CardTheme>> = {
+export const THEMES: Record<string, Partial<CardTheme>> = {
   neon: { bg: '#07020f', card: ['#1a0a33', '#0b0418'], border: '#ff3df2', borderW: 6, radius: 44, pen: ['#2ef2ff', '#ff3df2', '#ffe14d', '#7df9ff'], accentMarks: '#ff3df2', pattern: 'grid', patternColor: 'rgba(255,61,242,0.16)' },
   chrome: { bg: '#0b0e14', card: ['#eef2f8', '#aab4c4'], border: '#ffffff', borderW: 6, radius: 90, ink: '#0b1220', ink2: '#2a3446', pen: ['#2b5cff', '#d6246e', '#0b1220', '#5b3df5'], accentMarks: '#2b5cff', pattern: 'lines', patternColor: 'rgba(255,255,255,0.35)', markBg: '#0b1220', markInk: '#ffffff' },
   dream: { bg: '#1b1235', card: ['#f6edff', '#d8cbff'], border: '#ffffff', borderW: 5, radius: 110, ink: '#3a2a66', ink2: '#5b4a8a', pen: ['#ff7ab8', '#7a5cff', '#ff7ab8', '#6c4bd8'], accentMarks: '#7a5cff', pattern: 'dots', patternColor: 'rgba(122,92,255,0.18)', markBg: '#3a2a66', markInk: '#ffffff' },
@@ -88,9 +88,11 @@ Object.assign(THEMES, {
   wall: { bg: '#18181c', card: ['#2c2c33', '#222228'], border: '#ff9f43', borderW: 6, shadow: '#000000', radius: 18, ink: '#f2f2f5', ink2: 'rgba(242,242,245,0.75)', pen: ['#ff9f43', '#f2f2f5', '#ff9f43', '#ffd0a0'], accentMarks: '#ff9f43', font: "'Unbounded Variable', sans-serif", load: '800 40px "Unbounded Variable"', fontScale: 0.8, markBg: '#ff9f43', markInk: '#18181c' },
   flap: { bg: '#0d0d10', card: ['#1b1b1f', '#141417'], border: '#ffd23f', borderW: 6, shadow: '#3a3a40', radius: 6, ink: '#f4f4f4', ink2: 'rgba(244,244,244,0.7)', pen: ['#ffd23f', '#f4f4f4', '#ff5c5c', '#ffd23f'], accentMarks: '#ffd23f', font: "'Cascadia Code', Consolas, monospace", fontScale: 0.8, markBg: '#ffd23f', markInk: '#0d0d10' }
 } as Record<string, Partial<CardTheme>>)
+// Film Strip is the Film Reel's sibling: same stock, same card
+THEMES.filmstrip = THEMES.film!
 
 /** which doodle kit each look draws with */
-const KIT_OF: Record<string, string> = {
+export const KIT_OF: Record<string, string> = {
   neon: 'neon', chrome: 'chrome', dream: 'dream', crt: 'term', sticker: 'sticker', chat: 'chat', paper: 'paper', journal: 'paper', doodle: 'paper', arcade: 'pixel',
   noir: 'cine', sunset: 'sun', dusk: 'sun', blocks: 'pixel', stadium: 'sport', cassette: 'tape', sketch: 'paper', glitch: 'term', comic: 'comic',
   stencil: 'spray', film: 'cine', filmstrip: 'cine', trailer: 'cine', lock: 'soft', wallet: 'grid', route: 'route', editor: 'term',

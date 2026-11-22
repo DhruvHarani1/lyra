@@ -1,41 +1,41 @@
 /* Lyra website: hero, looks wall + showcase, state story, rails, release links. Uses REPO and reduce from demo.js. */
-const BASE_VIBES = window.LYRA_VIBES || []
-// looks added after the first site build (they only have a full-screen screenshot): merged in so every look is on the page
-const EXTRA = [
-  { id: 'filmstrip', name: 'Film Strip', tag: 'The film advances frame by frame', layout: 'scene', stage: 'intertitle', acc: '#e0b36a', light: false },
-  { id: 'lock', name: 'Lock Screen', tag: 'Each line arrives as a notification', layout: 'scene', stage: 'lockscreen', acc: '#b58cff', light: false },
-  { id: 'wallet', name: 'Wallet', tag: 'Every line is a payment', layout: 'scene', stage: 'wallet', acc: '#35e08a', light: false },
-  { id: 'route', name: 'Route', tag: 'The lyrics are a route on a map', layout: 'scene', stage: 'route', acc: '#4aa3ff', light: false },
-  { id: 'editor', name: 'Editor', tag: 'The song as code', layout: 'scene', stage: 'editor', acc: '#3b9cff', light: false },
-  { id: 'metro', name: 'Metro', tag: 'A line map, one stop per word', layout: 'scene', stage: 'metro', acc: '#ff3b6b', light: false },
-  { id: 'web', name: 'Web', tag: 'Words hang in a spider web', layout: 'scene', stage: 'weave', acc: '#9aa8ff', light: false },
-  { id: 'lens', name: 'Lens', tag: 'A glass lens magnifies the line', layout: 'scene', stage: 'label', acc: '#5ff0c4', light: false },
-  { id: 'picto', name: 'Picto', tag: 'Words turn into pictograms', layout: 'scene', stage: 'picto', acc: '#ff7a59', light: false },
-  { id: 'wall', name: 'Drift Wall', tag: 'Words land on a wall that drifts in 3D', layout: 'scene', stage: 'wall', acc: '#ffa23b', light: false },
-  { id: 'flap', name: 'Split-flap', tag: 'An airport board flips each word', layout: 'scene', stage: 'flap', acc: '#ffd23b', light: false },
-  { id: 'journal', name: 'Journal', tag: 'A ruled page, a taped polaroid, marker highlights', layout: 'scene', stage: 'jot', acc: '#e0556d', light: true },
-  { id: 'dusk', name: 'Dusk Ridge', tag: 'A star-filled sky over sunlit mountains', layout: 'scene', stage: 'bloom', acc: '#ffb86b', light: false },
-  { id: 'doodle', name: 'Doodle', tag: 'Fat marker, bright shapes, scribbles that draw themselves', layout: 'scene', stage: 'scrawl', acc: '#ff5f7e', light: true },
-]
-const VIBES = [...BASE_VIBES, ...EXTRA.filter((x) => !BASE_VIBES.some((b) => b.id === x.id))]
-// looks that only have a full-screen screenshot (no phone / mini / no-video shots)
-const FULL_ONLY = new Set(EXTRA.map((x) => x.id))
-const HAS_CARD = new Set(BASE_VIBES.map((v) => v.id).filter((id) => !FULL_ONLY.has(id)))
-const shot = (name) => `assets/shots/${name}.jpg`
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
+// every look has every screenshot (scripts/make-site-shots.mjs makes them all), so there is nothing to special-case
+const VIBES = window.LYRA_VIBES || []
+const N = VIBES.length
+const WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
+const TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
+const numWords = (n) => (n < 20 ? WORDS[n] : TENS[Math.floor(n / 10)] + (n % 10 ? '-' + WORDS[n % 10].toLowerCase() : ''))
+const shot = (name) => `assets/shots/${name}.webp`
+// a full-screen shot comes in two widths
+const fullSet = (id, vid = true) => {
+  const n = `${id}-full${vid ? '' : '-novideo'}`
+  return vid ? { src: shot(n), srcset: `${shot(`${id}-full-800`)} 800w, ${shot(n)} 1600w` } : { src: shot(n), srcset: '' }
+}
 const rootStyle = document.documentElement.style
 const setAccent = (v) => rootStyle.setProperty('--acc', v.acc)
 const vibeById = (id) => VIBES.find((v) => v.id === id) || VIBES[0]
-const fine = matchMedia('(pointer: fine)').matches
+// pointer effects only where there is a real hovering pointer (not a touch screen that reports a mouse)
+const fine = matchMedia('(hover: hover) and (pointer: fine)').matches
+// the counts in the copy follow the data; the numbers in the HTML are the no-JS fallback
+$$('[data-looks]').forEach((el) => { el.textContent = N })
+$$('[data-looks-count]').forEach((el) => { el.dataset.count = N; el.textContent = N })
+$$('[data-looks-words]').forEach((el) => { el.textContent = numWords(N) })
+$$('[data-label-looks]').forEach((el) => el.setAttribute('aria-label', el.dataset.labelLooks.replace('{n}', N)))
 document.documentElement.classList.add('js')
 // when a screenshot is missing the layout must not collapse
 document.addEventListener('error', (e) => { if (e.target.tagName === 'IMG') e.target.style.visibility = 'hidden' }, true)
 // swap an <img> only once the new picture is ready, so there is never a blank flash
-const swapImg = (el, src, alt) => {
+const swapImg = (el, src, alt, srcset = '') => {
   if (!el) return
   const im = new Image()
-  im.onload = () => { el.src = src; if (alt !== undefined) el.alt = alt; el.style.visibility = ''; el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap') }
+  im.onload = () => {
+    if (srcset) el.srcset = srcset
+    else el.removeAttribute('srcset')
+    el.src = src; if (alt !== undefined) el.alt = alt; el.style.visibility = ''; el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap')
+  }
+  if (srcset) { im.sizes = el.sizes; im.srcset = srcset }
   im.src = src
 }
 
@@ -121,7 +121,7 @@ if (!reduce && fine) {
 }
 
 /* ---------- hero: words light up one by one, then the looks rotate ---------- */
-const HERO = VIBES.filter((v) => v.id !== 'none' && !FULL_ONLY.has(v.id))
+const HERO = VIBES.filter((v) => v.id !== 'none')
 {
   const words = $$('#hero-h1 .w')
   let i = 0
@@ -137,10 +137,10 @@ const HERO = VIBES.filter((v) => v.id !== 'none' && !FULL_ONLY.has(v.id))
   let cur = Math.max(0, HERO.findIndex((v) => v.id === 'neon'))
   const apply = (v) => {
     setAccent(v)
-    swapImg($('#hx-full'), shot(`${v.id}-full`), `Lyra fullscreen in the ${v.name} look`)
+    const f = fullSet(v.id)
+    swapImg($('#hx-full'), f.src, `Lyra fullscreen in the ${v.name} look`, f.srcset)
     swapImg($('#hx-phone'), shot(`${v.id}-phone`)); swapImg($('#hx-mini'), shot(`${v.id}-mini`))
-    const withCard = HERO.filter((x) => HAS_CARD.has(x.id))
-    const a = withCard[(cur + 5) % withCard.length], b = withCard[(cur + 11) % withCard.length]
+    const a = HERO[(cur + 5) % HERO.length], b = HERO[(cur + 11) % HERO.length]
     swapImg($('#hx-card-a'), shot(`card-${a.id}`)); swapImg($('#hx-card-b'), shot(`card-${b.id}`))
     $('#hx-name').textContent = v.name
   }
@@ -177,7 +177,7 @@ const HERO = VIBES.filter((v) => v.id !== 'none' && !FULL_ONLY.has(v.id))
   const stage = $('#wall-stage')
   const rows = [0, 1, 2].map((r) => VIBES.filter((_, i) => i % 3 === r))
   stage.innerHTML = rows.map((row, r) => {
-    const tiles = row.map((v) => `<button type="button" class="wt" data-id="${v.id}" style="--glow:${v.acc}" aria-label="Open the ${v.name} look"><img loading="lazy" decoding="async" src="${shot(`wall-${v.id}`)}" alt="" width="640" height="360" /><span>${v.name}</span></button>`).join('')
+    const tiles = row.map((v) => `<button type="button" class="wt" data-id="${v.id}" style="--glow:${v.acc}" aria-label="Open the ${v.name} look"><img loading="lazy" decoding="async" src="${shot(`tile-${v.id}`)}" alt="" width="640" height="360" /><span>${v.name}</span></button>`).join('')
     return `<div class="wallx__row${r === 1 ? ' is-rev' : ''}"><div class="wallx__track">${tiles}${tiles}</div></div>`
   }).join('')
   stage.addEventListener('click', (e) => {
@@ -205,22 +205,19 @@ const HERO = VIBES.filter((v) => v.id !== 'none' && !FULL_ONLY.has(v.id))
 {
   const list = $('#show-list'), canvas = $('#show-canvas'), img = $('#show-img')
   const S = { id: 'neon', dev: 'full', vid: 1 }
-  const swatch = (v) => (FULL_ONLY.has(v.id) ? `background-image:url(${shot(`wall-${v.id}`)})` : `background-image:url(${shot(`${v.id}-phone`)})`)
+  const swatch = (v) => `background-image:url(${shot(`tile-${v.id}`)})`
   list.innerHTML = VIBES.map((v) => `<button type="button" class="vbtn" aria-pressed="false" data-id="${v.id}"><i style="--sw:${v.acc};${swatch(v)}"></i><span><b>${v.name}</b><small>${v.tag}</small></span></button>`).join('')
   const render = (scroll) => {
     const v = vibeById(S.id)
-    const only = FULL_ONLY.has(v.id)
-    if (only && S.dev !== 'full') { S.dev = 'full'; $$('#seg-dev button').forEach((x) => x.classList.toggle('is-on', x.dataset.dev === 'full')) }
     setAccent(v)
-    const name = S.dev === 'full' ? `${v.id}-full${only || S.vid ? '' : '-novideo'}` : `${v.id}-${S.dev}`
     canvas.dataset.dev = S.dev
-    swapImg(img, shot(name), `${v.name} look, ${S.dev === 'full' ? 'full screen' : S.dev}`)
+    const f = S.dev === 'full' ? fullSet(v.id, !!S.vid) : { src: shot(`${v.id}-${S.dev}`), srcset: '' }
+    swapImg(img, f.src, `${v.name} look, ${S.dev === 'full' ? 'full screen' : S.dev}`, f.srcset)
     $('#show-name').textContent = v.name
     $('#show-tag').textContent = v.tag
     $('#show-tags').innerHTML = [`Layout: ${v.layout}`, `Lyric style: ${v.stage}`, v.light ? 'Light, inked' : 'Dark'].map((t) => `<span>${t}</span>`).join('')
     $$('.vbtn', list).forEach((b) => { const on = b.dataset.id === S.id; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', String(on)) })
-    $('#seg-vid').style.display = S.dev === 'full' && !only ? '' : 'none'
-    $('#seg-dev').style.display = only ? 'none' : ''
+    $('#seg-vid').style.display = S.dev === 'full' ? '' : 'none'
     if (scroll) { const b = $(`.vbtn[data-id="${S.id}"]`, list); if (b && list.scrollHeight > list.clientHeight + 4 && getComputedStyle(list).position === 'sticky') list.scrollTo({ top: b.offsetTop - list.clientHeight / 2 + b.offsetHeight / 2, behavior: 'smooth' }) }
   }
   window.lyraShow = (id) => { S.id = id; render(true) }
@@ -271,11 +268,9 @@ const HERO = VIBES.filter((v) => v.id !== 'none' && !FULL_ONLY.has(v.id))
 
 /* ---------- rails ---------- */
 {
-  const cards = VIBES.filter((v) => HAS_CARD.has(v.id))
-  const sets = VIBES.filter((v) => HAS_CARD.has(v.id))
-  const item = (kind, v) => `<figure class="rail__item" style="--glow:${v.acc}"><img loading="lazy" decoding="async" src="${shot(`${kind}-${v.id}`)}" alt="${kind === 'card' ? 'Share card' : 'Settings panel'}, ${v.name} look" /><figcaption>${v.name}</figcaption></figure>`
-  $('#rail-cards').innerHTML = cards.map((v) => item('card', v)).join('')
-  $('#rail-settings').innerHTML = sets.map((v) => item('settings', v)).join('')
+  const item = (kind, v) => `<figure class="rail__item" style="--glow:${v.acc}"><img loading="lazy" decoding="async" src="${shot(`${kind}-${v.id}`)}" alt="${kind === 'card' ? 'Share card' : 'Settings panel'}, ${v.name} look" width="${kind === 'card' ? 540 : 1280}" height="${kind === 'card' ? 960 : 720}" /><figcaption>${v.name}</figcaption></figure>`
+  $('#rail-cards').innerHTML = VIBES.map((v) => item('card', v)).join('')
+  $('#rail-settings').innerHTML = VIBES.map((v) => item('settings', v)).join('')
   // drag to scroll with the mouse
   $$('.rail').forEach((r) => {
     let down = false, sx = 0, sl = 0
@@ -291,15 +286,33 @@ if (/android/i.test(navigator.userAgent)) {
   a.classList.add('btn--acc'); a.classList.remove('btn--ghost'); w.classList.remove('btn--acc'); w.classList.add('btn--ghost')
   a.parentElement.prepend(a)
 }
+const mb = (n) => `${(n / 1048576).toFixed(0)} MB`
+// The GitHub API answers an array of releases; when rate limited it answers an object with a message, and that must not throw
+// somewhere unrelated. The answer is kept for the session so a reload does not spend the 60 requests an hour per visitor.
+const releases = async (repo) => {
+  const key = `lyra-releases:${repo}`
+  try { const c = JSON.parse(sessionStorage.getItem(key) || 'null'); if (c && Date.now() - c.t < 3600e3 && Array.isArray(c.rs)) return c.rs } catch { /* no storage */ }
+  const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=30`, { headers: { Accept: 'application/vnd.github+json' } })
+  const rs = await res.json()
+  if (!res.ok || !Array.isArray(rs)) throw new Error(rs && rs.message ? rs.message : `GitHub answered ${res.status}`)
+  const slim = rs.filter((r) => !r.draft).map((r) => ({ tag: r.tag_name, url: r.html_url, assets: r.assets.map((a) => ({ name: a.name, size: a.size, url: a.browser_download_url })) }))
+  try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), rs: slim })) } catch { /* private mode or full */ }
+  return slim
+}
+// the newest release whose tag matches (Windows tags are v0.24.1, Android tags are android-v0.10.1) and that really carries the file
+const pick = (rs, tagRe, ext) => {
+  // GitHub does not list releases strictly newest first (android-v0.9.0 can come before android-v0.10.1): take the highest version
+  const ver = (t) => t.replace(/^\D+/, '').split(/[.-]/).map((n) => parseInt(n, 10) || 0)
+  const newer = (a, b) => { const x = ver(a.tag), y = ver(b.tag); for (let i = 0; i < Math.max(x.length, y.length); i++) { const d = (x[i] || 0) - (y[i] || 0); if (d) return d > 0 } return false }
+  const r = rs.filter((x) => tagRe.test(x.tag) && x.assets.some((a) => a.name.toLowerCase().endsWith(ext))).reduce((best, x) => (!best || newer(x, best) ? x : best), null)
+  if (!r) return null
+  const a = r.assets.find((x) => x.name.toLowerCase().endsWith(ext))
+  return { v: r.tag.replace(/^\D+/, ''), url: a.url, size: a.size, page: r.url }
+}
 ;(async () => {
   try {
-    const rs = await (await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=30`)).json()
-    const pick = (re, ext) => {
-      const r = rs.find((x) => !x.draft && re.test(x.tag_name) && x.assets.some((a) => a.name.endsWith(ext)))
-      return r && { v: r.tag_name.replace(/^\D+/, ''), url: r.assets.find((a) => a.name.endsWith(ext)).browser_download_url, size: r.assets.find((a) => a.name.endsWith(ext)).size }
-    }
-    const win = pick(/^v\d/, '.exe'), and = pick(/^android-v/, '.apk')
-    const mb = (n) => `${(n / 1048576).toFixed(0)} MB`
+    const rs = await releases(REPO)
+    const win = pick(rs, /^v\d/, '.exe'), and = pick(rs, /^android-v\d/, '.apk')
     if (win) {
       $('#dl-win').href = win.url; $('#cta-win').href = win.url
       $('#dl-win-v').textContent = `Version ${win.v} · ${mb(win.size)} · Windows 10 / 11`
@@ -310,12 +323,16 @@ if (/android/i.test(navigator.userAgent)) {
       $('#dl-and-v').textContent = `Version ${and.v} · ${mb(and.size)} · Android 8+`
       $('#v-and').textContent = `Android ${and.v}`
     }
-  } catch { /* offline or rate limited: the buttons keep pointing at the releases page */ }
+  } catch { /* offline or rate limited: the buttons keep pointing at the releases list, which has both */ }
 })()
 
 /* ---------- reel: recordings of the real app ---------- */
 {
   const v = $('#reel-video')
+  // autoplay only for people who did not ask for less motion or less data; the others get the video controls instead
+  const auto = !reduce && !navigator.connection?.saveData && !matchMedia('(prefers-reduced-data: reduce)').matches
+  if (!auto) v.controls = true
+  const play = () => { if (auto) v.play().catch(() => {}) }
   const tabs = $$('#reel-tabs button')
   tabs.forEach((x) => x.setAttribute('aria-pressed', String(x.classList.contains('is-on'))))
   $('#reel-tabs').addEventListener('click', (e) => {
@@ -325,11 +342,11 @@ if (/android/i.test(navigator.userAgent)) {
     tabs.forEach((x) => { x.classList.toggle('is-on', x === b); x.setAttribute('aria-pressed', String(x === b)) })
     $('#reel-box').classList.toggle('is-tall', k === 'widget')
     b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' })
-    v.poster = `assets/poster-${k}.jpg`
+    v.poster = `assets/poster-${k}.webp`
     v.src = `assets/clip-${k}.mp4`
     v.play().catch(() => {})
   })
-  new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause())), { threshold: 0.25 }).observe(v)
+  new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? play() : v.pause())), { threshold: 0.25 }).observe(v)
   const song = $('#song-video')
   new IntersectionObserver((es) => es.forEach((e) => { if (!e.isIntersecting && !song.paused) song.pause() }), { threshold: 0.1 }).observe(song)
 }
@@ -337,15 +354,12 @@ if (/android/i.test(navigator.userAgent)) {
 /* ---------- Vega: newest release links ---------- */
 ;(async () => {
   try {
-    const rs = await (await fetch('https://api.github.com/repos/DhruvHarani1/vega/releases?per_page=10')).json()
-    const r = rs.find((x) => !x.draft && x.assets.some((a) => a.name.endsWith('.exe')))
-    if (!r) return
-    const exe = r.assets.find((a) => a.name.endsWith('.exe')), apk = r.assets.find((a) => a.name.endsWith('.apk'))
-    const mb = (n) => `${(n / 1048576).toFixed(0)} MB`
-    const v = r.tag_name.replace(/^\D+/, '')
-    $('#vega-win').href = exe.browser_download_url
-    $('#vega-win').textContent = `Download for Windows · ${v}`
-    if (apk) { $('#vega-and').href = apk.browser_download_url; $('#vega-and').textContent = `Download for Android · ${v}` }
-    $('#vega-meta').textContent = `Version ${v} · Windows ${mb(exe.size)}${apk ? ` · Android ${mb(apk.size)}` : ''} · free and open source`
+    const rs = await releases('DhruvHarani1/vega')
+    const exe = rs.map((r) => ({ r, a: r.assets.find((a) => a.name.toLowerCase().endsWith('.exe')) })).find((x) => x.a)
+    const apk = rs.map((r) => ({ r, a: r.assets.find((a) => a.name.toLowerCase().endsWith('.apk')) })).find((x) => x.a)
+    const ver = (x) => x.r.tag.replace(/^\D+/, '')
+    if (exe) { $('#vega-win').href = exe.a.url; $('#vega-win').textContent = `Download for Windows · ${ver(exe)}` }
+    if (apk) { $('#vega-and').href = apk.a.url; $('#vega-and').textContent = `Download for Android · ${ver(apk)}` }
+    if (exe || apk) $('#vega-meta').textContent = `${[exe && `Windows ${ver(exe)} · ${mb(exe.a.size)}`, apk && `Android ${ver(apk)} · ${mb(apk.a.size)}`].filter(Boolean).join(' · ')} · free and open source`
   } catch { /* keep the releases page links */ }
 })()

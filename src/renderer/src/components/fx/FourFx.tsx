@@ -64,13 +64,13 @@ export function PictoFx() {
 /** Drift Wall: rows of colour slabs sliding past each other behind the words. */
 export function WallFx() {
   return (
-    <div className="wlfx">
+    <div className="wafx">
       {[0, 1, 2, 3].map((r) => (
-        <div key={r} className={`wlfx__row wlfx__row--${r}`}>
+        <div key={r} className={`wafx__row wafx__row--${r}`}>
           <i />
         </div>
       ))}
-      <span className="wlfx__tag">Drift wall · No. 07</span>
+      <span className="wafx__tag">Drift wall · No. 07</span>
     </div>
   )
 }

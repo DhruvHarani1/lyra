@@ -4,9 +4,13 @@ Protocol spec for client authors: `docs/connect-protocol.md`.
 
 ## 1. What existed before (mapped from the code)
 
+> Historical. This section and the "Gaps" paragraph below describe the app BEFORE Lyra Connect (the old LAN server, Jam
+> and Rooms). They are not the current state: the Connect host (`src/main/connect/`) replaced them. Current behaviour is in
+> sections 2 to 5.
+
 Three overlapping features, all "show Lyra on another screen":
 
-1. **TV and party mode** (`src/main/lan/server.ts`, `viewerHtml.ts`; settings `lanViewer`, `lanPort`, `lanToken`).
+1. **TV and party mode** (the removed src/main/lan/server.ts and viewerHtml.ts; settings `lanViewer`, `lanPort`, `lanToken`).
    A Node `http` server bound to `0.0.0.0` (every interface, including VPN / virtual adapters), default port 47813.
    Authentication: one static 12-hex-character secret (`?k=`) stored in settings, passed in the URL query of every
    request. Transport: plain http, Server-Sent Events (`/events`, a state message every 4 s plus on change),
@@ -14,7 +18,7 @@ Three overlapping features, all "show Lyra on another screen":
    all devices: nobody could be removed except by rotating the key for everyone (there was no UI to rotate it). No
    pairing, no device list, no roles, no remote control, no clock-offset (the page used the host `now` stamp and
    assumed zero skew). The link with the key was shown as text and QR in Settings.
-2. **Jam nearby / Stream sound** (`src/renderer/src/store/nearby.ts`, `/rtc/offer` on the same server, setting `lanAudio`).
+2. **Jam nearby / Stream sound** (the removed renderer store nearby.ts, `/rtc/offer` on the same server, setting `lanAudio`).
    The viewer could request WebRTC audio of the PC's whole system sound (loopback capture of everything the PC plays)
    which also needed a display-capture permission handler in `src/main/index.ts`.
 3. **Rooms / Jam** (`store/room.ts`, `store/jam.ts`, `website/room.html`). Host a room or join one by code through the
@@ -22,7 +26,7 @@ Three overlapping features, all "show Lyra on another screen":
    lyrics) pushed by the host, a basic ping for skew, guests can see the host's network address. Joiners in the app
    match their own Spotify to the host.
 
-Gaps relative to the goal: open-ish LAN server on all interfaces, secret in URLs and shared by all, no revocation, no
+Gaps of that old design relative to the goal (all addressed by Connect): open-ish LAN server on all interfaces, secret in URLs and shared by all, no revocation, no
 discovery, no per-device identity, nothing shared except lyrics (no video id, vibe or user choices), no remote
 control, no real clock sync, no reconnect logic in the page, polling-style state every 4 s.
 
@@ -99,6 +103,23 @@ roles enforced on every command; rate limits and pre-auth limits; max 12 devices
 same-origin check for browsers; strict CSP, `no-store`, `no-referrer` on the page; payload caps (4 KB in, 768 KB out);
 no data served before pairing.
 
+Hardening added later:
+- **Host header allow-list** (DNS rebinding): HTTP and the WebSocket upgrade accept only the chosen LAN IP, `localhost` or
+  `127.0.0.1`, with or without the port. Anything else gets 421 (HTTP) or 403 (upgrade), checked before the Origin rule.
+- **CSP connect-src** of the viewer page is built per request: `'self' ws://<host:port>` of this server (Safari and older
+  WebViews do not let `'self'` cover `ws:`), never the `ws:` wildcard. The overlay keeps `connect-src 'self'`.
+- **Device tokens at rest** (`connect-devices.json`) are encrypted per device with the OS credential store (Electron
+  `safeStorage`, like the Spotify tokens) and written atomically. Where encryption is unavailable the file falls back to
+  plaintext tokens; an old plaintext file is migrated to encrypted on the first load once encryption is available. A token
+  that cannot be decrypted is dropped (that device pairs again).
+- **Devices list**: every way a session ends (kick, revoke, role change, dead-peer sweep, replacement by a reconnect, peer
+  close, pre-auth timeout) goes through one `drop()`, which refreshes the devices list controllers see. A peer's TCP FIN
+  is now treated as a close (Node's http sockets are half-open capable, so FIN alone never fired `close`).
+- **mDNS** is bound to 0.0.0.0:5353 (needed to receive multicast on every OS) but joins the group on the LAN interface only,
+  answers by multicast on that interface, and ignores any query whose source address is not private / link-local / loopback.
+- **Pairing cannot be downgraded**: `pair` is accepted only as a connection's first step and a code is single use;
+  there is no negotiation of weaker auth. (The pairing token itself still crosses the LAN in the clear, see below.)
+
 NOT provided, plainly:
 - **No encryption.** Plain `ws`/`http`: an attacker on the same Wi-Fi can read the now-playing stream, and can read the
   token if they sniff the moment of pairing (they could then act as that device). Pair on a network you trust. The
@@ -110,6 +131,7 @@ NOT provided, plainly:
 - A hostile device that is already paired as controller can control playback until disconnected.
 - An overlay link is a bearer secret in a URL (fragment). It ends up in OBS's saved scene files, and in a browser's history or
   bookmarks if opened there; anyone who copies it can watch what plays (read-only) until it is removed. Not encrypted either.
+  Revoking the overlay device drops its live socket immediately (tested) and the link can never authenticate again.
 
 ## 5. Limits and what is verified
 
@@ -117,12 +139,14 @@ Unit tested (vitest): protocol parsing and limits, HMAC against node:crypto, clo
 backoff, pairing (expiry, single use, brute force, rate limit, party, revoke, persistence, device cap), command gate,
 sync-state diffing, WebSocket framing, mDNS packet building and parsing, LAN address and origin rules. The hub is
 tested over real loopback sockets: pair, replay state, reconnect by proof, bad code / bad proof, forbidden commands,
-signed commands and replays, revoke, party, ping, live broadcast, wrong origin. The overlay role has its own hub tests:
+signed commands and replays, revoke, party, ping, live broadcast, wrong origin, rebinding Host (HTTP and upgrade), the CSP
+header, and the devices list after kick, revoke, sweep, replacement and peer disconnect; the encrypted device store is
+tested with a fake cipher (encrypt, migrate, fallback, undecryptable, corrupt file). The overlay role has its own hub tests:
 link shape, `/overlay` CSP, proof auth, redaction (no choices, no video id, no device list), view-only enforcement with a valid
 signature, no upgrade or minting through codes, invisibility to controllers, revocation of a live and a stale link, device cap,
 and a loopback test that drives the overlay's feed logic (clock offset included) from a live host.
 The overlay and the viewer were also run in Chromium (Playwright, `scripts/ui-test/overlay-check.mjs`) against the real hub on
-loopback: all ten looks, transparency, chroma, options, the line advancing with the clock and freezing on pause, live vibe
+loopback: the looks (the overlay maps the app's 34 vibes onto 10 looks), transparency, chroma, options, the line advancing with the clock and freezing on pause, live vibe
 change, wrong / missing / revoked credentials, no CSP violation, the viewer's manifest, icon, TV layout, idle hide, and that
 pairing from the QR fragment and reconnecting by proof still work.
 The viewer was loaded in a browser against a live hub: pairing from the QR fragment (fragment wiped), credential

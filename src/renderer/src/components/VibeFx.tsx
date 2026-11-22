@@ -1,28 +1,12 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getPosition, usePlayer } from '@/store/player'
 import { useEffectiveVibe } from '@/hooks/useVibe'
 import { EditorFx, MetroFx, RouteFx, WalletFx, WebFx } from '@/components/fx/Looks25'
 import { FlapFx, LensFx, PictoFx, WallFx } from './fx/FourFx'
+import { SceneWindow } from './fx/SceneWindow'
 
 const PALM = 'M50 300 C48 220 52 150 60 90 C40 100 18 96 0 80 C24 78 44 82 58 74 C52 52 36 40 14 36 C40 30 62 44 66 66 C74 46 92 34 112 34 C96 44 82 58 76 80 C96 84 116 82 140 70 C120 92 94 98 70 98 C62 150 58 220 62 300 Z'
 
-
-/** The framed window of a scene vibe (see styles/scene.css): a panel when there is no video, plus the vibe's own frame layers. */
-function SceneWindow({ children }: { children?: ReactNode }) {
-  return (
-    <div className="scenewin">
-      <div className="scenewin__art">
-        <span>No video</span>
-        <div className="scenewin__eq">
-          {[0, 0.2, 0.1, 0.3, 0.15].map((d, i) => (
-            <i key={i} style={{ animationDelay: `${d}s` }} />
-          ))}
-        </div>
-      </div>
-      {children}
-    </div>
-  )
-}
 
 /** Artwork: a gallery wall. The wall is the cover's colours, the video hangs as a framed print under a brass picture light. */
 function NoneFx() {
@@ -597,8 +581,8 @@ function BlocksFx() {
   )
 }
 
-/** The ten looks inspired by the phone-screen / motion-scene styles: shared shell, each one adds its own few pieces. */
-const NEW_LOOKS = ['lock', 'lens', 'picto', 'wall', 'flap'] // wallet, route, editor, metro and web draw their own scene (components/fx/Looks25.tsx)
+/** The lock / lens / picto / wall / flap looks: a shared shell, each one adds its own few pieces. (wallet, route, editor, metro and web draw their own scene, components/fx/Looks25.tsx) */
+const NEW_LOOKS = ['lock', 'lens', 'picto', 'wall', 'flap']
 function NewLookFx({ vibe }: { vibe: string }) {
   const [now, setNow] = useState(() => new Date())
   useEffect(() => {
@@ -606,23 +590,6 @@ function NewLookFx({ vibe }: { vibe: string }) {
     const id = setInterval(() => setNow(new Date()), 15000)
     return () => clearInterval(id)
   }, [vibe])
-  const web = useMemo(() => {
-    const cx = 200
-    const cy = 230
-    const spokes = Array.from({ length: 16 }, (_, i) => {
-      const a = (i / 16) * Math.PI * 2
-      return `M${cx} ${cy} L${(cx + Math.cos(a) * 900).toFixed(1)} ${(cy + Math.sin(a) * 900).toFixed(1)}`
-    }).join(' ')
-    const rings = Array.from({ length: 9 }, (_, r) => {
-      const rad = 40 + r * 62
-      return Array.from({ length: 16 }, (_, i) => {
-        const a = (i / 16) * Math.PI * 2
-        const sag = 0.93 + 0.05 * Math.sin(i * 1.7 + r)
-        return `${i ? 'L' : 'M'}${(cx + Math.cos(a) * rad * sag).toFixed(1)} ${(cy + Math.sin(a) * rad * sag).toFixed(1)}`
-      }).join(' ') + ' Z'
-    }).join(' ')
-    return spokes + ' ' + rings
-  }, [])
   const hh = String(now.getHours()).padStart(2, '0')
   const mm = String(now.getMinutes()).padStart(2, '0')
   const date = now.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })
@@ -633,44 +600,6 @@ function NewLookFx({ vibe }: { vibe: string }) {
           <b>{hh}:{mm}</b>
           <span>{date}</span>
         </div>
-      )}
-      {vibe === 'wallet' && (
-        <div className="nvfx__head">
-          Activity
-          <small>Every line, paid in full</small>
-        </div>
-      )}
-      {vibe === 'route' && (
-        <>
-          <div className="nvfx__map" />
-          <svg className="nvfx__river" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M-20 430 C 200 360 300 490 520 440 S 860 360 1020 410" />
-          </svg>
-          <svg className="nvfx__route" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M60 530 C 200 430 260 390 380 370 S 560 310 700 230 S 900 130 990 60" />
-          </svg>
-        </>
-      )}
-      {vibe === 'editor' && (
-        <>
-          <div className="nvfx__gutter" />
-          <div className="nvfx__tabs">
-            <span>lyrics.ts</span>
-            <span>notes.md</span>
-          </div>
-        </>
-      )}
-      {vibe === 'metro' && (
-        <svg className="nvfx__lines" viewBox="0 0 1000 560" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M-20 120 H420 L520 220 H1020" stroke="#ff3b6b" />
-          <path d="M-20 440 H240 L340 340 H760 L860 440 H1020" stroke="#35c6ff" />
-          <path d="M620 -20 V150 L700 230 V580" stroke="#ffd23f" />
-        </svg>
-      )}
-      {vibe === 'web' && (
-        <svg className="nvfx__web" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <path d={web} />
-        </svg>
       )}
       {vibe === 'lens' && <LensFx />}
       {vibe === 'picto' && <PictoFx />}

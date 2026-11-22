@@ -1,15 +1,7 @@
 import type { LyricStyle, Vibe } from './types'
 
-/**
- * Where the card and the lyrics go in fullscreen (and with a video behind):
- *  side  card on the left, lyrics on the right (the classic arrangement)
- *  dock  the card becomes a slim bar along the bottom, the lyrics own the stage above it
- *  orb   a small floating pill in the corner, the lyrics fill the whole screen
- *  bar   controls live inside the bottom letterbox bar, the lyrics are subtitles above
- *  chat  one centred column like a messaging app, the controls are the message bar
- *  term  a framed sidebar next to a framed log, like two terminal panes
- */
-export type LayoutArch = 'side' | 'dock' | 'orb' | 'bar' | 'chat' | 'term' | 'scene'
+/** Where the card and the lyrics go: every look composes its own screen (a 'scene': the video window, the card and the lyrics are placed by styles/scene.css and the look's own file). */
+export type LayoutArch = 'scene'
 
 export interface VibeInfo {
   id: Vibe
@@ -44,7 +36,7 @@ export const VIBES: readonly VibeInfo[] = [
   { id: 'comic', layout: 'scene', style: 'bubble', name: 'Pop Comic', tag: 'Halftone page, speech bubbles, POW' },
   { id: 'stencil', layout: 'scene', style: 'spray', name: 'Stencil', tag: 'Sprayed on a concrete wall' },
   { id: 'film', layout: 'scene', style: 'intertitle', name: 'Film Reel', tag: 'Running film stock, silent-film titles' },
-  { id: 'filmstrip', layout: 'scene', style: 'intertitle', name: 'Film Strip', tag: 'The film advances frame by frame (draft B)' },
+  { id: 'filmstrip', layout: 'scene', style: 'intertitle', name: 'Film Strip', tag: 'The film advances frame by frame' },
   { id: 'lock', layout: 'scene', style: 'lockscreen', name: 'Lock Screen', tag: 'Each line arrives as a notification' },
   { id: 'wallet', layout: 'scene', style: 'wallet', name: 'Wallet', tag: 'The song as a run of payments' },
   { id: 'route', layout: 'scene', style: 'route', name: 'Route', tag: 'A pin for every line on a map' },
@@ -87,7 +79,7 @@ export interface SmartInput {
   light?: number
 }
 
-const WORDS: Partial<Record<Vibe, { re: RegExp; why: string }>> = {
+export const WORDS: Partial<Record<Vibe, { re: RegExp; why: string }>> = {
   neon: { re: /\b(night|nights|city|cities|lights?|neon|midnight|drive|driving|club|dance|dancing|electric|downtown|street|streets|fast|speed)\b/g, why: 'night-city words' },
   dream: { re: /\b(dream|dreams|dreaming|star|stars|moon|sky|skies|heaven|float|floating|sleep|cloud|clouds|ocean|sea|angel|wish|galaxy|universe|forever)\b/g, why: 'dreamy words' },
   chat: { re: /\b(call|called|calling|text|texted|phone|message|miss|missed|hey|baby|babe|tell|told|answer|reply|hello|dm|number)\b/g, why: 'talking-to-you words' },
@@ -108,17 +100,17 @@ const WORDS: Partial<Record<Vibe, { re: RegExp; why: string }>> = {
   glitch: { re: /\b(broken|break|breaking|static|noise|lost|crash|crashing|fall|falling|burn|burning|fire|scream|screaming|run|running|chaos|mess|wrong|numb|signal)\b/g, why: 'broken, noisy words' },
   comic: { re: /\b(boom|bang|pow|wow|crazy|wild|super|hero|power|fight|crash|jump|shout|loud|fire|thunder|yeah|hey|go|run)\b/g, why: 'loud, punchy words' },
   stencil: { re: /\b(street|streets|city|wall|walls|fight|rebel|rise|riot|noise|loud|fire|burn|young|wild|run|running|freedom|revolution|gang|block|hood|concrete|power)\b/g, why: 'street words' },
-  lock: { re: /(phone|call|text|message|messages|night|alone|wait|waiting|miss|missing|late|tonight)/g, why: 'late-night words' },
-  wallet: { re: /(money|pay|paid|cash|gold|rich|cost|price|bank|worth|spend|dollar|dollars|coin|coins)/g, why: 'money words' },
-  route: { re: /(road|roads|map|lost|found|north|south|east|west|home|miles|far|travel|journey|way|walk|walking)/g, why: 'journey words' },
-  editor: { re: /(code|machine|digital|system|data|loop|run|running|signal|binary|wire|robot)/g, why: 'machine words' },
-  metro: { re: /(train|station|track|tracks|line|lines|city|move|moving|ride|riding|stop|stops|travel)/g, why: 'train words' },
-  web: { re: /(web|thread|threads|spin|caught|trap|tangled|silk|spider|net|tie|bound)/g, why: 'web words' },
-  lens: { re: /(eye|eyes|look|see|seeing|vision|focus|blur|glass|mirror|watch|watching)/g, why: 'seeing words' },
-  picto: { re: /(moon|sun|star|stars|heart|fire|rain|love|light|sky|dream)/g, why: 'picture words' },
-  wall: { re: /(wall|walls|stone|build|built|break|brick|door|doors|room|rooms|house)/g, why: 'wall words' },
-  flap: { re: /(fly|flying|flight|gone|leave|leaving|goodbye|travel|airport|sky|plane|going)/g, why: 'departure words' },
-  filmstrip: { re: /(film|movie|scene|camera|memory|memories|yesterday|old|golden|shadow|shadows|remember|years|time|story|once|reel)/g, why: 'film words' },
+  lock: { re: /\b(phone|call|text|message|messages|night|alone|wait|waiting|miss|missing|late|tonight)\b/g, why: 'late-night words' },
+  wallet: { re: /\b(money|pay|paid|cash|gold|rich|cost|price|bank|worth|spend|dollar|dollars|coin|coins)\b/g, why: 'money words' },
+  route: { re: /\b(road|roads|map|lost|found|north|south|east|west|home|miles|far|travel|journey|way|walk|walking)\b/g, why: 'journey words' },
+  editor: { re: /\b(code|machine|digital|system|data|loop|run|running|signal|binary|wire|robot)\b/g, why: 'machine words' },
+  metro: { re: /\b(train|station|track|tracks|line|lines|city|move|moving|ride|riding|stop|stops|travel)\b/g, why: 'train words' },
+  web: { re: /\b(web|thread|threads|spin|caught|trap|tangled|silk|spider|net|tie|bound)\b/g, why: 'web words' },
+  lens: { re: /\b(eye|eyes|look|see|seeing|vision|focus|blur|glass|mirror|watch|watching)\b/g, why: 'seeing words' },
+  picto: { re: /\b(moon|sun|star|stars|heart|fire|rain|love|light|sky|dream)\b/g, why: 'picture words' },
+  wall: { re: /\b(wall|walls|stone|build|built|break|brick|door|doors|room|rooms|house)\b/g, why: 'wall words' },
+  flap: { re: /\b(fly|flying|flight|gone|leave|leaving|goodbye|travel|airport|sky|plane|going)\b/g, why: 'departure words' },
+  filmstrip: { re: /\b(film|movie|scene|camera|memory|memories|yesterday|old|golden|shadow|shadows|remember|years|time|story|once|reel)\b/g, why: 'film words' },
   film: { re: /\b(film|movie|scene|camera|memory|memories|yesterday|old|golden|lights?|shadow|shadows|summer|dance|dancing|remember|years|time|story|once)\b/g, why: 'cinematic, nostalgic words' },
   chrome: { re: /\b(future|shine|shiny|silver|chrome|gold|diamond|mirror|glass|crystal|space|rocket|baby|girl|boy|money)\b/g, why: 'shiny words' }
 }

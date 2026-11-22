@@ -244,6 +244,18 @@ export interface CodeLine {
   depth: number
 }
 
+/** Do two rows draw the same thing? Rows are rebuilt on every lyric line, so React.memo needs this instead of identity. */
+export function sameCodeRow(a: CodeLine, b: CodeLine): boolean {
+  if (a === b) return true
+  if (a.n !== b.n || a.kind !== b.kind || a.depth !== b.depth || a.git !== b.git || a.folded !== b.folded || a.toks.length !== b.toks.length) return false
+  for (let i = 0; i < a.toks.length; i++) {
+    const x = a.toks[i]!
+    const y = b.toks[i]!
+    if (x.t !== y.t || x.s !== y.s || x.m !== y.m) return false
+  }
+  return true
+}
+
 export interface Statement {
   index: number
   text: string

@@ -2,29 +2,45 @@
 
 A **vibe** is a complete look. It changes: lyric typography and the way each word arrives (the *lyric stage*), the background and animated effects (VibeFx), the layout archetype of card/lyrics/controls, the player card plate, the cover (poster) frame, the video treatment, the unsynced / no-lyrics / video screens, the Settings panel skin, the share card, the Android widget palette, and the smart-picker keywords. The owner's rule: **the look is designed, not configured** (no user layout/typeface/size/animation settings; saved values are ignored by `lockLook`).
 
-## The 20 looks (id, name, layout archetype, lyric stage)
-| id | name | layout | stage | idea |
-|---|---|---|---|---|
-| none | Artwork | side | classic | colours from the cover, glass |
-| neon | Neon | dock | kinetic | synthwave tubes, sun and grid |
-| chrome | Chrome | dock | kinetic | Y2K liquid metal (light plate, ink text) |
-| dream | Dream | orb | constellation | pastel star map, twinkles |
-| crt | Terminal | term | type | green phosphor, panes, `cat`-style |
-| sticker | Stickers | side | sticker | die-cut pop, yellow ground |
-| chat | DM | chat | chat | the song texts you (bubbles) |
-| paper | Diary | side | diary | handwriting on ruled paper, taped polaroid |
-| arcade | Arcade | dock | kinetic | 8-bit scoreboard, Press Start 2P |
-| noir | Cinema | bar | subtitle | black-and-white, subtitles, letterbox |
-| sunset | Sunset Drive | dock | kinetic | palms, radio, pink sky |
-| blocks | Blocks | side | chatlog | sandbox with a chat log (Minecraft-inspired, original) |
-| stadium | Stadium | dock | lowerthird | broadcast scoreboard |
-| cassette | Cassette | side | type | Walkman, amber LCD, paper insert |
-| trailer | Trailer | bar | kinetic | movie title cards, gold hairlines |
-| sketch | Sketchbook | orb | zoom | giant red cut-out words on graphite paper (owner's reference video) |
-| glitch | Glitch | orb | zoom | RGB-split words on a dying tape |
-| comic | Pop Comic | orb | zoom | halftone, outlines, BAM words |
-| stencil | Stencil | orb | zoom | spray-paint stencil on concrete |
-| film | Film Reel | orb | zoom | sepia grain, light leaks, projector flicker |
+## The 34 looks (id, name, lyric stage, idea)
+Every look uses the `scene` layout archetype (see doc 4); the older archetypes are legacy. Copied from `src/shared/vibes.ts` on 2026-11-23: if they differ, the code wins.
+
+| id | name | lyric stage | idea |
+|---|---|---|---|
+| none | Artwork | classic | A gallery wall lit in the colours of the cover |
+| neon | Neon | sign | Rain alley, neon signs |
+| chrome | Chrome | liquid | Y2K liquid metal |
+| dream | Dream | constellation | Pastel star map |
+| crt | Terminal | log | tmux panes, a lyric log, a status bar |
+| sticker | Stickers | sticker | Die-cut pop |
+| chat | DM | chat | The song texts you |
+| paper | Diary | note | A cosy night corner, a polaroid, handwriting |
+| journal | Journal | jot | A ruled page, a taped polaroid, marker highlights |
+| doodle | Doodle | scrawl | Fat marker, bright shapes, scribbles that draw themselves |
+| arcade | Arcade | pixel | 8-bit cabinet |
+| noir | Cinema | subtitle | Subtitles in black & white |
+| sunset | Sunset Drive | bloom | Golden hour, warm glow |
+| dusk | Dusk Ridge | bloom | A star-filled sky over sunlit mountains |
+| blocks | Blocks | chatlog | A sandbox with a chat log |
+| stadium | Stadium | lowerthird | Live broadcast scoreboard |
+| cassette | Cassette | label | Tape deck, label-maker strips |
+| trailer | Trailer | title | Movie title cards |
+| sketch | Sketchbook | ink | Written by hand in ink and pencil |
+| glitch | Glitch | glitch | Signal lost: static, tears, colour split |
+| comic | Pop Comic | bubble | Halftone page, speech bubbles, POW |
+| stencil | Stencil | spray | Sprayed on a concrete wall |
+| film | Film Reel | intertitle | Running film stock, silent-film titles |
+| filmstrip | Film Strip | intertitle | The film advances frame by frame (draft B) |
+| lock | Lock Screen | lockscreen | Each line arrives as a notification |
+| wallet | Wallet | wallet | The song as a run of payments |
+| route | Route | route | A pin for every line on a map |
+| editor | Editor | editor | The lyric as code in an editor |
+| metro | Metro | metro | A transit line, a station per word |
+| web | Web | weave | Every line spun on a web |
+| lens | Lens | bloom | Words bulge through a glass lens |
+| picto | Picto | picto | A small icon beside the words that have one |
+| wall | Drift Wall | wall | Words land on a wall that drifts in 3D |
+| flap | Split-flap | flap | An airport board, every letter flips |
 
 Source of truth: `src/shared/vibes.ts` (`VIBES`, `ALL_VIBES`, `vibeInfo`, `stepVibe`, `pickVibe` smart scorer with per-vibe keyword regexes `WORDS`). Type union `Vibe` in `src/shared/types.ts`; `LyricStyle` there too.
 
@@ -32,20 +48,20 @@ Source of truth: `src/shared/vibes.ts` (`VIBES`, `ALL_VIBES`, `vibeInfo`, `stepV
 `vibeMode`: `fixed` (the chosen vibe), `cycle` (rotate through a pool, `V` key = next vibe), `smart` (`pickVibe` from words, pace, year, cover colour; deterministic per song). Per-song choices are remembered (`songVibes`). `hooks/useVibe.ts`: `useEffectiveVibe`, `cycleVibe`, `useVibeConductor`.
 
 ## Lyric stages (`components/LyricsStage.tsx`, `LyricsView.tsx`)
-classic list (default), kinetic (words stack as big type), constellation (star map), sticker, chat, type (typewriter), diary, subtitle, chatlog, lowerthird, and **zoom** (one giant word at a time thrown at the camera: scale 2.7 -> 1 with blur and tilt, whole line small underneath; looks: fill / outline / cut / ghost, chosen deterministically per word). Stages use container query units (`cqw/cqh`) inside `.stage` (`container-type: size`).
+35 kinds in `LyricStyle` (`src/shared/types.ts`): classic list, kinetic, constellation, sticker, chat, type, diary, subtitle, chatlog, lowerthird, sign, liquid, pixel, bloom, title, ink, glitch, bubble, spray, intertitle, log, note, jot, scrawl, label, lockscreen, wallet, route, editor, metro, weave, picto, wall, flap, and **zoom** (one giant word at a time thrown at the camera: scale 2.7 -> 1 with blur and tilt, whole line small underneath; looks: fill / outline / cut / ghost, chosen deterministically per word). Stages use container query units (`cqw/cqh`) inside `.stage` (`container-type: size`).
 
-## Everything a look touches (checklist when adding a vibe)
-1. `src/shared/types.ts` Vibe union; `src/shared/vibes.ts` entry + `WORDS` regex (+ `vibes.test.ts` if counts are asserted).
-2. `components/VibeFx.tsx` effect layers; CSS for them in `styles/vibes.css`.
-3. `styles/vibes.css`: `:root[data-vibe='x'] { --rimc }`, `[data-vibe='x'] .shell { --accent --glow --font --fg ... }` (light vibes set `--fg` dark + `--on-fg`, `--word-dim`, and need the word/contrast overrides at the bottom of the file), lyric stage looks (e.g. `.kin__word`, `.zoom__word--*`).
-4. `styles/states.css`: unsynced (`.lyrics__notice`, `.plain__stanza`), no lyrics/waiting (`.lfb*`), video-playing tweaks (`[data-bg-media]` dim/filters). Minimum text size 10 px.
-5. `styles/skins.css`: Settings panel (`.sidepanel`) and the dock/pill/bar player card plate; `styles/cards.css`: mini player / phone dock / side layout plates (**generated** by `scripts/gen-cards.py`; edit the table and re-run).
-6. `styles/posters.css`: animated cover frame using the three `.artwork__deco` layers (`Artwork.tsx`); small covers must keep thin frames (`states.css` rule).
-7. `lib/shareCard.ts`: `THEMES[id]` (paper, pens, type, pattern) -> `cardTheme()`.
-8. `styles/redesign.css`: `.vibecard--x .vibecard__sw` gallery swatch.
-9. Android widget palette: `WidgetPalettes.of` in `android/.../LyraWidget.kt`.
-10. Website: `website/vibes-data.js` entry + regenerate screenshots (`scripts/make-site-shots.mjs --only=<id>`), release notes.
-11. Tests: nothing to register, `scripts/ui-test/run.mjs` reads `vibes.ts`; add the zoom-stage selectors if you invent a new stage (`stageSel`/`nowSel`).
+## Everything a look touches (checklist when adding a look)
+1. `src/shared/types.ts` `Vibe` union (+ `LyricStyle` if you invent a stage); `src/shared/vibes.ts` entry + the `WORDS` regex for the smart picker (+ `vibes.test.ts` if counts are asserted).
+2. The look's own CSS, imported in `renderer/src/main.tsx` in cascade order: the original `styles/<look>.css` (or `<look>-v2.css`, `x-<look>.css`, `p-<look>.css` for restyles of the same look), its geometry variables for `scene.css`, and `styles/edge-<look>.css` (the window edge; one file per look so looks never share an edge).
+3. Effect layers: `components/VibeFx.tsx` and `components/fx/` (`FourFx.tsx`, `Looks25.tsx`); the edge logic in `components/EdgeFx.tsx` (variables `--lp --li --lt --ts --lv`). Special renderers: `DmKinds.tsx` (DM message kinds), `lib/codeGen.ts` (Editor code), `lib/journalInk.ts` (Journal pens).
+4. `styles/vibes.css`: `:root[data-vibe='x']` tokens (`--accent --glow --font --fg ...`; light looks set `--fg` dark and need the word/contrast overrides at the bottom).
+5. `styles/states.css`: unsynced (`.lyrics__notice`, `.plain__stanza`), no lyrics / waiting (`.lfb*`), video-playing tweaks. Minimum text size 10 px.
+6. `styles/skins.css` (Settings panel and plates) and `styles/cards.css` (mini player / phone dock / side plates: **generated** by `scripts/gen-cards.py`; edit its table and re-run, never hand-edit).
+7. `styles/posters.css` (animated cover frame, `Artwork.tsx`), `lib/shareCard.ts` (`THEMES[id]`), `styles/redesign.css` (gallery swatch `.vibecard--x`).
+8. Small-window and platform files: `styles/mini-looks.css` (the 420x700 mini window composition per look, Windows only), `styles/android-looks.css` and `styles/android-scenes.css` (phone, tablet, foldable), `styles/fit-full.css` and `styles/fit-mini.css` (last-word size fixes found by the UI test), `styles/minsizes.css` (10 px floor), `styles/tv.css` and `styles/car.css`.
+9. Android widget palette: `WidgetPalettes.of` in `android/.../LyraWidget.kt` (verified: it is still there).
+10. Website: `website/vibes-data.js` entry + screenshots (`scripts/make-site-shots.mjs --only=<id>`), `website/whats-new.html`.
+11. Tests: nothing to register, `scripts/ui-test/run.mjs` reads `vibes.ts`; add selectors to `stageSel` / `nowSel` if you invent a new stage.
 
 ## Design principles (apply to every look)
 * **Distinct, not themed**: change type, motion, shape language and materials, not just colour. Each look has a signature gesture (neon flicker, pencil jitter, typewriter cursor, tape reels...).
@@ -59,4 +75,4 @@ classic list (default), kinetic (words stack as big type), constellation (star m
 * Fonts available: Inter, Nunito, Unbounded (display), Fraunces (italic), VT323, Caveat, Press Start 2P (all via `@fontsource`, imported in `renderer/src/main.tsx`).
 
 ## Light inked vibes (special care)
-sticker, paper, cassette, sketch, comic (and chrome plate): dark ink on light ground. The generic rule forces the active word white in dark themes (`lyrics.css`) so each of these needs overrides (see the bottom of `vibes.css`). With a dark video behind, text must sit on paper cards (see `states.css` DIARY/SKETCHBOOK/POP COMIC blocks).
+sticker, paper, journal, cassette, sketch, comic (and chrome plate): dark ink on light ground. The generic rule forces the active word white in dark themes (`lyrics.css`) so each of these needs overrides (see the bottom of `vibes.css`). With a dark video behind, text must sit on paper cards (see `states.css` DIARY/SKETCHBOOK/POP COMIC blocks).

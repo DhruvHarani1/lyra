@@ -1,4 +1,9 @@
 /* Lyra website, 2026 redesign. Tokens first, then page furniture. The live-demo replicas live in demo.css. */
+/* Self-hosted fonts (Latin subset, variable weight): the site makes no third-party request. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(assets/fonts/inter-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url(assets/fonts/jetbrains-mono-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Unbounded'; font-style: normal; font-weight: 500 800; font-display: swap; src: url(assets/fonts/unbounded-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 @property --c1 { syntax: '<color>'; inherits: true; initial-value: #ff7a59; }
 @property --c2 { syntax: '<color>'; inherits: true; initial-value: #c64cff; }
 @property --c3 { syntax: '<color>'; inherits: true; initial-value: #3fd0ff; }
@@ -419,3 +424,18 @@ h2 em .sw > span { background: linear-gradient(100deg, var(--acc), var(--c2), va
   .hx__copy, .hx__stage { transform: none; opacity: 1; }
   h2.hsplit .sw > span { transform: none; }
 }
+
+/* ---------- former inline styles, and the no-JS fallbacks ---------- */
+.sx--stats { padding-top: 60px; }
+.split__h { margin-top: 18px; }
+.split__lead { margin-top: 22px; }
+.cta--center { justify-content: center; }
+.hx__meta--vega { margin-top: 16px; }
+.ft__lead { font-size: 15px; }
+.chip-float { margin: 0; }
+.ft__fine a { display: inline; }
+.u-link { text-decoration: underline; }
+.u-mt22 { margin-top: 22px; }
+.nojs { color: var(--fg2); font-size: 15px; max-width: 70ch; margin: 18px auto; }
+.nojs-list { columns: 2 260px; margin: 12px 0; padding-left: 20px; line-height: 1.7; }
+.nojs a, .nojs-list a { text-decoration: underline; color: var(--fg); }

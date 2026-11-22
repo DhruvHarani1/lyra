@@ -1,14 +1,14 @@
 # 1. The project and the owner
 
 ## What Lyra is
-Lyra is a free, open-source (MIT) lyrics companion. It reads what the user is playing (Spotify desktop on Windows through the Windows media session; any media-card player on Android) and shows the lyrics **word by word**, in sync, over the **music video** of the song, in one of **20 hand-designed looks** ("vibes"). Windows app (Electron) and Android app (native shell + WebView) share one TypeScript/React UI.
+Lyra is a free, open-source (MIT) lyrics companion. It reads what the user is playing (Spotify desktop on Windows through the Windows media session; any media-card player on Android) and shows the lyrics **word by word**, in sync, over the **music video** of the song, in one of **34 hand-designed looks** ("vibes"). Windows app (Electron) and Android app (native shell + WebView) share one TypeScript/React UI.
 
 Repository: `github.com/DhruvHarani1/lyra`. Sister project: **Vega** (`DhruvHarani1/vega`), a standalone music app that embeds Lyra's lyrics player. Website: `lyra-website-rho.vercel.app` (folder `website/`, deployed by Vercel).
 
-Current versions (2026-11-21): Windows **0.22.0**, Android **0.8.0**. Every release is on GitHub Releases (`vX.Y.Z` Windows installer, `android-vX.Y.Z` APK).
+Current versions (2026-11-23): Windows **0.24.1**, Android **0.10.1**. Every release is on GitHub Releases (`vX.Y.Z` Windows installer, `android-vX.Y.Z` APK).
 
 ## Core promises
-* Free forever, no account, no tracking, no ads. Everything the user chooses stays on the device. Network use: lyrics services (LRCLIB first), YouTube/Apple preview lookups, GitHub releases API for update checks and website download links.
+* Free forever, no account, no tracking, no ads. Everything the user chooses stays on the device. Network use is listed exactly in `PRIVACY.md`: lyrics services (LRCLIB first), MusicBrainz, Apple preview and (with the user's own key) YouTube lookups, GitHub Releases for update checks and website download links, and the opt-in internet Rooms. Lyra Connect is LAN-only and off by default.
 * Lyrics are the hero. They never clip, always have contrast >= 3:1, and unsynced lyrics never pretend to follow the song.
 * A missing thing (lyrics, video, network) never leaves a hole: there is a designed screen for it.
 * Original designs only. Looks are *inspired by* worlds (synthwave, Minecraft, stadium broadcast...) but never copy trademarks, logos, characters or art.

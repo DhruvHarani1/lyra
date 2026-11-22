@@ -11,24 +11,11 @@
   --jn-rose: #e0556d;
   --jn-hi: #ffd84a;
   --jn-note: #fff0a6;
-  --sc-ww: min(33vw, 52vh);
-  --sc-wl: 9vw;
-  --sc-wt: 14vh;
   --sc-wr: 0.4vh;
-  --sc-ll: calc(9vw + var(--sc-ww) + 7vw);
-  --sc-lt: 13vh;
-  --sc-lw: calc(94vw - var(--sc-ww) - 9vw - 7vw);
-  --sc-lb: 28vh;
-  --sc-lbs: 26vh;
-  --sc-cl: var(--sc-ll);
-  --sc-cb: 7vh;
-  --sc-ct: auto;
-  --sc-cw: min(40vw, 520px);
   --sc-art-bg: repeating-linear-gradient(180deg, #fdf4e6 0 2.4vh, #cfdcf3 2.4vh calc(2.4vh + 1px));
   --sc-art-fg: #22305c;
   --sc-eq: #e0556d;
 }
-:root[data-vibe='journal'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(36vw, 58vh); }
 :root[data-vibe='journal'][data-rim='on']::after { display: none; }
 [data-vibe='journal'] .shell {
   --accent: #e0556d;
@@ -47,26 +34,25 @@
   --bg-0: #f3e3cf;
   color: var(--fg);
 }
-[data-vibe='journal'] .backdrop .backdrop__field { background: radial-gradient(110% 90% at 40% 30%, #fbefdd, #f1dcc3 80%); }
 :root[data-vibe='journal'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
 
 /* ---------------- the page ---------------- */
 .jfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.jfx__paper { position: absolute; inset: 0; opacity: 0.4; mix-blend-mode: multiply; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); }
-.jfx__rules { position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 5.4vh, rgba(70, 110, 190, 0.2) 5.4vh calc(5.4vh + 1px)); -webkit-mask: linear-gradient(180deg, transparent 8vh, #000 10vh); mask: linear-gradient(180deg, transparent 8vh, #000 10vh); }
-.jfx__margin { position: absolute; left: 5.4vw; top: 0; bottom: 0; width: 2px; background: rgba(224, 85, 109, 0.55); box-shadow: 0.5vh 0 0 rgba(224, 85, 109, 0.18); }
-.jfx__hole { position: absolute; left: 1.8vw; width: 2.4vh; height: 2.4vh; margin-top: -1.2vh; border-radius: 50%; background: #d6c3a8; box-shadow: inset 0.3vh 0.4vh 0.5vh rgba(60, 40, 20, 0.45), 0 0 0 1px rgba(60, 40, 20, 0.18); }
-.jfx__stamp { position: absolute; right: 6vw; top: 12vh; font: 700 2.2vh/1 'Unbounded Variable', 'Inter Variable', sans-serif; letter-spacing: 0.18em; color: var(--jn-rose); border: 2px solid currentColor; border-radius: 0.6vh; padding: 0.8vh 1.2vh; rotate: 4deg; opacity: 0.72; }
-.jfx__coffee { position: absolute; right: 6vw; bottom: 9vh; width: 13vh; height: 13vh; border-radius: 50%; box-shadow: inset 0 0 0 0.5vh rgba(120, 70, 30, 0.2), inset 0.4vh 0.5vh 1.4vh rgba(120, 70, 30, 0.12); background: radial-gradient(circle, transparent 62%, rgba(150, 90, 40, 0.07) 63%, transparent 72%); opacity: 0.8; }
+.jfx__paper { position: absolute; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.jfx__rules { position: absolute; background: repeating-linear-gradient(180deg, transparent 0 5.4vh, rgba(70, 110, 190, 0.2) 5.4vh calc(5.4vh + 1px)); -webkit-mask: linear-gradient(180deg, transparent 8vh, #000 10vh); mask: linear-gradient(180deg, transparent 8vh, #000 10vh); }
+.jfx__margin { position: absolute; width: 2px; background: rgba(224, 85, 109, 0.55); box-shadow: 0.5vh 0 0 rgba(224, 85, 109, 0.18); }
+.jfx__hole { position: absolute; width: 2.4vh; height: 2.4vh; margin-top: -1.2vh; border-radius: 50%; background: #d6c3a8; box-shadow: inset 0.3vh 0.4vh 0.5vh rgba(60, 40, 20, 0.45), 0 0 0 1px rgba(60, 40, 20, 0.18); }
+.jfx__stamp { position: absolute; font: 700 2.2vh/1 'Unbounded Variable', 'Inter Variable', sans-serif; letter-spacing: 0.18em; color: var(--jn-rose); border: 2px solid currentColor; border-radius: 0.6vh; padding: 0.8vh 1.2vh; rotate: 4deg; opacity: 0.72; }
+.jfx__coffee { position: absolute; width: 13vh; height: 13vh; border-radius: 50%; box-shadow: inset 0 0 0 0.5vh rgba(120, 70, 30, 0.2), inset 0.4vh 0.5vh 1.4vh rgba(120, 70, 30, 0.12); background: radial-gradient(circle, transparent 62%, rgba(150, 90, 40, 0.07) 63%, transparent 72%); }
 .jfx__doodle { position: absolute; fill: none; stroke: var(--jn-rose); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .jfx__doodle path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: jn-draw 10s ease-in-out infinite; }
-.jfx__doodle--heart { width: 7vh; height: 7vh; right: 10vw; top: 24vh; rotate: 10deg; }
-.jfx__doodle--star { width: 6vh; height: 6vh; right: 21vw; bottom: 17vh; rotate: -12deg; stroke: #e6a400; }
+.jfx__doodle--heart { width: 7vh; height: 7vh; rotate: 10deg; }
+.jfx__doodle--star { width: 6vh; height: 6vh; rotate: -12deg; stroke: #e6a400; }
 .jfx__doodle--star path { animation-delay: 2.5s; }
-.jfx__doodle--squig { width: 14vh; height: 3.6vh; right: 8vw; top: 38vh; stroke: var(--jn-ink); opacity: 0.7; }
+.jfx__doodle--squig { width: 14vh; height: 3.6vh; stroke: var(--jn-ink); opacity: 0.7; }
 .jfx__doodle--squig path { animation-delay: 5s; }
 @keyframes jn-draw { 0% { stroke-dashoffset: 1; } 30%, 70% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
-.jfx__flower { position: absolute; left: calc(var(--sc-wl) + var(--sc-ww) - 5vh); bottom: 6vh; width: 9vh; height: 13.5vh; rotate: 18deg; opacity: 0.9; filter: drop-shadow(0.3vh 0.4vh 0.3vh rgba(60, 40, 20, 0.25)); }
+.jfx__flower { position: absolute; width: 9vh; height: 13.5vh; rotate: 18deg; opacity: 0.9; filter: drop-shadow(0.3vh 0.4vh 0.3vh rgba(60, 40, 20, 0.25)); }
 .jfx__flower .stem { fill: none; stroke: #6f8a4a; stroke-width: 2.4; stroke-linecap: round; }
 .jfx__flower .leaf { fill: #8ba75f; }
 .jfx__flower .petal { fill: #f2a7b8; stroke: #d9788f; stroke-width: 1; }
@@ -114,7 +100,6 @@
   background: linear-gradient(180deg, #ffe97f 0 2.2vh, var(--jn-note) 2.2vh) !important;
   border: 0 !important;
   box-shadow: 0.4vh 1.1vh 2vh rgba(70, 40, 20, 0.3) !important;
-  rotate: 1.2deg;
   color: #22305c;
 }
 :root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 8.6vh !important; border-radius: 0.3vh !important; box-shadow: 0 0 0 0.5vh #fffdf6, 0 0.4vh 0.8vh rgba(70, 40, 20, 0.35); }
@@ -157,3 +142,67 @@
 
 /* chrome text sits on paper: dark ink */
 [data-vibe="journal"] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(34, 48, 92, 0.62) !important; text-shadow: none !important; }
+
+/* ---- second pass, was x-journal.css ---- */
+/* ==========================================================================
+   JOURNAL, premium pass: an open notebook lying on a green cutting mat. The window is the desk (mat with a fine grid), the page is
+   a real sheet with a rounded edge, a centre spine, ruled lines and a red margin; the polaroid is taped on the left page, the words
+   are handwritten on the right page, the sticky note (card) sits on the mat below the book. Washi tape holds the corners (edge).
+   Settings: a ruled notebook page with a red margin. Phone: the dock is a yellow sticky note.
+   ========================================================================== */
+:root[data-vibe='journal'] {
+  --sc-ww: min(30vw, 48vh);
+  --sc-wl: 11vw;
+  --sc-wt: 17vh;
+  --sc-ll: 55vw;
+  --sc-lt: 13vh;
+  --sc-lw: 36vw;
+  --sc-lb: 30vh;
+  --sc-lbs: 28vh;
+  --sc-cl: 50vw;
+  --sc-cb: 2.4vh;
+  --sc-ct: auto;
+  --sc-cw: min(40vw, 500px);
+}
+:root[data-vibe='journal'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(32vw, 52vh); }
+/* the mat */
+[data-vibe='journal'] .backdrop .backdrop__field {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px) 0 0 / 3.6vh 3.6vh,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px) 0 0 / 3.6vh 3.6vh,
+    radial-gradient(100% 90% at 50% 40%, #6c9487, #3f6458);
+}
+/* the sheet */
+.jfx__paper { inset: 4vh 3.5vw 11vh; border-radius: 1.6vh; opacity: 1; mix-blend-mode: normal; background: linear-gradient(90deg, #f6e8d2 0, #fdf4e6 6%, #fdf4e6 47%, #e9d6b9 50%, #fdf4e6 53%, #fdf4e6 94%, #f3e2c8); }
+.jfx__rules { inset: 10vh 3.5vw 15vh; }
+.jfx__margin { left: calc(3.5vw + 5vw); top: 4vh; bottom: 11vh; }
+.jfx__hole { left: calc(3.5vw + 1.6vw); }
+.jfx__stamp { right: 8vw; top: 6.4vh; }
+.jfx__coffee { right: 12vw; bottom: 14vh; opacity: 0.5; }
+.jfx__corner { display: none !important; }
+.jfx__flower { left: calc(var(--sc-wl) + var(--sc-ww) - 3vh); bottom: 14vh; }
+.jfx__doodle--heart { right: 10vw; top: 16vh; }
+.jfx__doodle--squig { right: auto; left: 16vw; top: 78vh; }
+.jfx__doodle--star { right: 16vw; bottom: 22vh; }
+:root[data-vibe='journal'] .jfx__rules { -webkit-mask: none; mask: none; }
+/* the card: a yellow sticky note on the mat, under the book */
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { rotate: -1.6deg; }
+/* settings: a ruled notebook page */
+:root[data-vibe='journal'] .sidepanel {
+  background: linear-gradient(90deg, transparent 38px, rgba(224, 85, 109, 0.55) 38px 40px, transparent 40px), repeating-linear-gradient(180deg, #fdf4e6 0 31px, #cfdcf3 31px 32px);
+  padding-left: 10px;
+}
+:root[data-vibe='journal'] .sidepanel .settings section { background: rgba(255, 253, 246, 0.85); box-shadow: 0 0 0 1px rgba(34, 48, 92, 0.18), 3px 4px 0 rgba(224, 85, 109, 0.25); }
+:root[data-vibe='journal'] .sidepanel h3 { font-size: 1.8em; }
+/* phone: a yellow sticky note */
+:root[data-platform='android'][data-vibe='journal'] .phone__dock { --fg: #22305c; --fg-2: #3a4678; --fg-3: #56608a; background: linear-gradient(180deg, #ffe97f 0 14px, #fff0a6 14px) !important; color: #22305c; border-radius: 4px 4px 4px 22px !important; box-shadow: 0 8px 20px rgba(70, 40, 20, 0.3); rotate: -0.8deg; }
+:root[data-platform='android'][data-vibe='journal'] .phone__bar { background: linear-gradient(180deg, rgba(253, 244, 230, 0.7), transparent); }
+/* the video shows through a hole in the page (the polaroid sits over it); the page shadow lives on its own layer so the hole stays clear */
+.jfx::before { content: ''; position: absolute; inset: 4vh 3.5vw 11vh; border-radius: 1.6vh; box-shadow: 0 2.4vh 6vh rgba(0, 0, 0, 0.45), 0 0 0 0.5vh #efe0c6, 0 0 0 0.7vh rgba(0, 0, 0, 0.12); }
+.jfx__paper { box-shadow: none; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .jfx__paper {
+  clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, calc(var(--sc-wl) - 3.5vw) calc(var(--sc-wt) - 4vh), calc(var(--sc-wl) - 3.5vw + var(--sc-ww)) calc(var(--sc-wt) - 4vh), calc(var(--sc-wl) - 3.5vw + var(--sc-ww)) calc(var(--sc-wt) - 4vh + var(--sc-wh)), calc(var(--sc-wl) - 3.5vw) calc(var(--sc-wt) - 4vh + var(--sc-wh)), calc(var(--sc-wl) - 3.5vw) calc(var(--sc-wt) - 4vh));
+}
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .jfx__rules {
+  clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, calc(var(--sc-wl) - 3.5vw) calc(var(--sc-wt) - 10vh), calc(var(--sc-wl) - 3.5vw + var(--sc-ww)) calc(var(--sc-wt) - 10vh), calc(var(--sc-wl) - 3.5vw + var(--sc-ww)) calc(var(--sc-wt) - 10vh + var(--sc-wh)), calc(var(--sc-wl) - 3.5vw) calc(var(--sc-wt) - 10vh + var(--sc-wh)), calc(var(--sc-wl) - 3.5vw) calc(var(--sc-wt) - 10vh));
+}

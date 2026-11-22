@@ -335,8 +335,18 @@ function WordLine({ line, nextTime }: { line: LyricLine; nextTime: number | unde
 
 function PlainLyrics({ result }: { result: LyricsResult }) {
   const showRomanization = useSettings((x) => x.settings.romanizeLyrics)
-  const paragraphs = (result.plain ?? '').split(/\n{2,}/)
   const journal = useEffectiveVibe().vibe === 'journal' // Journal marks the unsynced lines with its own pens too (lib/journalInk.ts)
+  // split, pen choice and romanisation are pure functions of the text: computed once per song, not on every re-render
+  const paragraphs = useMemo(
+    () =>
+      (result.plain ?? '').split(/\n{2,}/).map((p, i) =>
+        p.split('\n').map((l, j) => {
+          const rom = showRomanization ? romanize(l) : l
+          return { l, ink: journal ? plainInk(i, j, l) : null, rom: rom !== l ? rom : null }
+        })
+      ),
+    [result.plain, journal, showRomanization]
+  )
   return (
     <div className="lyrics__scroller lyrics__scroller--plain" data-nodrag tabIndex={-1}>
       <div className="lyrics__inner lyrics__inner--plain">
@@ -345,21 +355,16 @@ function PlainLyrics({ result }: { result: LyricsResult }) {
         </p>
         {paragraphs.map((p, i) => (
           <p key={i} className="plain__stanza">
-            {p.split('\n').map((l, j) => {
-              const ink = journal ? plainInk(i, j, l) : null
-              return (
+            {p.map(({ l, ink, rom }, j) => (
               <span
                 key={j}
                 style={{ display: 'block' }}
                 className={ink ? `jp jp--${ink.ink}${ink.mark ? ` jp--${ink.mark}` : ''}${ink.tag ? ` jp--tag-${ink.tag}` : ''}` : undefined}
               >
                 {l}
-                {showRomanization && romanize(l) !== l && (
-                  <span style={{ display: 'block', fontSize: '0.82em', opacity: 0.78 }}>{romanize(l)}</span>
-                )}
+                {rom !== null && <span style={{ display: 'block', fontSize: '0.82em', opacity: 0.78 }}>{rom}</span>}
               </span>
-              )
-            })}
+            ))}
           </p>
         ))}
       </div>

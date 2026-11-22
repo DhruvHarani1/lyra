@@ -1,0 +1,1 @@
+Android TV can pair with your PC using the 8-character code from Lyra Connect (not yet tried on a real TV). Lighter animated edges, and readable unsynced lyrics on small screens. Releases are now only built from a commit whose checks passed.

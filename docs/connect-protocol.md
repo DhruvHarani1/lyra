@@ -2,7 +2,8 @@
 
 For anyone building a client (Android TV, Android Auto, phone app, another PC). The reference implementation is
 `src/core/connect/` (pure logic, shared by host, web viewer and tests) and `src/main/connect/` (the host). The web
-viewer in `src/main/connect/viewerHtml.ts` is a complete working client in about 150 lines of JS.
+viewer in `src/main/connect/viewerHtml.ts` is a complete working client (pairing, reconnect, clock sync, lyric rendering and controls; read it as the reference
+implementation, it is no longer tiny).
 
 ## 1. Transport and discovery
 
@@ -130,5 +131,12 @@ off or the page hidden if the platform allows; the snapshot sent on `ready` brin
 
 Per-device 256-bit tokens (the overlay link is the one deliberate secret in a URL: fragment only, revocable), challenge-response (token never re-sent), signed commands with replay protection, single-use
 short-lived pairing codes in the URL fragment, LAN-only binding and peer check, strict page CSP and same-origin check,
-revocation, no secrets in URLs or Referers. NOT provided: confidentiality. Traffic is plain `ws`: someone on the same network can
+revocation (drops the live socket immediately, overlay links included), no secrets in URLs or Referers.
+Host-side details a client author may notice: the HTTP server and the WebSocket upgrade answer only when the `Host`
+header is the host's LAN IP, `localhost` or `127.0.0.1` (with or without the port), so connect by IP (the QR does), not
+through a DNS name; browsers' `Origin` must equal `http://<Host>`; the viewer page's CSP allows a socket to its own
+`ws://host:port` only; mDNS queries from non-LAN source addresses are ignored; stored device tokens are encrypted at rest
+on the host where the OS allows. Server messages are not individually authenticated (the stream is read-only state; only
+commands are MACed), and `pair` is accepted only as the first step of a connection, so there is no weaker path to
+downgrade to. NOT provided: confidentiality. Traffic is plain `ws`: someone on the same network can
 read what is playing and, at pairing time, see the token. See `docs/connect-redesign.md` for the plan to add TLS.

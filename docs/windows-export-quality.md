@@ -156,7 +156,7 @@ Delivery:
 
 A repeatable benchmark so "smooth" is a number, not an opinion:
 
-- `scripts/export-bench.js` (extends the existing `scratch/export-test.js` harness): runs live and own-audio exports for 30 s at 720p/1080p, 30/60 fps, under four conditions (idle, window minimized, another heavy process, memory pressure).
+- a planned script, export-bench.js (not written yet), (extends the existing `scratch/export-test.js` harness): runs live and own-audio exports for 30 s at 720p/1080p, 30/60 fps, under four conditions (idle, window minimized, another heavy process, memory pressure).
 - It then runs `ffprobe` on the result and prints: average fps, p50/p99/max frame gap, count of gaps over 2x the frame time, audio length vs video length, integrated loudness (`ebur128`), true peak.
 - **Acceptance gates**: p99 gap under 1.5x frame time; zero gaps over 3x; audio/video length difference under 50 ms plus the end card; loudness -14 +/- 1 LUFS; peak under -1 dBTP.
 - A/V sync: a click track played from a test file; measure click-to-flash offset; must be under 40 ms.

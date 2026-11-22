@@ -60,14 +60,20 @@ Works like the phone: `MediaMonitor` reads the active `MediaSession` (Spotify's 
 * It only sees apps that publish a session. Netflix-style apps that block it, and apps that publish no metadata, show nothing.
 * Lyrics are matched by title and artist from the session, like on the phone. Seeking and play/pause go back through the session's transport controls; an app may refuse them.
 
-### 4.2 Paired with Lyra on a phone or computer (`PairedSource` + `ConnectTransport`)
+### 4.2 Paired with Lyra on a computer (Lyra Connect: `PairedSource` + `LanConnectTransport`)
 
-The other device already knows what is playing (Spotify Web API on the desktop, the media session on a phone). The TV follows it:
+The Lyra desktop app already knows what is playing, the lyrics it picked and its own song clock, and it hosts **Lyra Connect** (`docs/connect-protocol.md`, host in `src/main/connect/`). The TV is a Connect client, a `viewer` that can also be a `controller`:
 
-* `docs/connect-protocol.md` did not exist in this branch when this was written, so the **transport is a stub**: `StubConnectTransport` never connects. Everything above it is real: the pairing screen (QR code + short code `K7M-2QX`, 6 chars from an alphabet without look-alikes, QR link `lyra://pair?c=<code>&n=<TV name>`, a placeholder scheme), the persisted code (`TvPrefs.code`, "New code" button), `PairedSource` (keeps the latest snapshot, answers `snapshot` / `status` / `command`, extrapolates position for the screen saver), and the page flow.
-* To finish it, implement `ConnectTransport` (three methods: `connect(code, name, listener)`, `stop()`, `send(commandJson)`) against the protocol document and return it from `TvTransports.create()`. Snapshots are the existing `PlaybackSnapshot` JSON; commands are the existing `{"type":"toggle|play|pause|next|previous|seek"}` JSON, so no page change is needed.
-* The pairing code only starts a handshake; it must not be the only thing protecting a connection. The real protocol has to authenticate the two ends (for example a key exchange over the LAN or relay) and show the user what was paired.
-* Until then paired mode shows "Waiting for your device..." forever. Nothing is faked.
+* **Pairing is driven by the computer.** On the computer: Lyra, Devices, add a device; it shows an 8-character Crockford code (`ABCD-EFGH`, valid 2 minutes, single use). On the TV: Set up, "Pair with Lyra on my computer", choose the computer (found by mDNS `_lyra-connect._tcp` through `NsdManager`, `HostDiscovery`) or type its address, type the code with the remote (an on-screen key grid: D-pad moves, OK types; `src/android-web/tv.ts`), Connect. The old TV-generated 6-character code and the `lyra://pair` link are gone. The TV has no camera, so the host's QR code is for phones; the same text (`http://<ip>:<port>/#p=<CODE>`) parses with `PairingCode.parseLink`.
+* **Handshake** (`ConnectClient.kt`, `LanConnectTransport`): `pair {code, name, cn}` gives `paired {deviceId, token, role, sn}`; the token is saved once in `SecretStore` (Keystore AES-GCM, key `tv-connect`) together with the host's address and mDNS name. Later connections use `hello` / `challenge` / `auth {proof}` with `proof = HMAC-SHA256(token, "lyra1|auth|cn|sn")` (`ConnectCrypto`, `javax.crypto`). The token is never sent again. `bad-proof` / `unknown-device` (the computer forgot or revoked the TV) deletes the stored token and asks to pair again.
+* **Wire:** `WsClient` is a small RFC 6455 client over `java.net.Socket` (text frames, masking, ping/pong, fragments, size limit). OkHttp is not a dependency of the app and Connect needs nothing else, so no new library was added. Plain `ws://` on the LAN, as the protocol says (no confidentiality, see its section 9). Raw sockets are not affected by the cleartext policy.
+* **What the TV shows:** `now` / `play` / `view` / `art` become a `PlaybackSnapshot` (`HostState.snapshotJson`); `sampledAt` is moved onto the TV's clock with the NTP-style offset (`ClockOffset`: `ping`/`pong`, best of the last 8 samples by round trip, 6 pings 150 ms apart, then every second, then every 10 s), so the page's own extrapolation, and therefore the lyrics, follow the computer's song clock. The host's lyric shift (`view.offsetMs`) is applied to the position. The host's `lyrics` message reaches the page as a `LyricsResult` through the `tvLyrics` RPC (`api.ts` asks it first on a TV; if the computer has none it falls back to the page's own services). `devices` and `ready.vibes` are ignored; the look is the TV's own.
+* **Controller:** the remote's play/pause/seek/next/previous become signed `cmd {n, b, mac}` (`mac = HMAC(sessionKey, n|b)`, `n` increasing per connection) only when the host gave the TV the `controller` role (Devices panel); as a viewer, `command()` returns false and the host would answer `err forbidden`.
+* **Reconnect:** exponential backoff 0.5 s to 15 s with jitter, the host's address is re-resolved before each attempt (found again by mDNS name if the IP changed), the clock is re-estimated.
+* The TV also needs the Lyra desktop's Devices/Connect to be switched on (it listens only on the LAN address of one network card).
+
+**Verified:** pure parts (code parsing, HMAC vectors equal to node:crypto's, clock offset, message mapping, credentials) in `android/app/src/test/.../tv/ConnectLogicTest.kt` and `TvLogicTest.kt`; the whole client (pair, state, lyrics, signed commands accepted by the hub, reconnect by proof, wrong token and reused code refused) against the **real desktop hub** over loopback: `LYRA_KOTLIN_INTEROP=1 npx vitest run src/android-web/connectInterop.test.ts` starts `src/main/connect/hub.ts` and runs `HubInteropTest` through Gradle (needs the Android SDK; skipped otherwise). **Not verified:** a real TV or an emulator, NSD discovery, Keystore storage on a device, and the on-screen key grid with a real remote (the grid was checked in the browser harness: `?tv=1&tvs=pair|pair0|linked`, fits 1920x1080).
+
 
 ## 5. Screen saver (`TvDream`)
 
@@ -88,13 +94,13 @@ Everything is scoped by `:root[data-platform='tv']`; the file is imported in `ma
 
 ```
 npx vite -c scripts/harness/vite.config.ts --port 5611          # the browser harness
-node scripts/harness/tv-shots.mjs --port=5611 --vibes=neon,sunset,none --sizes=hd,tv720 --out=tmp/tv [--ui=1] [--setup=pair|access|nolist]
+node scripts/harness/tv-shots.mjs --port=5611 --vibes=neon,sunset,none --sizes=hd,tv720 --out=tmp/tv [--ui=1] [--setup=pair|pair0|linked|access|nolist]
 node scripts/harness/tv-keys.mjs --port=5611                     # remote behaviour, 14 checks
 npx vitest run src/android-web                                   # key rules + D-pad focus (10 tests)
 cd android && ./gradlew assembleDebug testDebugUnitTest lintDebug   # needs ANDROID_HOME; the web UI first: npm run build:android-ui
 ```
 
-The harness switch is `?tv=1` (`scripts/harness/entry.ts`), with `?tvs=pair|access|nolist` to choose the setup screen. `tv-shots.mjs` also reports text under 24 px on screen (CSS zoom included) and text outside the 5 % margins.
+The harness switch is `?tv=1` (`scripts/harness/entry.ts`), with `?tvs=pair|pair0|linked|access|nolist` to choose the setup screen (`pair`: a computer found on the network, `pair0`: nothing found, type the address, `linked`: paired and connected). `tv-shots.mjs` also reports text under 24 px on screen (CSS zoom included) and text outside the 5 % margins.
 
 ## 8. Edits to shared files
 
@@ -107,10 +113,10 @@ The harness switch is `?tv=1` (`scripts/harness/entry.ts`), with `?tvs=pair|acce
 
 Verified (this machine, Windows, Android SDK 36 toolchain):
 
-* `assembleDebug`, `testDebugUnitTest` (8 new tests: pairing code, QR link, key mapping, stub transport) and `lintDebug` pass; the other lint errors that existed before are gone on this branch and none are in the TV code.
+* `assembleDebug`, `testDebugUnitTest` (pairing code parsing, Connect HMAC vectors, clock offset, message mapping, key mapping) and `lintDebug` pass; the other lint errors that existed before are gone on this branch and none are in the TV code.
 * The built APK declares the leanback launcher activity, the banner, and no required touchscreen / microphone / portrait / leanback features.
-* `npx vitest run src/android-web` (10 tests) and `tsc --noEmit -p tsconfig.web.json` pass; `npm run build:android-ui` builds (QR code library is loaded only on the pairing screen).
-* In the browser harness at 1920x1080 and 1280x720: the looks Neon, Chrome, Sunset, Cinema, Stadium and Artwork render with the controls shown and hidden, the card fades, the three setup screens render (QR, code, adb text), and `tv-keys.mjs` passes 14 checks: seek, look change, pause, focus movement with a visible ring, Menu / Back, no cursor. `tv-shots.mjs` reports every look's card text at or above 24 px on screen except the gaps below.
+* `npx vitest run src/android-web` (10 tests) and `tsc --noEmit -p tsconfig.web.json` pass; `npm run build:android-ui` builds.
+* In the browser harness at 1920x1080 and 1280x720: the looks Neon, Chrome, Sunset, Cinema, Stadium and Artwork render with the controls shown and hidden, the card fades, the setup screens render (code entry with a found computer and with typed address, paired, adb text), and `tv-keys.mjs` passes 14 checks: seek, look change, pause, focus movement with a visible ring, Menu / Back, no cursor. `tv-shots.mjs` reports every look's card text at or above 24 px on screen except the gaps below.
 
 NOT verified (needs a TV, a TV emulator or a Fire TV; there was none, and the SDK here only has a phone image):
 
@@ -119,6 +125,6 @@ NOT verified (needs a TV, a TV emulator or a Fire TV; there was none, and the SD
 * Performance of the WebView scene looks on weak TV hardware (the renderer drops to its light mode below 4 cores / 4 GB, as everywhere).
 * Notification access on real TVs, the adb command text, Spotify TV app's session, the screen saver selection and OLED behaviour.
 * Fire TV specifics (it ignores some `settings` commands and has its own screen saver rules).
-* Pairing: only the TV half exists, against a stub.
+* Pairing on a real TV: the Connect client is verified against the real desktop hub over loopback (section 4.2) but not on a TV, an emulator or a real Wi-Fi (NSD discovery, Keystore, the on-screen keys with a remote).
 
 Known gaps in the looks (cosmetic, all found by `tv-shots.mjs`): some looks keep decorative small print under 28 px on a 1080p screen: Cinema and Stadium artist lines (about 19 to 21 px, their own rules override the TV size), Arcade HUD, Film Reel / Film Strip edge text, Lock Screen and Route clocks, Editor tab names, Chat header meta. The lyrics themselves are always large (60 to 90 px in the scene looks). The remaining looks (about half of the 30) were measured by the script but not looked at one by one.

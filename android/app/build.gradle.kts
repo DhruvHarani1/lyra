@@ -56,7 +56,14 @@ android {
             applicationIdSuffix = ".debug"
         }
         release {
-            isMinifyEnabled = false
+            // R8 (code shrinking + resource shrinking) is OFF in shipped builds on purpose, see docs/android-release.md:
+            // the app builds and unit-tests fine with it (-PlyraMinify), but no minified build has been run on a device,
+            // and a WebView app with widgets, receivers and a screen saver fails in ways only a device shows. The keep
+            // rules are ready in proguard-rules.pro; turn it on by default only after a minified build was exercised on a phone.
+            val minify = project.hasProperty("lyraMinify")
+            isMinifyEnabled = minify
+            isShrinkResources = minify
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = if (keystorePath != null) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }

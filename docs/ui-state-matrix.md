@@ -1,5 +1,7 @@
 # Fixed UI per vibe: the state matrix
 
+> **Status (2026-11-23, 0.24.1):** every one of the 34 looks has its own designed screens for synced / unsynced / no lyrics / waiting / video, composed as a scene on Windows full screen (`styles/scene.css` plus the look's own files), its own mini-player composition (`styles/mini-looks.css`) and its own Android phone / tablet layout (`styles/android-looks.css`, `android-scenes.css`). Checked with `test:ui:states`, `test:ui:quick` and `scene-check.mjs` (layout only). The note below is the 0.21.0 status, kept for history.
+>
 > **Status (0.21.0):** every vibe has designed unsynced / no-lyrics / video screens on Windows full screen and the phone (`styles/states.css`; sheets in `docs/img/`). Mini player and tablet still reuse the same CSS, reviewed only for clipping and contrast. Earlier note (0.20.0): user layout settings removed; `npm run test:ui:states` renders every vibe x phone/tablet/Windows 768/mini x lyrics plain/none/offline. Designed per-cell screens and the video states are still open.
 
 **Decision (owner, 2026-11-21):** users do not arrange the UI. For every vibe we ship one fixed, designed screen for every combination of *state* and *device*, and improve them from feedback. Remove user layout controls from Settings.

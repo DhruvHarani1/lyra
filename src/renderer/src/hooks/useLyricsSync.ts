@@ -12,7 +12,7 @@ export function lyricPosition(offsetMs: number): number {
 /** One shared ~12 Hz timer for every active-line hook (several can be mounted at once); idle when nobody listens or the window is hidden. */
 const tickers = new Set<() => void>()
 let tickTimer: ReturnType<typeof setInterval> | null = null
-function subscribeTick(fn: () => void): () => void {
+export function subscribeTick(fn: () => void): () => void {
   tickers.add(fn)
   if (tickTimer === null) {
     tickTimer = setInterval(() => {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ALL_VIBES } from '@shared/vibes'
 import { buildManifest } from './pwa'
 import { OVERLAY_CORE_JS, OVERLAY_HTML } from './overlayPage'
 
@@ -29,7 +30,7 @@ const core = new Function(
 
 describe('vibe -> look mapping', () => {
   it('covers every vibe id with a known look', () => {
-    const ids = ['none', 'sticker', 'chat', 'crt', 'neon', 'chrome', 'dream', 'paper', 'journal', 'doodle', 'arcade', 'noir', 'sunset', 'dusk', 'blocks', 'stadium', 'cassette', 'trailer', 'sketch', 'glitch', 'comic', 'stencil', 'film', 'filmstrip', 'lock', 'wallet', 'route', 'editor', 'metro', 'web', 'lens', 'picto', 'wall', 'flap']
+    const ids = [...ALL_VIBES] as string[]
     for (const id of ids) expect(core.LOOK_NAMES).toContain(core.lookFor(id))
     expect(Object.keys(core.LOOKS).sort()).toEqual([...ids].sort())
   })

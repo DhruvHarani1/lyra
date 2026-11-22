@@ -9,3 +9,7 @@
 :root[data-vibe='stencil'] .edge__c { height: 1.5vh; background: repeating-linear-gradient(-45deg, #ff6a00 0 2vh, #161412 2vh 4vh); background-position: calc(var(--li, 0) * 4vh) 0; transition: background-position 0.5s cubic-bezier(0.3, 1.4, 0.5, 1); box-shadow: 0 -0.3vh 0 rgba(0, 0, 0, 0.5); opacity: 0.92; }
 :root[data-vibe='stencil'][data-mode='mini'] .edge__c { height: 1vh; }
 :root[data-platform='android'][data-vibe='stencil'] .edge__a { height: calc(6px + var(--lp, 0) * 70px); }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* Stencil: the drips run behind the card, not over it */
+:root[data-vibe='stencil'] .edge { z-index: 0; }

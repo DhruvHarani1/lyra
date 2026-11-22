@@ -1,25 +1,9 @@
-import { useMemo, type ReactNode } from 'react'
+import { useMemo } from 'react'
 import { useActiveLine } from '@/hooks/useLyricsSync'
+import { SceneWindow } from './SceneWindow'
 import { caretColumn, identOf, langInfo, lineBase, pickLang } from '@/lib/codeGen'
 import { useLyrics } from '@/store/lyrics'
 import { usePlayer } from '@/store/player'
-
-/** The video window host (same markup as VibeFx's SceneWindow; styles/scene.css positions it from the --sc-* variables). */
-function SceneWin({ children }: { children?: ReactNode }) {
-  return (
-    <div className="scenewin">
-      <div className="scenewin__art">
-        <span>No video</span>
-        <div className="scenewin__eq">
-          {[0, 0.2, 0.1, 0.3, 0.15].map((d, i) => (
-            <i key={i} style={{ animationDelay: `${d}s` }} />
-          ))}
-        </div>
-      </div>
-      {children}
-    </div>
-  )
-}
 
 /** Wallet: a stack of payment cards. Two cards peek from behind the video card, a running "lines paid" balance heads the activity. */
 export function WalletFx() {
@@ -33,10 +17,10 @@ export function WalletFx() {
         <b>LYRA PAY</b>
         <span>•••• 0043</span>
       </i>
-      <SceneWin>
+      <SceneWindow>
         <i className="wlfx__chip" />
         <i className="wlfx__waves" />
-      </SceneWin>
+      </SceneWindow>
       <i className="wlfx__sheen" />
       <div className="wlfx__head">
         <small>LYRA PAY · ACTIVITY</small>
@@ -64,16 +48,16 @@ export function RouteFx() {
         <i className="rtfx__handle" />
         <small>UP NEXT · {'→'} every line is a stop</small>
       </div>
-      <SceneWin>
+      <SceneWindow>
         <span className="rtfx__tag">STREET VIEW</span>
-      </SceneWin>
+      </SceneWindow>
     </div>
   )
 }
 
 /** Editor: an IDE. Title bar, tabs, breadcrumb, a preview pane and a status line (language, Ln/Col, encoding); the file name and the language follow the song. The activity bar, minimap and progress line are the window edge. */
 export function EditorFx() {
-  const title = usePlayer((x) => x.snapshot?.track?.title ?? 'Song')
+  const title = usePlayer((x) => x.snapshot?.track?.title ?? '')
   const lyrics = useLyrics((x) => x.state)
   const lines = useMemo(() => (lyrics.phase === 'ready' ? lyrics.result.lines : []), [lyrics])
   const active = useActiveLine(lines)
@@ -114,7 +98,7 @@ export function EditorFx() {
         <span>LF</span>
         <span className="edfx__lang">{label}</span>
       </div>
-      <SceneWin />
+      <SceneWindow />
     </div>
   )
 }
@@ -146,9 +130,9 @@ export function MetroFx() {
         <span>NOW BOARDING</span>
         <em />
       </div>
-      <SceneWin>
+      <SceneWindow>
         <i className="mtfx__glass" />
-      </SceneWin>
+      </SceneWindow>
       <i className="mtfx__rivet mtfx__rivet--a" />
       <i className="mtfx__rivet mtfx__rivet--b" />
     </div>
@@ -180,7 +164,7 @@ export function WebFx() {
       <div className="wbfx__thread">
         <i className="wbfx__spider" />
       </div>
-      <SceneWin />
+      <SceneWindow />
       {[0, 1, 2, 3, 4].map((i) => (
         <i key={i} className={`wbfx__dew wbfx__dew--${i}`} />
       ))}

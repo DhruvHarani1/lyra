@@ -9,7 +9,7 @@ import { ConnectHub } from './hub'
 import { FrameParser, acceptKey, encodeFrame } from './ws'
 import { buildResponse, asksForUs, parseQuestions } from './mdns'
 import { OVERLAY_CORE_JS } from './overlayPage'
-import { isLocalPeer, isPrivateIPv4, originAllowed, pickLanAddress } from './net'
+import { hostAllowed, isLocalPeer, isPrivateIPv4, originAllowed, pickLanAddress } from './net'
 
 // ---- framing -----------------------------------------------------------------------------------------------------
 
@@ -94,11 +94,11 @@ class TestClient {
   private sock!: Socket
   private waiters: Array<() => void> = []
 
-  static async open(port: number, origin?: string): Promise<TestClient> {
+  static async open(port: number, origin?: string, host?: string): Promise<TestClient> {
     const c = new TestClient()
     await new Promise<void>((resolve, reject) => {
       c.sock = createConnection(port, '127.0.0.1', () => {
-        c.sock.write(`GET /ws HTTP/1.1\r\nHost: 127.0.0.1:${port}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\nSec-WebSocket-Version: 13\r\n${origin ? `Origin: ${origin}\r\n` : ''}\r\n`)
+        c.sock.write(`GET /ws HTTP/1.1\r\nHost: ${host ?? `127.0.0.1:${port}`}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\nSec-WebSocket-Version: 13\r\n${origin ? `Origin: ${origin}\r\n` : ''}\r\n`)
       })
       c.sock.on('error', reject)
       c.sock.on('close', () => {
@@ -173,7 +173,7 @@ class TestClient {
   }
 }
 
-function makeHub(opts: { lanIp?: string | null } = {}) {
+function makeHub(opts: { lanIp?: string | null; now?: () => number } = {}) {
   const commands: CommandBody[] = []
   const pairing = new Pairing({ now: Date.now, randomHex: (n) => randomBytes(n).toString('hex'), randomBytes: (n) => new Uint8Array(randomBytes(n)) })
   const hub = new ConnectHub({
@@ -183,6 +183,7 @@ function makeHub(opts: { lanIp?: string | null } = {}) {
     icon: () => ({ png: Buffer.from([137, 80, 78, 71]), size: 64 }),
     lanIp: () => (opts.lanIp === undefined ? '127.0.0.1' : opts.lanIp),
     port: 0,
+    ...(opts.now ? { now: opts.now } : {}),
     hostName: () => 'TestPC',
     vibes: ['none', 'neon'],
     onCommand: (c) => commands.push(c),
@@ -605,5 +606,138 @@ describe('overlay role', () => {
     expect(pos).toBeLessThan(5000)
     expect(core.activeIndex(lines, pos)).toBe(0)
     expect(core.activeIndex(lines, core.positionAt(feed, Date.now() + 1500, 0))).toBe(1) // the clock keeps running
+  })
+})
+
+// ---- host validation, CSP, and the devices list staying true --------------------------------------------------------------
+
+describe('host header (DNS rebinding)', () => {
+  it('allows only this server by IP, localhost or 127.0.0.1, with or without the port', () => {
+    const ok = (h: string | undefined) => hostAllowed(h, '192.168.1.5', 47813)
+    expect(['192.168.1.5', '192.168.1.5:47813', 'localhost:47813', 'LOCALHOST', '127.0.0.1:47813'].every(ok)).toBe(true)
+    expect(['evil.example', 'evil.example:47813', '192.168.1.5:80', '192.168.1.6:47813', '192.168.1.5.evil.example', '', undefined].some(ok)).toBe(false)
+  })
+
+  it('refuses a rebinding Host on HTTP and on the WebSocket upgrade', async () => {
+    const { hub } = makeHub()
+    live.push(hub)
+    await hub.start()
+    const port = hub.status().port
+    const get = (host: string) =>
+      new Promise<number>((resolve) => {
+        request({ host: '127.0.0.1', port, path: '/', headers: { Host: host } }, (res) => {
+          res.resume()
+          res.on('end', () => resolve(res.statusCode!))
+        }).end()
+      })
+    expect(await get(`evil.example:${port}`)).toBe(421)
+    expect(await get(`127.0.0.1:${port}`)).toBe(200)
+    expect(await get(`localhost:${port}`)).toBe(200)
+
+    // an Origin equal to the rebinding Host would pass the old origin-vs-Host comparison; the Host check stops it
+    const evil = `evil.example:${port}`
+    const c = await TestClient.open(port, `http://${evil}`, evil)
+    live.push(c)
+    await c.waitClosed()
+    expect(c.closed).toBe(true)
+    expect(c.msgs).toEqual([])
+  })
+
+  it('pins the viewer CSP connect-src to this server, never the ws: wildcard; the overlay stays same-origin only', async () => {
+    const { hub } = makeHub()
+    live.push(hub)
+    await hub.start()
+    const port = hub.status().port
+    const csp = async (path: string) => String((await httpGet(port, path)).headers['content-security-policy'])
+    const viewer = await csp('/')
+    expect(viewer).toContain(`connect-src 'self' ws://127.0.0.1:${port};`)
+    expect(viewer).not.toMatch(/connect-src[^;]*\sws:(\s|;)/)
+    expect(await csp('/overlay')).toContain("connect-src 'self';")
+  })
+})
+
+describe('devices list follows every kind of drop', () => {
+  type Devs = Array<{ id: string; online: boolean; role: string }>
+  /** wait until the controller is told a devices list satisfying `ok` */
+  async function devicesWhere(c: TestClient, ok: (d: Devs) => boolean, ms = 3000): Promise<Devs> {
+    const end = Date.now() + ms
+    for (;;) {
+      const m = await c.until('devices', Math.max(50, end - Date.now()))
+      if (ok(m.devices)) return m.devices
+    }
+  }
+  const onlineOf = (id: string) => (d: Devs) => d.some((x) => x.id === id && x.online)
+  const offlineOf = (id: string) => (d: Devs) => d.some((x) => x.id === id && !x.online)
+
+  it('kick (role change) marks the device offline for controllers', async () => {
+    const { hub } = makeHub()
+    live.push(hub)
+    await hub.start()
+    const ctl = await pair(hub, 'controller')
+    const v = await pair(hub, 'viewer')
+    await devicesWhere(ctl.c, onlineOf(v.paired.deviceId))
+    hub.setRole(v.paired.deviceId, 'controller')
+    await devicesWhere(ctl.c, offlineOf(v.paired.deviceId))
+  })
+
+  it('revoke removes the device from the list controllers see', async () => {
+    const { hub } = makeHub()
+    live.push(hub)
+    await hub.start()
+    const ctl = await pair(hub, 'controller')
+    const v = await pair(hub, 'viewer')
+    await devicesWhere(ctl.c, onlineOf(v.paired.deviceId))
+    hub.revoke(v.paired.deviceId)
+    await devicesWhere(ctl.c, (d) => !d.some((x) => x.id === v.paired.deviceId))
+    expect(hub.devices().some((x) => x.id === v.paired.deviceId)).toBe(false)
+  })
+
+  it('the dead-peer sweep marks a silent device offline', async () => {
+    let t = Date.now()
+    const { hub } = makeHub({ now: () => t })
+    live.push(hub)
+    await hub.start()
+    const ctl = await pair(hub, 'controller')
+    const v = await pair(hub, 'viewer')
+    await devicesWhere(ctl.c, onlineOf(v.paired.deviceId))
+    t += 15_000
+    ctl.c.send({ t: 'ping', id: 1, c0: 1 }) // the controller is still talking
+    await ctl.c.until('pong')
+    t += 6_000 // the viewer has now been silent for 21 s
+    ;(hub as unknown as { sweep(): void }).sweep()
+    await devicesWhere(ctl.c, offlineOf(v.paired.deviceId))
+    expect(hub.devices().find((x) => x.id === v.paired.deviceId)?.online).toBe(false)
+  })
+
+  it('a replaced session leaves the device online, and the old socket is closed', async () => {
+    const { hub } = makeHub()
+    live.push(hub)
+    await hub.start()
+    const ctl = await pair(hub, 'controller')
+    const v = await pair(hub, 'viewer')
+    await devicesWhere(ctl.c, onlineOf(v.paired.deviceId))
+    const c2 = await TestClient.open(hub.status().port)
+    live.push(c2)
+    const cn = randomBytes(16).toString('hex')
+    c2.send({ t: 'hello', deviceId: v.paired.deviceId, name: 'x', cn })
+    const { sn } = await c2.until('challenge')
+    c2.send({ t: 'auth', proof: Pairing.proof(v.paired.token, cn, sn) })
+    await c2.until('ready')
+    await v.c.waitClosed()
+    expect(v.c.closed).toBe(true)
+    await devicesWhere(ctl.c, onlineOf(v.paired.deviceId))
+    c2.close() // the new one goes: now it really is offline
+    await devicesWhere(ctl.c, offlineOf(v.paired.deviceId))
+  })
+
+  it('a peer that just disconnects is marked offline too', async () => {
+    const { hub } = makeHub()
+    live.push(hub)
+    await hub.start()
+    const ctl = await pair(hub, 'controller')
+    const v = await pair(hub, 'viewer')
+    await devicesWhere(ctl.c, onlineOf(v.paired.deviceId))
+    v.c.close()
+    await devicesWhere(ctl.c, offlineOf(v.paired.deviceId))
   })
 })

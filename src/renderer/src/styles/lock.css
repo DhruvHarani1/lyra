@@ -1,0 +1,47 @@
+/* ==========================================================================
+   LOCK SCREEN, premium pass: the video IS the wallpaper.
+   Full-bleed picture behind a real lock screen: a big centred clock and date, the lines arrive as a centred stack of glass
+   notifications, the card is the media widget above the home indicator, with the flashlight and camera buttons in the bottom
+   corners. The edge is the status bar (top glow, signal and battery) and the home indicator, which fills as the line is sung
+   (edge-lock.css). (Was: a small window top right and a clock top left.)
+   ========================================================================== */
+:root[data-vibe='lock'] {
+  --sc-ww: 100vw;
+  --sc-wh: 100vh;
+  --sc-wl: 0px;
+  --sc-wt: 0px;
+  --sc-wr: 0px;
+  --sc-cl: calc(50vw - min(21vw, 320px));
+  --sc-cr: auto;
+  --sc-cb: 8.5vh;
+  --sc-ct: auto;
+  --sc-cw: min(42vw, 640px);
+  --sc-ll: calc(50vw - min(24vw, 380px));
+  --sc-lt: 31vh;
+  --sc-lw: min(48vw, 760px);
+  --sc-lb: 26vh;
+  --sc-lbs: 26vh;
+}
+/* the lock screen has its own edge (status bar + home indicator): no generic rim light on top of it, like every other look */
+:root[data-vibe='lock'][data-rim='on']::after { display: none; }
+:root[data-vibe='lock'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: 100vw; }
+/* a soft scrim so the glass reads on any picture */
+[data-vibe='lock'] .scenewin { box-shadow: none; background: linear-gradient(180deg, rgba(14, 8, 48, 0.5), rgba(14, 8, 48, 0.08) 38%, rgba(14, 8, 48, 0.1) 60%, rgba(14, 8, 48, 0.62)); }
+/* clock: centred, big and thin */
+[data-vibe='lock'] .nvfx__clock { left: 0; right: 0; top: 6.5vh; text-align: center; }
+[data-vibe='lock'] .nvfx__clock b { font-size: 15vh; font-weight: 200; }
+[data-vibe='lock'] .nvfx__clock span { font-size: 2.6vh; }
+/* the two round buttons in the corners */
+[data-vibe='lock'] .nvfx::before, [data-vibe='lock'] .nvfx::after { position: absolute; bottom: 4.2vh; width: 7vh; height: 7vh; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, 0.2); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); color: #fff; font: 400 3.2vh/1 'Inter Variable', sans-serif; }
+[data-vibe='lock'] .nvfx::before { content: '◐'; left: 6vw; }
+[data-vibe='lock'] .nvfx::after { content: '◉'; right: 6vw; }
+:root[data-vibe='lock'][data-mode='mini'] .nvfx::before, :root[data-vibe='lock'][data-mode='mini'] .nvfx::after, :root[data-platform='android'][data-vibe='lock'] .nvfx::before, :root[data-platform='android'][data-vibe='lock'] .nvfx::after { display: none; }
+/* notifications get a centred, wider glass */
+[data-vibe='lock'] .feed--lockscreen .feed__row { background: rgba(255, 255, 255, 0.2); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1.6vh 4vh rgba(8, 4, 40, 0.35); }
+[data-vibe='lock'] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(255, 255, 255, 0.7); }
+/* settings: frosted glass sheet */
+:root[data-vibe='lock'] .sidepanel { background: rgba(40, 28, 110, 0.55); -webkit-backdrop-filter: blur(30px) saturate(1.4); backdrop-filter: blur(30px) saturate(1.4); border-radius: 3.2vh; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3); }
+:root[data-vibe='lock'] .sidepanel h3, :root[data-vibe='lock'] .sidepanel .settings h4 { font-weight: 300; letter-spacing: 0; }
+[data-vibe='lock'] .nvfx { z-index: 3; }
+:root[data-vibe='lock'] .full__device { visibility: hidden; }
+[data-vibe='lock'] .nvfx__clock { z-index: 2; }

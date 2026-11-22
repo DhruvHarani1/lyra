@@ -155,8 +155,18 @@ const MEASURE = () => {
     if (fs < 10 && shown(el)) tinyText.push({ el: label(el), fs })
   }
 
+  // a look's scene (video window / vibefx layer) must really be rendered: a stray `display: none` from another look's
+  // stylesheet (Drift Wall's `.wlfx` once hid the whole Wallet scene) leaves the left side empty with no text clipped
+  const sceneZero = []
+  if (new URLSearchParams(location.search).get('mode') === 'full') {
+    const fx = document.querySelector('.vibefx')
+    if (fx && (R(fx).width < 4 || R(fx).height < 4)) sceneZero.push('vibefx')
+    const wins = [...document.querySelectorAll('.scenewin')]
+    for (const w of wins) if (R(w).width < 40 || R(w).height < 40) sceneZero.push(`scenewin ${Math.round(R(w).width)}x${Math.round(R(w).height)}`)
+  }
+
   return {
-    vw, vh,
+    vw, vh, sceneZero,
     hscroll: document.documentElement.scrollWidth - vw,
     hasText: textRects.length,
     textBox: union ? { l: union.l, t: union.t, r: union.r, b: union.b } : null,
@@ -204,6 +214,7 @@ const CONTRAST = async ({ png, rects }) => {
 
 function verdict(d, m, contrast) {
   const f = []
+  if (m.sceneZero.length) f.push(`scene not rendered: ${m.sceneZero.join(', ')}`)
   if (m.hscroll > 1) f.push(`page scrolls sideways by ${m.hscroll}px`)
   if (!d.lyricsOptional && m.hasText === 0) f.push('no lyric text on screen')
   if (m.clipped.length) f.push(`text clipped: ${m.clipped.slice(0, 2).map((c) => `${c.el} by ${c.by} (${c.cut}px)`).join('; ')}`)
@@ -244,6 +255,19 @@ async function main() {
       await page.goto(`${BASE}/?paused=1&t=43500&${d.q}${withVideo ? '&video=night' : ''}&s=${s}`)
       await page.evaluate(() => document.fonts.ready)
       await page.waitForTimeout(2800)
+      // a slow runner (CI: software-rendered Linux) is still mid-transition here: lines fading in, the lyric list still gliding to the
+      // current line. Wait for the one-shot animations and the scroll to settle (looping decoration is ignored), so we judge the finished frame
+      await page.evaluate(async () => {
+        const busy = () => document.getAnimations().some((a) => a.playState === 'running' && Number.isFinite(a.effect?.getComputedTiming().endTime ?? Infinity))
+        const tops = () => [...document.querySelectorAll('.lyrics__scroller')].map((e) => e.scrollTop).join()
+        let last = tops(), calm = 0
+        for (let i = 0; i < 40 && calm < 4; i++) {
+          await new Promise((r) => setTimeout(r, 100))
+          const now = tops()
+          calm = !busy() && now === last ? calm + 1 : 0
+          last = now
+        }
+      })
       const m = await page.evaluate(MEASURE)
       const shot = await page.screenshot()
       let contrast = null

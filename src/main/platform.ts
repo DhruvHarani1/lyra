@@ -76,6 +76,13 @@ class SafeStorageSecret implements SecretStore {
   }
 }
 
+/** Per-value encryption for stores that hold several secrets (Connect device tokens). */
+export const safeStorageCipher = {
+  available: (): boolean => safeStorage.isEncryptionAvailable(),
+  encrypt: (plain: string): string => safeStorage.encryptString(plain).toString('base64'),
+  decrypt: (b64: string): string => safeStorage.decryptString(Buffer.from(b64, 'base64'))
+}
+
 export function installElectronPlatform(): void {
   const platform: CorePlatform = {
     fetch: (url, init) => net.fetch(url, init),

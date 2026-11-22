@@ -1,6 +1,6 @@
 # Fullscreen lyrics on big screens: a better layout
 
-Status: Cinema layout (video behind the lyrics, Windows) built; the other presets are still plan. Written 2026-10-24 from the owner's screenshot (1918 x 1198, Spotify music video behind the lyrics).
+Status: **historical.** The Cinema / Split / Poster / Focus presets in this plan were removed as user settings in 0.20 (the look decides) and every look has been a self-composed `scene` layout since 0.24 (`styles/scene.css`; see `docs/vibe-redesign-plan.md`). Kept for the reasoning on readability. Original status: Cinema layout (video behind the lyrics, Windows) built; the other presets were still plan. Written 2026-10-24 from the owner's screenshot (1918 x 1198, Spotify music video behind the lyrics).
 
 Goal: on a large screen the lyrics should feel like a cinema experience: the music video is the hero, the current line is unmistakable and always readable, everything else gets out of the way. Today the lyric column fills the right half with seven big lines, and the text fights with the picture.
 
@@ -84,7 +84,7 @@ Does not work
 **Adaptive behaviour**
 16. Breakpoints: below 700 px wide or portrait = Poster; 700-1100 = Split; above 1100 landscape = Cinema; 21:9 = Split with the lyric side chosen from where the video's subject usually is (default right, one-key flip `L`).
 17. Font sizes scale with the window height as well as width so a short, wide window (a laptop at 1366x768) does not overflow.
-18. TV mode and the Android fullscreen reuse the Poster/Focus presets.
+18. (Historical) The old LAN TV mode and the Android fullscreen reused the Poster/Focus presets. TV mode was replaced by Lyra Connect (`docs/connect-redesign.md`); Android TV uses the desktop full-screen mode (`docs/android-tv.md`).
 
 ## 5. Accessibility and quality gates
 

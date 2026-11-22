@@ -9,7 +9,6 @@
 :root[data-vibe='editor'] .edge__a { left: 5vh; right: 9vh; top: 8.4vh; height: 0.3vh; background: linear-gradient(90deg, #3b9eff calc(var(--lp, 0) * 100%), transparent 0); box-shadow: 0 0 0.8vh rgba(59, 158, 255, 0.7); }
 
 /* the settings panel (z 21) and its scrim sit over the edge */
-:root[data-vibe='editor']:has(.sidepanel) .edge { z-index: 19; }
 /* a small window / a phone: no room for the activity bar and the minimap */
 @media (max-aspect-ratio: 1/1) { :root[data-vibe='editor'] :is(.edge__b, .edge__d) { display: none; } :root[data-vibe='editor'] .edge__a { left: 0; right: 0; } }
 :root[data-platform='android'][data-vibe='editor'] :is(.edge__b, .edge__d) { display: none; }

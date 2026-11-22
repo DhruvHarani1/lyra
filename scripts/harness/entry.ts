@@ -118,21 +118,26 @@ const api: any = {
 }
 await import('@/main')
 if (tv) {
-  // ?tvs= picks the setup screen the TV shows: ready (default, plays) | pair (QR + short code) | access (standalone, no notification access) | nolist (…and Settings has no such screen)
+  // ?tvs= picks the setup screen the TV shows: ready (default, plays) | pair (code entry, a computer found) | pair0 (code entry, nothing found: type the address) | linked (paired and connected) | access (standalone, no notification access) | nolist (…and Settings has no such screen)
   const tvs = q.get('tvs') ?? 'ready'
   const mock = {
-    mode: tvs === 'pair' ? 'paired' : 'local',
+    mode: tvs === 'pair' || tvs === 'pair0' || tvs === 'linked' ? 'paired' : 'local',
     hasAccess: tvs !== 'access' && tvs !== 'nolist',
     canOpenAccessSettings: tvs !== 'nolist',
-    paired: false,
-    code: 'K7M-2QX',
-    link: 'lyra://pair?c=K7M2QX&n=Living%20Room%20TV',
+    paired: tvs === 'linked',
+    link: tvs === 'linked' ? 'connected' : 'idle',
+    saved: tvs === 'linked',
+    hostName: tvs === 'linked' ? 'STUDIO-PC' : '',
+    role: 'viewer',
+    error: null,
+    hosts: tvs === 'pair' ? [{ name: 'Lyra on STUDIO-PC', host: '192.168.1.20', port: 47813 }] : [],
+    defaultPort: 47813,
     deviceName: 'Living Room TV',
     adb: 'adb shell cmd notification allow_listener dev.lyra.android/dev.lyra.android.MediaListenerService'
   }
   ;(window as any).__lyraNative = { push() {}, back: () => false }
   const { startTv } = await import('../../src/android-web/tv')
-  startTv({ rpc: async (m: string) => (m === 'tvState' ? mock : true) as never, exit: () => console.log('tv exit'), forceSetup: tvs !== 'ready' })
+  startTv({ rpc: async (m: string) => (m === 'tvState' ? mock : m === 'tvPair' ? { ok: true, message: null } : true) as never, exit: () => console.log('tv exit'), forceSetup: tvs !== 'ready' })
 }
 const panel = q.get('panel')
 if (panel) { const { useUi } = await import('@/store/ui'); useUi.getState().setPanel(panel as never) }

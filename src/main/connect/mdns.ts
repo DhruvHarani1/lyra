@@ -1,5 +1,6 @@
 import { createSocket, type Socket } from 'node:dgram'
 import { SERVICE_TYPE } from '@core/connect/protocol'
+import { isLocalPeer } from './net'
 
 
 /**
@@ -121,7 +122,9 @@ export class MdnsAdvertiser {
       this.warn('mDNS unavailable', e.message)
       this.stop()
     })
-    sock.on('message', (msg) => {
+    sock.on('message', (msg, rinfo) => {
+      // the socket is bound to 0.0.0.0 (so multicast arrives on every platform); drop queries from outside the LAN
+      if (!isLocalPeer(rinfo.address)) return
       if (this.info && asksForUs(parseQuestions(msg), this.info)) this.send(buildResponse(this.info))
     })
     sock.bind(MDNS_PORT, () => {

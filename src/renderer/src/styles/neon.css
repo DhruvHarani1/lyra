@@ -11,17 +11,6 @@
   --neon-glass: rgba(10, 18, 34, 0.62);
   --neon-hair: rgba(255, 255, 255, 0.14);
   /* scene geometry (styles/scene.css) */
-  --sc-wl: 5vw;
-  --sc-wt: 9vh;
-  --sc-ww: min(40vw, 70vh);
-  --sc-wr: 2.2vh;
-  --sc-cr: 5vw;
-  --sc-ct: calc(64px + 4vh);
-  --sc-cw: clamp(170px, 17vw, 270px);
-  --sc-ll: 5vw;
-  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 5vh);
-  --sc-lw: calc(100vw - 5vw - var(--sc-cw) - 11vw);
-  --sc-lb: 18vh;
   --sc-art-bg: radial-gradient(circle at 50% 40%, rgba(255, 79, 163, 0.22), transparent 65%), #091221;
   --sc-eq: linear-gradient(180deg, var(--neon-cyan), var(--neon-pink));
 }
@@ -103,14 +92,6 @@
 }
 @keyframes neon-sweep { 0%, 70% { background-position: -80% 0; } 100% { background-position: 90% 0; } }
 /* the shop-window frame (the box is the scene window) */
-[data-vibe='neon'] .scenewin {
-  box-shadow:
-    0 0 0 0.5vh #14223a,
-    0 0 0 calc(0.5vh + 1px) rgba(255, 255, 255, 0.12),
-    0 0 0 calc(0.5vh + 2px) rgba(107, 234, 255, 0.55),
-    0 3vh 8vh rgba(0, 0, 0, 0.6),
-    0 0 6vh rgba(107, 234, 255, 0.22);
-}
 .neonfx__glass {
   position: absolute;
   inset: 0;
@@ -130,12 +111,7 @@
 
 /* ---------------- the card: glass, hung from a rail by two chains, swaying a little ---------------- */
 :root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
-  border-radius: 2.4vh !important;
-  background: var(--neon-glass) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  backdrop-filter: blur(14px) saturate(1.3);
   border: 0 !important;
-  box-shadow: 0 0 0 1px var(--neon-hair), 0 0 0 2px rgba(107, 234, 255, 0.28), 0 2.4vh 6vh rgba(0, 0, 0, 0.5), 0 0 5vh rgba(107, 234, 255, 0.16) !important;
   transform-origin: 50% -4vh;
   animation: neon-sway 7s ease-in-out infinite;
 }
@@ -144,23 +120,8 @@
 :root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::after {
   content: '';
   position: absolute;
-  top: -4vh;
   width: 3px;
-  height: 4vh;
   border-radius: 2px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.35));
-}
-:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { left: 22%; }
-:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::after { right: 22%; }
-:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork {
-  box-shadow: 0 1.4vh 3vh rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.22);
-}
-:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 {
-  font-family: 'Inter Variable', system-ui, sans-serif;
-  font-size: 2.3vh;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-shadow: none;
 }
 :root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.6vh); color: rgba(190, 215, 245, 0.72); }
 :root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #fff !important; color: #0a1220 !important; box-shadow: 0 0.8vh 2vh rgba(255, 79, 163, 0.45) !important; }
@@ -257,3 +218,84 @@
 /* ---------------- mini player / phone: the alley stays a quiet backdrop ---------------- */
 :root[data-vibe='neon'][data-mode='mini'] .neonfx__rain, :root[data-vibe='neon'][data-platform='android'] .neonfx__rain { opacity: 0.55; }
 :root[data-vibe='neon'][data-mode='mini'] .neonfx__ring, :root[data-vibe='neon'][data-platform='android'] .neonfx__ring { display: none; }
+
+/* ---- second pass, was recomp1.css ---- */
+/* ===== NEON: sign-shop wall: huge tube lyrics on the left, the video in a neon-tube window on the right, the card a sign hung from its frame ===== */
+:root[data-vibe='neon'] {
+  --sc-ww: min(40vw, 64vh);
+  --sc-wl: calc(100vw - 7vw - var(--sc-ww));
+  --sc-wt: 15vh;
+  --sc-wr: 3vh;
+  --sc-cl: var(--sc-wl);
+  --sc-cr: auto;
+  --sc-ct: calc(var(--sc-wt) + var(--sc-wh) + 9.6vh);
+  --sc-cw: var(--sc-ww);
+  --sc-ll: 5vw;
+  --sc-lt: 12vh;
+  --sc-lw: calc(var(--sc-wl) - 5vw - 5vw);
+  --sc-lb: 10vh;
+  --sc-lbs: 10vh;
+}
+[data-vibe='neon'] .scenewin { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 2vh 6vh rgba(0, 0, 0, 0.6); }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .neonfx::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--sc-wl) - 2.4vh);
+  top: calc(var(--sc-wt) - 2.4vh);
+  width: calc(var(--sc-ww) + 4.8vh);
+  height: calc(var(--sc-wh) + 4.8vh);
+  box-sizing: border-box;
+  border: 0.7vh solid #ffe3f1;
+  border-radius: 4.6vh;
+  box-shadow: 0 0 0.5vh #fff, 0 0 1.6vh #ff4fa3, 0 0 4.4vh #ff4fa3, inset 0 0 1.4vh #ff4fa3, inset 0 0 4vh rgba(255, 79, 163, 0.4);
+  animation: rc-neon-buzz 9s steps(1) infinite;
+  transition: width 0.7s, height 0.7s;
+}
+@keyframes rc-neon-buzz { 0%, 47%, 50%, 100% { opacity: 1; } 48% { opacity: 0.5; } 49% { opacity: 0.9; } }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .neonfx::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--sc-wl) + var(--sc-ww) * 0.5 - 12vh);
+  top: calc(var(--sc-wt) - 5.2vh);
+  width: 24vh;
+  height: 1.4vh;
+  background: linear-gradient(180deg, #44546e, #1b2538);
+  border-radius: 0.5vh;
+  box-shadow: 0 0.6vh 1.4vh rgba(0, 0, 0, 0.6);
+}
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  flex-direction: row;
+  align-items: center;
+  gap: 2vh;
+  padding: 1.5vh 2.2vh 1.5vh 1.5vh !important;
+  border-radius: 1.2vh !important;
+  background: linear-gradient(180deg, #101c30, #0a1322) !important;
+  box-shadow: 0 0 0 0.35vh var(--neon-cyan), 0 0 1.4vh var(--neon-cyan), inset 0 0 1.6vh rgba(107, 234, 255, 0.2), 0 2.4vh 5vh rgba(0, 0, 0, 0.6) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before, :root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::after { top: -6.6vh !important; height: 6.6vh !important; background: linear-gradient(180deg, #6d7f9c, #2c3a52) !important; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { left: 14% !important; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::after { right: 14% !important; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 9.4vh !important; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child, :root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { border-radius: 0.8vh !important; box-shadow: 0 0 0 0.3vh rgba(255, 255, 255, 0.4) !important; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font-family: 'Unbounded Variable', sans-serif; font-size: 2.1vh; font-weight: 800; color: #ffd9ec; text-shadow: 0 0 0.4vh #fff, 0 0 1.4vh #ff4fa3; letter-spacing: -0.02em; }
+:root[data-vibe='neon']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #ff4fa3, #6beaff) !important; }
+/* lyrics: huge tube lettering, outlined in light with a glow (stage 'sign') */
+:root[data-vibe='neon'] .sign--sign .sign__row { font-size: min(6.8vw, 12.4vh); line-height: 1.02; letter-spacing: -0.045em; gap: 0 0.22em; }
+:root[data-vibe='neon'] .sign--sign .sign__word { color: transparent; -webkit-text-stroke: 0.16vh rgba(150, 175, 215, 0.5); }
+:root[data-vibe='neon'] .sign--sign .sign__word.is-in { color: rgba(255, 79, 163, 0.14); -webkit-text-stroke: 0.3vh #ffe3f1; text-shadow: 0 0 0.6vh #fff, 0 0 2vh #ff4fa3, 0 0 5vh rgba(255, 79, 163, 0.7); }
+:root[data-vibe='neon'] .sign--sign .sign__word.is-now { color: rgba(107, 234, 255, 0.16); -webkit-text-stroke: 0.3vh #effcff; text-shadow: 0 0 0.6vh #fff, 0 0 2vh #6beaff, 0 0 5vh rgba(107, 234, 255, 0.7); }
+:root[data-vibe='neon'] .sign__next { font: 700 max(10.5px, min(2.2vw, 3.6vh))/1.2 'Unbounded Variable', sans-serif; letter-spacing: -0.02em; text-transform: uppercase; color: rgba(150, 175, 215, 0.4); }
+:root[data-vibe='neon'] .sign--sign .sign__refl { display: none; }
+
+/* ---- last-word size fixes (found by the UI test at short / narrow windows), were in fit-*.css ---- */
+/* Android tablets in landscape: the lyric region is short, so the big words shrink to two lines */
+@media (min-width: 900px) and (max-height: 900px) {
+  :root[data-platform='android'][data-vibe='neon'] .sign--sign .sign__row { font-size: min(3.9vw, 9vh); }
+}

@@ -19,6 +19,21 @@ Ordered by effort vs. audience. "You" = needs the maintainer's account; "Ready" 
 | **Google Play** | Largest reach | One-time $25. Needs a Notification-access declaration and a privacy policy URL. Later. |
 | **GitHub Releases** | Direct APK | Done. |
 
+## Release gate (both workflows)
+
+`release.yml` (Windows) and `android.yml` run on their own, not after CI, so each one now checks before publishing that the **CI**
+workflow's newest run for the same commit SHA finished `success` (`gh run list --workflow ci.yml --commit <sha>`). No CI run, a
+running one or a failed one stops the publish with an error that says so. This applies to a pushed tag and to "Run workflow" with
+`publish` on; a dry run (publish off) is never gated.
+
+- Override: run the workflow by hand with `publish` **and** `force` ticked. It prints a warning and skips only this check. A tag push
+  cannot set `force`; to ship a tagged commit CI rejected, run the workflow by hand with `force`.
+- `android.yml` also refuses to publish when the signing secrets (`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
+  `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`) are missing: the build would silently fall back to the debug key, and the in-app
+  updater refuses any update not signed like the installed app, so every user would be stuck. `force` does not bypass this.
+- `android.yml` runs `./gradlew testDebugUnitTest lintDebug` before building the APK (the Kotlin unit tests did not run in CI before).
+- After a green CI the order is: bump version, merge to main, wait for CI, then tag or run the workflow.
+
 ## Directories and communities
 - **AlternativeTo** (list as an alternative to Musixmatch, Lyrically, Spotify's lyrics view), **Product Hunt**, **Show HN**.
 - **Reddit:** r/spotify, r/opensource, r/FOSS, r/androidapps, r/windows, r/developersIndia (read each sub's self-promo rules first).
