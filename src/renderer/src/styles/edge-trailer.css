@@ -1,0 +1,17 @@
+/* TRAILER edge: gold hairlines on the letterbox edges (they brighten while a line is sung) and an anamorphic lens flare, a thin
+   blue streak with a warm core, that sweeps in at the start of every line from alternating sides: --lt (0|1) sets the side, --lp the
+   moment (max(0, 1 - 5 * progress) so it only lives in the first fifth of the line). */
+:root[data-vibe='trailer'][data-mode='full']:not([data-platform='android']) .edge__a { top: var(--sc-wt); height: 1px; background: linear-gradient(90deg, transparent, #c9a24a 12%, #c9a24a 88%, transparent); opacity: calc(0.35 + var(--lv, 0) * 0.5); }
+:root[data-vibe='trailer'][data-mode='full']:not([data-platform='android']) .edge__c { top: calc(var(--sc-wt) + var(--sc-wh) - 1px); bottom: auto; height: 1px; background: linear-gradient(90deg, transparent, #c9a24a 12%, #c9a24a 88%, transparent); opacity: calc(0.35 + var(--lv, 0) * 0.5); }
+:root[data-vibe='trailer'][data-mode='full']:not([data-platform='android']) .edge::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: calc(var(--sc-wt) + var(--sc-wh) * 0.42);
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(120, 190, 255, 0.9) 30%, #fff 50%, rgba(120, 190, 255, 0.9) 70%, transparent);
+  box-shadow: 0 0 2.4vh rgba(120, 190, 255, 0.8);
+  opacity: max(0, calc(1 - var(--lp, 0) * 5));
+  transform: translateX(calc((var(--lt, 0) * 2 - 1) * (30vw + var(--lp, 0) * 60vw))) scaleX(calc(0.5 + var(--lp, 0) * 3));
+}

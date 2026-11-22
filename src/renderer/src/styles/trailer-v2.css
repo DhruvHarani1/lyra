@@ -1,0 +1,42 @@
+/* ==========================================================================
+   TRAILER v2: a theatrical teaser (fullscreen, mini and phone; mechanics in scene.css).
+   The 2.39:1 picture stays full width, but the black bars now carry print like a real teaser: "A LYRA PICTURE" top left, the
+   release line top right, and the credits (the card) in the bottom bar. Each lyric line is a title card set large in wide-tracked
+   Fraunces caps that pushes in slowly like a dolly shot. Gold hairlines frame the picture. What is unique here: the print on the
+   letterbox bars, the slow push-in titles, and a gold-and-black palette with no other colour.
+   Edge (edge-trailer.css): gold hairlines along the letterbox edges and an anamorphic lens flare that streaks in from alternating
+   sides on every new line.
+   ========================================================================== */
+:root[data-vibe='trailer'] {
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) * 0.4);
+  --sc-cl: 5vw;
+  --sc-cw: 46vw;
+  --sc-cb: 0.8vh;
+}
+:root[data-vibe='trailer']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .trailerfx::before,
+:root[data-vibe='trailer']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .trailerfx::after {
+  position: absolute;
+  top: calc(var(--sc-wt) / 2);
+  translate: 0 -50%;
+  font: 500 max(10.5px, 1.5vh) 'Fraunces Variable', Georgia, serif;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: #c9a24a;
+  white-space: nowrap;
+}
+:root[data-vibe='trailer']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .trailerfx::before { content: 'A LYRA PICTURE'; left: 5vw; }
+:root[data-vibe='trailer']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .trailerfx::after { content: 'IN CINEMAS · THIS SONG'; right: 19vw; letter-spacing: 0.4em; opacity: 0.8; }
+[data-vibe='trailer'] .scenewin { box-shadow: inset 0 0 0 1px rgba(201, 162, 74, 0.35); }
+/* titles: larger, slower, with a dolly push-in */
+.sign--title .sign__row { font-size: min(3.6vw, 6.6vh); letter-spacing: 0.26em; font-weight: 400; animation: tr-push 9s linear 1 forwards; }
+@keyframes tr-push { from { transform: scale(1); } to { transform: scale(1.07); } }
+.sign--title .sign__word.is-in { color: #f6ecda; text-shadow: 0 0 2vh rgba(255, 217, 160, 0.3), 0 0.3vh 1.2vh rgba(0, 0, 0, 0.8); }
+.sign--title .sign__row::after { content: ''; display: block; width: 100%; height: 1px; margin-top: 1.4vh; background: linear-gradient(90deg, transparent, #c9a24a, transparent); transform: scaleX(calc(0.2 + var(--lp, 0) * 0.8)); }
+:root[data-motion='off'] .sign--title .sign__row { animation: none; }
+/* bars carry the credits: the card gets a gold rule above it */
+:root[data-vibe='trailer']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { border-top: 1px solid rgba(201, 162, 74, 0.55) !important; padding-top: 0.6vh !important; }
+/* settings: gold hairlines on black, serif titles */
+:root[data-vibe='trailer'] .sidepanel { background: #0b0a09; border: 0; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(201, 162, 74, 0.5), inset 0 0 0 5px #0b0a09, inset 0 0 0 6px rgba(201, 162, 74, 0.25), 0 3vh 8vh rgba(0, 0, 0, 0.6); }
+:root[data-vibe='trailer'] .sidepanel h3 { font: 500 17px 'Fraunces Variable', Georgia, serif; letter-spacing: 0.34em; text-transform: uppercase; color: #c9a24a; }
+:root[data-vibe='trailer'] .sidepanel .stabs button.is-on { background: transparent; color: #f6ecda; box-shadow: inset 0 -2px 0 #c9a24a; border-radius: 0; }
+:root[data-vibe='trailer'][data-mode='mini'] .trailerfx::before, :root[data-vibe='trailer'][data-mode='mini'] .trailerfx::after { display: none; }

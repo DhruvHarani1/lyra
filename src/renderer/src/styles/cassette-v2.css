@@ -1,0 +1,63 @@
+/* ==========================================================================
+   CASSETTE v2: a hi-fi tape deck seen straight on (fullscreen, mini and phone; mechanics in scene.css).
+   The room is gone: the screen IS the faceplate, brushed aluminium with screws in the corners and a black strip printed with
+   STEREO CASSETTE DECK. The video sits in a small black-bezel display on the left, two analog VU meters with moving needles sit
+   next to it, the lyrics are amber dot-matrix label strips under the display, and the card is the cassette itself with its two
+   reels. What is unique here: the only LIGHT metal look and the only one with working instrument dials.
+   Edge (edge-cassette.css): a ribbon of magnetic tape running ANTICLOCKWISE around the window edge, faster while a line is sung.
+   ========================================================================== */
+:root[data-vibe='cassette'] {
+  --rimc: #b8b0a0;
+  --sc-ww: min(40vw, 62vh);
+  --sc-wl: 6vw;
+  --sc-wt: 11vh;
+  --sc-wr: 1.4vh;
+  --sc-ll: 6vw;
+  --sc-lt: calc(11vh + var(--sc-wh) + 4.4vh);
+  --sc-lw: calc(var(--sc-ww) + 14vw);
+  --sc-lb: 8vh;
+  --sc-lbs: 8vh;
+  --sc-cr: 5vw;
+  --sc-cl: auto;
+  --sc-cb: 7vh;
+  --sc-cw: min(36vw, 480px);
+}
+:root[data-vibe='cassette'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(40vw, 62vh); }
+[data-vibe='cassette'] .shell { --fg: #2a2018; --fg-2: rgba(42, 32, 24, 0.75); --fg-3: rgba(42, 32, 24, 0.6); --on-fg: #ecdcc0; --line: rgba(42, 32, 24, 0.25); --bg-0: #b9b2a6; }
+[data-vibe='cassette'] .backdrop .backdrop__field { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, rgba(0, 0, 0, 0.045) 1px 3px), linear-gradient(180deg, #dcd7cc, #b3ada1 70%, #a39d91); }
+:root[data-vibe='cassette'] .cassettefx__wood, :root[data-vibe='cassette'] .cassettefx__light, :root[data-vibe='cassette'] .cassettefx__tape { display: none; }
+/* the faceplate print: a black strip with the model name, four screws */
+.cassettefx__plate, .cassettefx__vu, .cassettefx__screw { display: none; }
+:root[data-vibe='cassette']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .cassettefx__plate { display: block; position: absolute; left: 0; right: 0; top: 0; height: 7.2vh; background: linear-gradient(180deg, #1b1713, #2a2520); box-shadow: 0 0.3vh 0 rgba(255, 255, 255, 0.35); }
+:root[data-vibe='cassette']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .cassettefx__plate::after { content: 'STEREO CASSETTE DECK  ·  C-60'; position: absolute; left: 60vw; top: 50%; translate: 0 -50%; font: 700 max(10.5px, 1.2vh) 'Courier New', monospace; letter-spacing: 0.22em; white-space: nowrap; color: #d4cfc4; }
+:root[data-vibe='cassette']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .cassettefx__screw { display: block; position: absolute; width: 2.2vh; height: 2.2vh; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f0ece4, #8f897d); box-shadow: 0 0.2vh 0.4vh rgba(0, 0, 0, 0.5); }
+.cassettefx__screw::after { content: ''; position: absolute; left: 12%; right: 12%; top: 46%; height: 8%; background: rgba(40, 34, 28, 0.7); rotate: 28deg; }
+.cassettefx__screw--a { left: 1.6vw; top: 8vh; } .cassettefx__screw--b { right: 1.6vw; top: 8vh; } .cassettefx__screw--c { left: 1.6vw; bottom: 3vh; } .cassettefx__screw--d { right: 1.6vw; bottom: 3vh; }
+/* the display: a black bezel, a pale glass edge */
+[data-vibe='cassette'] .scenewin { box-shadow: 0 0 0 1.6vh #14100c, 0 0 0 calc(1.6vh + 2px) #4a4036, 0 0 0 calc(1.6vh + 0.5vh) rgba(255, 255, 255, 0.35), 0.4vh 1.6vh 3vh calc(1.6vh) rgba(40, 30, 20, 0.45); }
+/* two VU meters: a cream dial, a red zone, a needle that follows the song */
+:root[data-vibe='cassette']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .cassettefx__vu { display: flex; gap: 2.4vh; position: absolute; left: calc(var(--sc-wl) + var(--sc-ww) + 5vw); top: calc(var(--sc-wt) + 1vh); }
+.cassettefx__dial { position: relative; width: 17vh; height: 11vh; border-radius: 1vh 1vh 3vh 3vh; background: radial-gradient(120% 90% at 50% 100%, #fff6dc, #e8d9b0); box-shadow: 0 0 0 0.6vh #14100c, inset 0 0 1.4vh rgba(120, 90, 40, 0.4); overflow: hidden; }
+.cassettefx__dial::before { content: ''; position: absolute; left: 50%; bottom: -5.5vh; width: 15vh; height: 15vh; margin-left: -7.5vh; border-radius: 50%; background: conic-gradient(from -50deg at 50% 50%, transparent 0 0, transparent 0), repeating-conic-gradient(from -52deg at 50% 50%, #2a2018 0 0.6deg, transparent 0.6deg 7deg); -webkit-mask: radial-gradient(circle, transparent 0 62%, #000 63% 74%, transparent 75%); mask: radial-gradient(circle, transparent 0 62%, #000 63% 74%, transparent 75%); clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); }
+.cassettefx__dial::after { content: 'VU'; position: absolute; left: 50%; bottom: 1.2vh; translate: -50% 0; font: 700 1.4vh/1 'Courier New', monospace; color: #7a5a2a; }
+.cassettefx__needle { position: absolute; left: 50%; bottom: -1vh; width: 0.4vh; height: 9.6vh; margin-left: -0.2vh; background: #c0392b; transform-origin: 50% 100%; transform: rotate(calc(-42deg + 84deg * (0.22 + 0.5 * var(--lv, 0) + 0.18 * sin(var(--ts, 0) * 6.5 + var(--ph, 0))))); transition: transform 0.16s linear; box-shadow: 0 0 0.3vh rgba(0, 0, 0, 0.4); }
+.cassettefx__dial--r .cassettefx__needle { --ph: 1.7; }
+/* lyrics: amber dot-matrix label strips */
+.sign--label .sign__row { background: #0f0b07; box-shadow: 0 0 0 0.3vh #4a4036, inset 0 0 1.6vh rgba(255, 150, 40, 0.14), 0.4vh 0.8vh 1.4vh rgba(60, 40, 20, 0.35); background-image: radial-gradient(rgba(255, 170, 60, 0.1) 30%, transparent 34%); background-size: 0.5vh 0.5vh; }
+.sign--label .sign__word.is-in { color: #ffcf7a; text-shadow: 0 0 1vh rgba(255, 160, 40, 0.5); }
+.sign--label .sign__word.is-now { color: #fff0c8; text-shadow: 0 0 1.6vh rgba(255, 190, 80, 0.9); }
+.sign--label .sign__next { color: rgba(42, 32, 24, 0.55); }
+[data-vibe='cassette'] .plain__stanza { color: #2a2018; text-shadow: none; }
+[data-vibe='cassette'] .lfb h3 { color: #2a2018; text-shadow: none; }
+[data-vibe='cassette'] .lfb p, [data-vibe='cassette'] .lfb small { color: rgba(42, 32, 24, 0.85); }
+[data-vibe='cassette'] .lfb__eq i { background: #c0392b; }
+[data-vibe='cassette'] .lyrics__notice { background: #0f0b07; color: #ffcf7a; }
+:root[data-vibe='cassette'] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(42, 32, 24, 0.7) !important; text-shadow: none !important; }
+/* settings: a deck control panel */
+:root[data-vibe='cassette'] .sidepanel { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, rgba(0, 0, 0, 0.04) 1px 3px), linear-gradient(180deg, #e0dbd0, #bdb7ab); border: 0; border-radius: 10px; box-shadow: 0 0 0 5px #14100c, inset 0 3px 0 #1b1713, 0 3vh 7vh rgba(40, 30, 20, 0.45); }
+:root[data-vibe='cassette'] .sidepanel h3 { font: 700 16px 'Courier New', monospace; letter-spacing: 0.3em; text-transform: uppercase; color: #2a2018; }
+:root[data-vibe='cassette'] .sidepanel .stabs button.is-on { background: #14100c; color: #ffcf7a; border-radius: 3px; }
+:root[data-vibe='cassette']:is([data-mode='full']) .full__top { --fg: #d4cfc4; --fg-2: #d4cfc4; --fg-3: #bdb7ab; color: #d4cfc4; }
+:root[data-vibe='cassette']:is([data-mode='full']) .full__device { color: #bdb7ab !important; }
+:root[data-vibe='cassette'][data-mode='mini'] :is(.cassettefx__vu, .cassettefx__plate::after) { display: none; }
+:root[data-vibe='cassette'][data-mode='mini'] .cassettefx__plate { height: 3.2vh; }

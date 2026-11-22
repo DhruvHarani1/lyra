@@ -1,0 +1,121 @@
+/* ==========================================================================
+   SKETCHBOOK v2: a draughtsman's drawing board (fullscreen, mini and phone; mechanics in scene.css).
+   Pale drafting paper with a fine blue-grey grid, graphite only (plus one red pencil). The video is "FIG. 1": corner crop marks, a
+   dimension line with arrowheads above it. The song is set in wide drawn capitals; the word being sung is dimensioned with a red
+   pencil span (tick | line | tick). The card is a wooden ruler lying along the bottom with cm ticks, the progress a pencil mark on it.
+   What is unique here: technical drawing (grid, dimensions, crop marks, a ruler), no tape, no doodles, no handwriting.
+   Edge (edge-sketch.css): graphite construction lines run along the edges and cross-hatching grows out of the top-left and
+   bottom-right corners as the line is sung.
+   ========================================================================== */
+:root[data-vibe='sketch'] {
+  --ink: #23262b;
+  --ink-2: rgba(35, 38, 43, 0.7);
+  --marker: #d23a2a;
+  --paper: #eceae1;
+  --paper-2: #f6f4ec;
+  --sc-ww: min(44vw, 70vh);
+  --sc-wl: calc(94vw - var(--sc-ww));
+  --sc-wt: 14vh;
+  --sc-wr: 0px;
+  --sc-ll: 6vw;
+  --sc-lt: 15vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 6vw - 5vw);
+  --sc-lb: 24vh;
+  --sc-lbs: 24vh;
+  --sc-cl: 6vw;
+  --sc-cb: 5vh;
+  --sc-cw: 88vw;
+  --sc-ct: auto;
+}
+:root[data-vibe='sketch'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(44vw, 70vh); }
+[data-vibe='sketch'] .shell { --font: 'Unbounded Variable', 'Inter Variable', system-ui, sans-serif; --fg: #23262b; --fg-2: rgba(35, 38, 43, 0.72); --fg-3: rgba(35, 38, 43, 0.56); --line: rgba(35, 38, 43, 0.18); --on-fg: #f6f4ec; --word-dim: rgba(35, 38, 43, 0.3); --bg-0: #e4e2d8; }
+[data-vibe='sketch'] .backdrop .backdrop__field {
+  background:
+    repeating-linear-gradient(0deg, rgba(70, 100, 140, 0.16) 0 1px, transparent 1px 3vh),
+    repeating-linear-gradient(90deg, rgba(70, 100, 140, 0.16) 0 1px, transparent 1px 3vh),
+    repeating-linear-gradient(0deg, rgba(70, 100, 140, 0.08) 0 1px, transparent 1px 0.6vh),
+    #eceae1;
+}
+/* the notebook props go: no rules, spine, tape, doodles; the pencil frame stays as the drawing border */
+:root[data-vibe='sketch'] :is(.sketchfx__rules, .sketchfx__spine, .sketchfx__doodle, .sketchfx__paper) { display: none !important; }
+:root[data-vibe='sketch'] .sketchfx__tape { display: none !important; }
+.sketchfx__frame { stroke: rgba(35, 38, 43, 0.7); stroke-width: 1.6; }
+/* FIG. 1: crop marks round the picture and a dimension line over it */
+[data-vibe='sketch'] .scenewin { box-shadow: 0 0 0 1px #23262b, 0 0 0 1.2vh #f6f4ec, 0 0 0 calc(1.2vh + 1px) rgba(35, 38, 43, 0.5), 0.8vh 1vh 0 calc(1.2vh) rgba(35, 38, 43, 0.12); }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .sketchfx::before {
+  content: '16 : 9';
+  position: absolute;
+  left: calc(var(--sc-wl) - 1.2vh);
+  top: calc(var(--sc-wt) - 5.4vh);
+  width: calc(var(--sc-ww) + 2.4vh);
+  height: 2.4vh;
+  box-sizing: border-box;
+  text-align: center;
+  font: 600 max(10.5px, 1.3vh) / 2.4vh 'Unbounded Variable', sans-serif;
+  letter-spacing: 0.3em;
+  color: #23262b;
+  background:
+    linear-gradient(#23262b, #23262b) 0 100% / 1px 100% no-repeat,
+    linear-gradient(#23262b, #23262b) 100% 100% / 1px 100% no-repeat,
+    linear-gradient(#23262b, #23262b) 0 50% / calc(50% - 5vh) 1px no-repeat,
+    linear-gradient(#23262b, #23262b) 100% 50% / calc(50% - 5vh) 1px no-repeat;
+}
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .sketchfx::after {
+  content: 'FIG. 1';
+  position: absolute;
+  left: calc(var(--sc-wl) - 1.2vh);
+  top: calc(var(--sc-wt) + var(--sc-wh) + 2.4vh);
+  font: 600 max(10.5px, 1.3vh) 'Unbounded Variable', sans-serif;
+  letter-spacing: 0.3em;
+  color: rgba(35, 38, 43, 0.75);
+}
+.scenewin__art span { font-family: 'Unbounded Variable', sans-serif; letter-spacing: 0.3em; font-size: 1.8vh; color: #23262b; text-transform: uppercase; }
+/* the card: a wooden ruler along the bottom with centimetre ticks, the progress is a pencil mark */
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  --fg: #23262b;
+  --fg-2: #4a3a1c;
+  --fg-3: #6a5428;
+  position: absolute;
+  background: linear-gradient(180deg, #f0cf72, #e2b84a) !important;
+  border: 0 !important;
+  border-radius: 0.6vh !important;
+  box-shadow: inset 0 0 0 1px rgba(90, 64, 12, 0.55), 0.6vh 1vh 0 rgba(35, 38, 43, 0.18) !important;
+  padding: 3.4vh 2.4vh 1.2vh 1.4vh !important;
+  gap: 2vh;
+  overflow: hidden;
+}
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2.6vh;
+  background:
+    repeating-linear-gradient(90deg, rgba(60, 40, 8, 0.8) 0 1px, transparent 1px 1.6vh) 0 0 / 100% 1.2vh no-repeat,
+    repeating-linear-gradient(90deg, rgba(60, 40, 8, 0.8) 0 1px, transparent 1px 8vh) 0 0 / 100% 2.2vh no-repeat;
+  width: auto;
+}
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 8vh !important; border-radius: 0.3vh !important; box-shadow: 0 0 0 1px #23262b; }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 700 2.4vh/1.1 'Unbounded Variable', sans-serif; letter-spacing: 0.02em; text-transform: uppercase; color: #23262b; }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { color: #4a3a1c; letter-spacing: 0.1em; text-transform: uppercase; }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(60, 40, 8, 0.28); height: 2px; border-radius: 0; }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #23262b; height: 4px; border-radius: 0; }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #23262b !important; color: #f0cf72 !important; box-shadow: none !important; border-radius: 0.5vh !important; }
+:root[data-vibe='sketch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #23262b; }
+/* lyrics: wide drawn capitals; the sung word is dimensioned in red pencil */
+.sign--ink .sign__line { rotate: 0deg; }
+.sign--ink .sign__row { font: 500 min(3.4vw, 6.2vh) / 1.14 'Unbounded Variable', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; gap: 0 0.4em; }
+.sign--ink .sign__word { color: rgba(35, 38, 43, 0.28); }
+.sign--ink .sign__word.is-in { color: #23262b; animation: sk-write 0.42s ease-out 1; }
+.sign--ink .sign__word.is-now::after { left: 0; right: 0; bottom: -0.16em; height: 0.08em; border-radius: 0; background: var(--marker); }
+.sign--ink .sign__word.is-now::before { content: ''; position: absolute; left: 0; right: 0; bottom: -0.3em; height: 0.28em; background: linear-gradient(var(--marker), var(--marker)) 0 0 / 0.07em 100% no-repeat, linear-gradient(var(--marker), var(--marker)) 100% 0 / 0.07em 100% no-repeat; }
+.sign--ink .sign__next { font: 500 max(10.5px, min(1.8vw, 3.1vh)) 'Unbounded Variable', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(35, 38, 43, 0.4); }
+[data-vibe='sketch'] .plain__stanza { font-family: 'Unbounded Variable', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; font-size: min(2.3vw, 4vh); }
+[data-vibe='sketch'] .lfb h3 { font-family: 'Unbounded Variable', sans-serif; text-transform: uppercase; letter-spacing: 0.02em; font-size: clamp(28px, 4.2vw, 64px); }
+:root[data-vibe='sketch'] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(35, 38, 43, 0.65) !important; text-shadow: none !important; }
+/* settings: a drawing sheet with a title block */
+:root[data-vibe='sketch'] .sidepanel { background: repeating-linear-gradient(0deg, rgba(70, 100, 140, 0.14) 0 1px, transparent 1px 22px), repeating-linear-gradient(90deg, rgba(70, 100, 140, 0.14) 0 1px, transparent 1px 22px), #f4f2ea; border: 2px solid #23262b; border-radius: 0; box-shadow: inset 0 0 0 5px #f4f2ea, inset 0 0 0 6px #23262b, 8px 9px 0 rgba(35, 38, 43, 0.16); }
+:root[data-vibe='sketch'] .sidepanel h3 { font: 700 15px 'Unbounded Variable', sans-serif; letter-spacing: 0.2em; text-transform: uppercase; color: #23262b; }
+:root[data-vibe='sketch'] .sidepanel .stabs button.is-on { background: #23262b; color: #f4f2ea; border-radius: 0; }
