@@ -71,7 +71,7 @@ const MEASURE = () => {
   const label = (el) => (el.getAttribute('aria-label') || el.className?.toString?.().split(' ')[0] || el.tagName).slice(0, 40)
 
   // the lyric text actually on screen: the current line in a list, or the staged phrase
-  const stageSel = ['.lyric.is-active .lyric__text', '.stage .kin__word.is-in', '.stage .zoom__word', '.stage .stk__word.is-in', '.stage .con__star.is-in span', '.stage .bub.is-live .bub__text span.is-in', '.stage .term__now', '.stage .diary__now', '.stage .sub__line span.is-in', '.stage .mc__row.is-live', '.stage .lt__bar p span.is-in', '.stage .sign__line > .sign__row .sign__word.is-in', '.stage .bloom__word.is-in', '.stage .termlog__word.is-in', '.stage .feed__word.is-in']
+  const stageSel = ['.lyric.is-active .lyric__text', '.stage .kin__word.is-in', '.stage .zoom__word', '.stage .stk__word.is-in', '.stage .con__star.is-in span', '.stage .bub.is-live .bub__text span.is-in', '.stage .term__now', '.stage .diary__now', '.stage .sub__line span.is-in', '.stage .mc__row.is-live', '.stage .lt__bar p span.is-in', '.stage .sign__line > .sign__row .sign__word.is-in', '.stage .bloom__word.is-in', '.stage .termlog__word.is-in', '.stage .feed__word.is-in', '.stage .code__w.is-in']
   const textRects = []
   for (const sel of stageSel) for (const el of document.querySelectorAll(sel)) {
     if (!shown(el)) continue
@@ -83,7 +83,7 @@ const MEASURE = () => {
     }
   }
   // contrast is judged on what is being sung right now (older / dimmed words are dim on purpose)
-  const nowSel = ['.lyric.is-active .lyric__text', '.stage .kin__word.is-now', '.stage .zoom__word', '.stage .stk__word.is-now', '.stage .con__star.is-now span', '.stage .bub.is-live .bub__text', '.stage .term__now', '.stage .diary__now', '.stage .sub__line', '.stage .mc__row.is-live', '.stage .lt__bar p', '.stage .sign__line > .sign__row .sign__word.is-now', '.stage .bloom__word.is-now', '.stage .termlog__word.is-now', '.stage .feed__word.is-now']
+  const nowSel = ['.lyric.is-active .lyric__text', '.stage .kin__word.is-now', '.stage .zoom__word', '.stage .stk__word.is-now', '.stage .con__star.is-now span', '.stage .bub.is-live .bub__text', '.stage .term__now', '.stage .diary__now', '.stage .sub__line', '.stage .mc__row.is-live', '.stage .lt__bar p', '.stage .sign__line > .sign__row .sign__word.is-now', '.stage .bloom__word.is-now', '.stage .termlog__word.is-now', '.stage .feed__word.is-now', '.stage .code__w.is-now']
   const nowRects = []
   for (const sel of nowSel) for (const el of document.querySelectorAll(sel)) {
     if (!shown(el)) continue
