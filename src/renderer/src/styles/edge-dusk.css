@@ -1,0 +1,7 @@
+/* Dusk Ridge edge: a warm light rises from the bottom edge and swells while a line is sung; a spark of sunlight runs along the
+   top of the ridge as the line goes by (position follows --lp), and the side edges catch a faint star-blue. */
+:root[data-vibe='dusk'] .edge__c { height: 6vh; background: linear-gradient(0deg, rgba(255, 170, 110, calc(0.22 + var(--lv, 0) * 0.28)), transparent); transition: background 0.6s; }
+:root[data-vibe='dusk'] .edge__c::after { content: ''; position: absolute; bottom: 0; height: 3px; width: 14vw; left: calc(var(--lp, 0) * 86vw); background: linear-gradient(90deg, transparent, #ffe2b0, transparent); box-shadow: 0 0 14px 3px rgba(255, 196, 120, 0.8); transition: left 0.12s linear; }
+:root[data-vibe='dusk'] .edge__a { height: 4vh; background: linear-gradient(180deg, rgba(150, 170, 255, calc(0.1 + var(--lv, 0) * 0.14)), transparent); }
+:root[data-vibe='dusk'] .edge__b, :root[data-vibe='dusk'] .edge__d { width: 5vw; background: linear-gradient(90deg, rgba(255, 180, 120, calc(0.08 + var(--lv, 0) * 0.14)), transparent); }
+:root[data-vibe='dusk'] .edge__b { transform: scaleX(-1); }

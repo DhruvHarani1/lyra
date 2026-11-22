@@ -13,6 +13,7 @@ P = {
  'journal': ('#fdf4e6','#3b2a2f',3,'12px','5px 6px 0 rgba(224,85,109,.45)','--fg:#3b2a2f;--fg-2:#5a3f46;--fg-3:#6a4a52;--line:rgba(59,42,47,.22);'),
  'arcade': ('#0d0d30','#ffe600',3,'0','6px 6px 0 #ff2d6f',''),
  'noir':   ('rgba(0,0,0,.8)','rgba(255,255,255,.5)',1,'2px','0 20px 50px rgba(0,0,0,.7)',''),
+ 'dusk': ('linear-gradient(90deg, rgba(20,16,50,.9), rgba(255,143,112,.5))','#ffd9a8',2,'18px','0 0 30px rgba(255,184,107,.4)',''),
  'sunset': ('linear-gradient(90deg, rgba(43,10,90,.88), rgba(255,46,147,.55))','#ffd1a6',2,'18px','0 0 30px rgba(255,122,184,.45)',''),
  'blocks': ('#c6c6c6','#000000',3,'0','inset -4px -4px 0 #555, inset 4px 4px 0 #fff','--fg:#222;--fg-2:#444;--fg-3:#555;--on-fg:#fff;--line:rgba(0,0,0,.3);'),
  'stadium':('linear-gradient(180deg,#0b3b86,#072a63)','#ffd23f',3,'8px','0 14px 30px -10px rgba(0,0,0,.7)',''),

@@ -370,6 +370,65 @@ function DiaryFx() {
 }
 
 /**
+ * Dusk Ridge, fullscreen: twilight over mountains. A star field that twinkles out of step (a few bright ones with a flare, a shooting
+ * star now and then), swinging rays from the low sun, three mountain ranges lit from the side by the setting sun (hazy far range,
+ * gold-rimmed mid range, dark near range with sparks on its peaks), mist in the valleys and a glow behind the ridge.
+ */
+const DUSK_STARS = (() => {
+  let s = 20261122
+  const r = (): number => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296)
+  const cols = ['#ffffff', '#fff3d6', '#cfe0ff', '#ffd9a8', '#ffe9f2']
+  return Array.from({ length: 78 }, (_, i) => {
+    const big = i % 11 === 0
+    return { left: r() * 100, top: r() * 100, s: big ? 3.2 + r() * 1.6 : 1.1 + r() * 1.7, c: cols[Math.floor(r() * cols.length)]!, d: 2.6 + r() * 4.4, w: -r() * 7, big }
+  })
+})()
+function DuskFx() {
+  const motes = useMemo(() => Array.from({ length: 14 }, (_, i) => ({ left: 4 + ((i * 37) % 90), bottom: 4 + ((i * 53) % 34), size: 2 + (i % 3), dur: 12 + (i % 6) * 3, delay: -(i * 1.7) })), [])
+  const FAR = 'M0 320 L0 190 L120 150 L230 185 L360 120 L470 170 L600 130 L740 180 L880 110 L1010 165 L1150 135 L1290 175 L1420 125 L1600 170'
+  const MID = 'M0 320 L0 230 L90 210 L200 170 L310 215 L430 190 L560 235 L700 150 L830 220 L960 200 L1100 160 L1230 215 L1370 185 L1500 225 L1600 205'
+  const NEAR = 'M0 320 L0 270 L140 250 L260 280 L400 240 L520 270 L660 255 L800 285 L940 245 L1080 275 L1220 250 L1360 280 L1480 255 L1600 275'
+  const peaks: Array<[number, number]> = [[360, 120], [880, 110], [1420, 125], [700, 150], [1100, 160], [400, 240], [940, 245], [1220, 250]]
+  return (
+    <div className="duskfx">
+      <div className="duskfx__stars">
+        {DUSK_STARS.map((st, i) => (
+          <i key={i} className={`duskfx__star${st.big ? ' duskfx__star--big' : ''}`} style={{ left: `${st.left}%`, top: `${st.top}%`, ['--s' as string]: `${st.s}px`, ['--c' as string]: st.c, ['--d' as string]: `${st.d}s`, ['--w' as string]: `${st.w}s` }} />
+        ))}
+        <i className="duskfx__shoot" />
+        <i className="duskfx__shoot duskfx__shoot--b" />
+      </div>
+      <i className="duskfx__ray duskfx__ray--a" />
+      <i className="duskfx__ray duskfx__ray--b" />
+      <i className="duskfx__ray duskfx__ray--c" />
+      <div className="duskfx__glow" />
+      <svg className="duskfx__ridges" viewBox="0 0 1600 320" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="dusk-rim" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#ffe2a8" />
+            <stop offset="0.45" stopColor="#ff9f7a" />
+            <stop offset="1" stopColor="#8d7ad9" stopOpacity="0.5" />
+          </linearGradient>
+        </defs>
+        <path className="duskfx__far" d={`${FAR} L1600 320 Z`} />
+        <path className="duskfx__rim duskfx__rim--far" d={FAR} />
+        <path className="duskfx__mid" d={`${MID} L1600 320 Z`} />
+        <path className="duskfx__rim" d={MID} />
+        <path className="duskfx__near" d={`${NEAR} L1600 320 Z`} />
+        {peaks.map(([x, y], i) => (
+          <circle key={i} className="duskfx__spark" cx={x} cy={y} r="2.6" style={{ ['--w' as string]: `${-i * 0.7}s` }} />
+        ))}
+      </svg>
+      <div className="duskfx__mist" />
+      {motes.map((m, i) => (
+        <i key={i} className="duskfx__mote" style={{ left: `${m.left}%`, bottom: `${m.bottom}%`, width: m.size, height: m.size, animationDuration: `${m.dur}s`, animationDelay: `${m.delay}s` }} />
+      ))}
+      <div className="duskfx__haze" />
+    </div>
+  )
+}
+
+/**
  * Journal, fullscreen: a page of a paper diary. Ruled lines and a rose margin with punched holes, a date stamp, the video as a
  * polaroid taped to the page with washi tape and a paper clip, a pressed flower, a heart sticker, a coffee ring and doodles that
  * draw themselves in and out. (The night-corner Diary is the other paper look; this one is bright, written by hand in blue-black ink
@@ -692,6 +751,7 @@ export function VibeFx() {
           <GoldenHour />
         </>
       )}
+      {vibe === 'dusk' && <DuskFx />}
       {vibe === 'blocks' && <BlocksFx />}
       {vibe === 'stadium' && <StadiumFx />}
       {vibe === 'cassette' && <CassetteFx />}

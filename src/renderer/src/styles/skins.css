@@ -100,6 +100,11 @@
 :root[data-vibe='noir'] .sidepanel h3, :root[data-vibe='noir'] .sidepanel .settings h4 { font-family: 'Iowan Old Style', Georgia, serif; color: rgba(244,244,244,.8); }
 :root[data-vibe='noir'] .sidepanel .stabs button.is-on { background: #ffffff; color: #000000; box-shadow: none; }
 
+:root[data-vibe='dusk'] .sidepanel {
+  --panel: rgba(28, 20, 60, .86); --fg: #fff; --fg-2: rgba(255,233,207,.82); --fg-3: rgba(255,233,207,.62); --line: rgba(255,217,168,.25); --line-2: rgba(255,217,168,.35); --accent: #ffb86b; --glow: #ffb86b; --glow-soft: transparent;
+  background: rgba(28, 20, 60, .86); color: #fff; border-radius: 28px; box-shadow: 0 2vh 6vh rgba(8, 4, 24, .55), inset 0 0 0 1px rgba(255,217,168,.25);
+}
+:root[data-vibe='dusk'] .sidepanel .stabs button.is-on { background: #ffb86b; color: #1a1030; box-shadow: none; }
 :root[data-vibe='sunset'] .sidepanel {
   --panel: #3a0f4d; --fg: #ffffff; --fg-2: rgba(255,255,255,.88); --fg-3: rgba(255,255,255,.68); --line: rgba(255,209,166,.3); --line-2: rgba(255,209,166,.3); --accent: #ffe14d; --glow: #ffe14d; --glow-soft: transparent;
   background: #3a0f4d; color: #ffffff; border: 2px solid #ffd1a6; border-radius: 34px; box-shadow: 0 26px 70px -12px rgba(255,46,147,.55);

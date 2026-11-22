@@ -106,7 +106,7 @@ object WidgetPalettes {
     /** The vibes that have a widget look, in the order the picker lists them: id to display name. */
     val vibeNames: List<Pair<String, String>> = listOf(
         "neon" to "Neon", "chrome" to "Chrome", "dream" to "Dream", "crt" to "CRT", "sticker" to "Sticker",
-        "chat" to "Chat", "paper" to "Paper", "journal" to "Journal", "doodle" to "Doodle", "arcade" to "Arcade", "noir" to "Noir", "sunset" to "Sunset",
+        "chat" to "Chat", "paper" to "Paper", "journal" to "Journal", "doodle" to "Doodle", "dusk" to "Dusk Ridge", "arcade" to "Arcade", "noir" to "Noir", "sunset" to "Sunset",
         "blocks" to "Blocks", "stadium" to "Stadium", "cassette" to "Cassette", "trailer" to "Trailer",
         "sketch" to "Sketchbook", "glitch" to "Glitch", "comic" to "Pop Comic"
     )
@@ -124,6 +124,7 @@ object WidgetPalettes {
         "journal" -> p("#FDF4E6", "#EBD2C5", "#3B2A2F", "#E0556D", true)
         "arcade" -> p("#101046", "#06061A", "#FFFFFF", "#FFE600")
         "noir" -> p("#0C0C0C", "#000000", "#F4F4F4", "#FFFFFF")
+        "dusk" -> p("#1B1640", "#FF8F70", "#FFFFFF", "#FFB86B")
         "sunset" -> p("#2B0A5A", "#FF2E93", "#FFFFFF", "#FFE14D")
         "blocks" -> p("#7A7A7A", "#5E5E5E", "#FFFFFF", "#55FF55")
         "stadium" -> p("#0B3B86", "#072A63", "#FFFFFF", "#FFD23F")

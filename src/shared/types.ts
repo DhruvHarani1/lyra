@@ -176,7 +176,7 @@ export type LyricAnimation = 'glide' | 'focus' | 'fade'
 export type LyricStyle = 'classic' | 'zoom' | 'kinetic' | 'constellation' | 'sticker' | 'chat' | 'type' | 'diary' | 'subtitle' | 'chatlog' | 'lowerthird' | 'sign' | 'liquid' | 'pixel' | 'bloom' | 'title' | 'ink' | 'glitch' | 'bubble' | 'spray' | 'intertitle' | 'log' | 'note' | 'jot' | 'scrawl' | 'label' | 'lockscreen' | 'wallet' | 'route' | 'editor' | 'metro' | 'weave' | 'picto' | 'wall' | 'flap'
 export type VibeMode = 'fixed' | 'cycle' | 'smart'
 /** a whole look: colours, type, background effects (and usually its own way of staging lyrics) */
-export type Vibe = 'none' | 'sticker' | 'chat' | 'crt' | 'neon' | 'chrome' | 'dream' | 'paper' | 'journal' | 'doodle' | 'arcade' | 'noir' | 'sunset' | 'blocks' | 'stadium' | 'cassette' | 'trailer' | 'sketch' | 'glitch' | 'comic' | 'stencil' | 'film' | 'filmstrip' | 'lock' | 'wallet' | 'route' | 'editor' | 'metro' | 'web' | 'lens' | 'picto' | 'wall' | 'flap'
+export type Vibe = 'none' | 'sticker' | 'chat' | 'crt' | 'neon' | 'chrome' | 'dream' | 'paper' | 'journal' | 'doodle' | 'arcade' | 'noir' | 'sunset' | 'dusk' | 'blocks' | 'stadium' | 'cassette' | 'trailer' | 'sketch' | 'glitch' | 'comic' | 'stencil' | 'film' | 'filmstrip' | 'lock' | 'wallet' | 'route' | 'editor' | 'metro' | 'web' | 'lens' | 'picto' | 'wall' | 'flap'
 /** how fullscreen lyrics are laid out over a video */
 
 export type SourceKind = 'local' | 'api'

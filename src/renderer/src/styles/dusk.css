@@ -1,0 +1,177 @@
+/* ==========================================================================
+   DUSK RIDGE: twilight over the mountains (fullscreen: one file, layout mechanics are in scene.css).
+   A warm photographic sky, soft light rays, dust floating in the light. The video is a framed print on the right, the song
+   blooms word by word on the left in plain, large type with the lines before and after it fading out, the card is a
+   frosted glass pill. Quiet on purpose: no props, only light. Edge effect: a slow warm glow rises from the bottom edge.
+   Outside fullscreen (mini player, phone) the older dusk with palms is still the backdrop until those get their own pass.
+   ========================================================================== */
+:root[data-vibe='dusk'] {
+  --gold: #ffb86b;
+  --rose: #ff8f70;
+  --gold-ink: #ffe9cf;
+  /* scene geometry (styles/scene.css): the print sits right, lyrics left, a glass pill bottom left */
+  --sc-ww: min(38vw, 62vh);
+  --sc-wl: calc(95vw - var(--sc-ww));
+  --sc-wt: 13vh;
+  --sc-wr: 1.6vh;
+  --sc-cl: 5vw;
+  --sc-cb: 5vh;
+  --sc-ct: auto;
+  --sc-cw: clamp(540px, 46vw, 700px);
+  --sc-ll: 5vw;
+  --sc-lt: 16vh;
+  --sc-lw: calc(95vw - var(--sc-ww) - 5vw - 5vw);
+  --sc-lb: 28vh;
+  --sc-lbs: 26vh;
+  --sc-art-bg: radial-gradient(90% 70% at 30% 85%, rgba(255, 200, 120, 0.7), transparent 70%), linear-gradient(180deg, #27406b 0%, #b66a64 62%, #ffc27a 100%);
+  --sc-art-fg: #fff;
+  --sc-eq: rgba(255, 233, 207, 0.9);
+}
+:root[data-vibe='dusk'][data-rim='on']::after { display: none; }
+
+/* ---------------- fullscreen: the sky ---------------- */
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .backdrop .backdrop__field {
+  background:
+    radial-gradient(60% 55% at 22% 96%, rgba(255, 190, 110, 0.9), rgba(255, 140, 100, 0.35) 45%, transparent 75%),
+    radial-gradient(90% 50% at 60% 100%, rgba(255, 110, 100, 0.35), transparent 70%),
+    linear-gradient(180deg, #0e1230 0%, #1b2a55 30%, #2f5a73 52%, #a8625c 78%, #e9965c 100%);
+}
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) :is(.vibefx__sunset-sun, .vibefx__palm, .vibefx__road, .vibefx__radio, .vibefx__stars-hud) { display: none; }
+.duskfx { display: none; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .duskfx { display: block; position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+/* soft rays of light from the low sun, slowly swinging */
+.duskfx__ray {
+  position: absolute;
+  left: 18%;
+  bottom: -10%;
+  width: 16vw;
+  height: 130vh;
+  transform-origin: 50% 100%;
+  background: linear-gradient(0deg, rgba(255, 200, 130, 0.34), rgba(255, 200, 130, 0.08) 55%, transparent);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  animation: dusk-ray 26s ease-in-out infinite;
+}
+.duskfx__ray--a { transform: rotate(18deg); }
+.duskfx__ray--b { transform: rotate(38deg); width: 10vw; animation-delay: -9s; animation-duration: 32s; opacity: 0.8; }
+.duskfx__ray--c { transform: rotate(60deg); width: 7vw; animation-delay: -16s; animation-duration: 38s; opacity: 0.6; }
+@keyframes dusk-ray { 0%, 100% { opacity: 0.5; translate: 0 0; rotate: -3deg; } 50% { opacity: 1; translate: 2vw 0; rotate: 4deg; } }
+/* soft ridges of hills */
+.duskfx__hills {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26vh;
+  background:
+    radial-gradient(130% 70% at 12% 112%, #1a2a3a 62%, transparent 63%),
+    radial-gradient(110% 60% at 78% 118%, #12202f 64%, transparent 65%),
+    radial-gradient(90% 40% at 48% 120%, #0a141f 70%, transparent 71%);
+  opacity: 0.9;
+}
+.duskfx__mote { position: absolute; border-radius: 50%; background: rgba(255, 226, 180, 0.8); box-shadow: 0 0 6px rgba(255, 210, 150, 0.8); opacity: 0; animation: dusk-mote linear infinite; }
+@keyframes dusk-mote { 0% { transform: translate(0, 0); opacity: 0; } 15%, 80% { opacity: 0.7; } 100% { transform: translate(6vw, -26vh); opacity: 0; } }
+.duskfx__haze { position: absolute; left: 0; right: 0; bottom: 0; height: 40vh; background: linear-gradient(0deg, rgba(255, 170, 110, 0.32), transparent); animation: dusk-breathe 9s ease-in-out infinite; }
+@keyframes dusk-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+:root[data-perf='low'] .duskfx__mote:nth-child(2n), :root[data-perf='low'] .duskfx__ray--b, :root[data-perf='low'] .duskfx__ray--c { display: none; }
+:root[data-motion='off'] .duskfx *, :root[data-motion='off'] .full__side { animation: none !important; }
+/* the print: a hairline and a deep warm shadow, a little light on the glass */
+[data-vibe='dusk'] .scenewin { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 4vh 10vh rgba(10, 4, 20, 0.55), 0 0 12vh rgba(255, 170, 110, 0.18); }
+[data-vibe='dusk'] .scenewin__art span { display: none; }
+.duskfx__glass { position: absolute; inset: 0; background: linear-gradient(150deg, rgba(255, 255, 255, 0.14), transparent 30%), linear-gradient(0deg, rgba(20, 8, 24, 0.28), transparent 40%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
+
+/* ---------------- the card: frosted glass pill ---------------- */
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  flex-direction: row;
+  align-items: center;
+  gap: 2.2vh;
+  padding: 1.4vh 2.4vh 1.4vh 1.4vh !important;
+  border-radius: 3vh !important;
+  background: rgba(34, 18, 40, 0.42) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+  border: 0 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 2vh 6vh rgba(10, 4, 20, 0.4) !important;
+}
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork {
+  flex: none;
+  width: 10vh !important;
+  border-radius: 1.6vh !important;
+  box-shadow: 0 1vh 2.4vh rgba(10, 4, 20, 0.45);
+}
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
+  grid-template-areas: 'titles controls' 'progress progress';
+  align-items: center;
+  column-gap: 2vw;
+  row-gap: 0.8vh;
+}
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font-family: 'Inter Variable', system-ui, sans-serif; font-size: 2.1vh; font-weight: 650; letter-spacing: -0.01em; color: #fff; text-shadow: none; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.5vh); color: var(--gold-ink); opacity: 0.8; }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #ffd9a6, #ff9f7a); }
+:root[data-vibe='dusk']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #fff !important; color: #3a1f2a !important; box-shadow: 0 0.8vh 2vh rgba(255, 150, 100, 0.4) !important; }
+
+/* ---------------- lyrics: bloom (stage 'bloom') ---------------- */
+
+[data-vibe='dusk'] .bloom { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 2.6vh; }
+[data-vibe='dusk'] .bloom__side { font: 600 max(10.5px, min(2.2vw, 3.6vh)) / 1.25 'Inter Variable', system-ui, sans-serif; letter-spacing: -0.02em; color: rgba(255, 233, 207, 0.4); min-height: 1.2em; filter: blur(0.6px); }
+[data-vibe='dusk'] .bloom__line { display: flex; flex-wrap: wrap; gap: 0 0.3em; font: 700 min(4.6vw, 8vh) / 1.1 'Inter Variable', system-ui, sans-serif; letter-spacing: -0.04em; padding-inline-end: 0.28em; }
+[data-vibe='dusk'] .bloom__word { color: rgba(255, 233, 207, 0.26); filter: blur(2px); transition: color 0.5s ease, filter 0.5s ease; }
+[data-vibe='dusk'] .bloom__word.is-in { color: #fff; filter: none; text-shadow: 0 0 2vh rgba(255, 170, 110, 0.55), 0 0.2vh 0.8vh rgba(40, 16, 30, 0.35); animation: dusk-bloom 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 1; }
+[data-vibe='dusk'] .bloom__word.is-now { color: #fff6e6; text-shadow: 0 0 3vh rgba(255, 190, 120, 0.85), 0 0.2vh 0.8vh rgba(40, 16, 30, 0.35); }
+@keyframes dusk-bloom { 0% { opacity: 0.2; filter: blur(8px); transform: translateY(1vh); } 100% { opacity: 1; filter: none; transform: none; } }
+:root[data-motion='off'][data-vibe='dusk'] .bloom__word { animation: none; }
+
+/* ---------------- other lyric states (same regions) ---------------- */
+[data-vibe='dusk'] .lyrics__notice { align-self: flex-start; background: rgba(255, 233, 207, 0.12); border: 0; box-shadow: inset 0 0 0 1px rgba(255, 233, 207, 0.4); color: var(--gold-ink); border-radius: 99px; letter-spacing: 0.12em; text-transform: uppercase; font-size: 11px; font-weight: 700; }
+[data-vibe='dusk'] .plain__stanza { font-family: 'Inter Variable', system-ui, sans-serif; font-weight: 600; font-style: normal; letter-spacing: -0.015em; color: var(--gold-ink); text-shadow: none; }
+[data-vibe='dusk'] .lfb { align-items: flex-start; text-align: left; }
+[data-vibe='dusk'] .lfb__poster { display: none; }
+[data-vibe='dusk'] .lfb h3 { font-family: 'Inter Variable', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.04em; text-transform: none; font-size: clamp(24px, 3.8vw, 54px); color: #fff; text-shadow: 0 0 2vh rgba(255, 170, 110, 0.5); }
+[data-vibe='dusk'] .lfb p { color: var(--gold-ink); text-shadow: none; }
+[data-vibe='dusk'] .lfb__actions { justify-content: flex-start; }
+[data-vibe='dusk'] .lfb__eq i { background: linear-gradient(180deg, #ffe9cf, #ff9f7a); box-shadow: none; }
+
+
+/* ==========================================================================
+   What is new in Dusk Ridge compared with the old golden-hour sky: a real star field (many stars in three sizes that twinkle out of
+   step, a few bright ones with a flare, a shooting star now and then) and mountains in three ranges with the setting sun lighting
+   every ridge: a hazy far range, a mid range with a gold rim light and a near dark range with sparks of light on its peaks.
+   ========================================================================== */
+[data-vibe='dusk'] .duskfx__hills { display: none; }
+.duskfx__stars { position: absolute; left: 0; right: 0; top: 0; height: 62vh; -webkit-mask: linear-gradient(180deg, #000 55%, transparent); mask: linear-gradient(180deg, #000 55%, transparent); }
+.duskfx__star { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: var(--c, #fff); box-shadow: 0 0 calc(var(--s) * 3) var(--c, #fff), 0 0 calc(var(--s) * 7) color-mix(in srgb, var(--c, #fff) 45%, transparent); opacity: 0.35; animation: dusk-twinkle var(--d, 4s) ease-in-out infinite; animation-delay: var(--w, 0s); }
+.duskfx__star--big::before, .duskfx__star--big::after { content: ''; position: absolute; left: 50%; top: 50%; background: linear-gradient(90deg, transparent, var(--c, #fff), transparent); width: calc(var(--s) * 9); height: 1px; transform: translate(-50%, -50%); }
+.duskfx__star--big::after { transform: translate(-50%, -50%) rotate(90deg); }
+@keyframes dusk-twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+.duskfx__shoot { position: absolute; left: 62%; top: 9%; width: 16vh; height: 2px; background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff); border-radius: 2px; rotate: 24deg; opacity: 0; animation: dusk-shoot 17s ease-in 3s infinite; }
+.duskfx__shoot--b { left: 22%; top: 18%; animation-delay: 11s; animation-duration: 23s; }
+@keyframes dusk-shoot { 0%, 94% { opacity: 0; transform: translate(0, 0); } 95% { opacity: 1; } 100% { opacity: 0; transform: translate(-24vh, 11vh); } }
+.duskfx__ridges { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 40vh; }
+.duskfx__ridges path { stroke-linejoin: round; }
+.duskfx__far { fill: #3a3f6e; opacity: 0.8; }
+.duskfx__mid { fill: #241f45; }
+.duskfx__near { fill: #0c0a1f; }
+.duskfx__rim { fill: none; stroke: url(#dusk-rim); stroke-width: 2.4; opacity: calc(0.7 + var(--lv, 0) * 0.3); filter: drop-shadow(0 0 4px rgba(255, 196, 120, 0.85)); }
+.duskfx__rim--far { stroke-width: 1.4; opacity: 0.45; }
+.duskfx__spark { fill: #fff0cf; filter: drop-shadow(0 0 5px #ffd38a); animation: dusk-twinkle 3.2s ease-in-out infinite; animation-delay: var(--w, 0s); }
+.duskfx__mist { position: absolute; left: 0; right: 0; bottom: 8vh; height: 16vh; background: linear-gradient(0deg, rgba(255, 170, 120, 0.22), transparent); filter: blur(6px); animation: dusk-breathe 11s ease-in-out infinite; }
+.duskfx__glow { position: absolute; left: 4%; bottom: 8vh; width: 46vw; height: 30vh; background: radial-gradient(closest-side, rgba(255, 200, 130, 0.55), rgba(255, 130, 100, 0.2) 60%, transparent); filter: blur(8px); animation: dusk-breathe 9s ease-in-out infinite; }
+:root[data-calm] .duskfx__star, :root[data-calm] .duskfx__spark { animation-play-state: paused; }
+:root[data-perf='low'] .duskfx__star:nth-child(2n), :root[data-perf='low'] .duskfx__shoot { display: none; }
+:root[data-motion='off'] .duskfx__star, :root[data-motion='off'] .duskfx__shoot { animation: none; }
+/* contrast pass: deeper mountains so the sunlit rims read, a brighter star field */
+.duskfx__far { fill: #2c3263; opacity: 0.92; }
+.duskfx__mid { fill: #17142f; }
+.duskfx__near { fill: #07061a; }
+.duskfx__mist { bottom: 3vh; height: 9vh; opacity: 0.8; }
+.duskfx__haze { height: 18vh; opacity: 0.6; }
+.duskfx__star { opacity: 0.5; }
+@keyframes dusk-twinkle { 0%, 100% { opacity: 0.45; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.2); } }
