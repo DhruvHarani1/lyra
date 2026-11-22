@@ -22,6 +22,16 @@ P = {
  'sketch': ('#f4ead0','#1f1511',2,'8px','5px 5px 0 #d23a2a','--fg:#1f1511;--fg-2:#3a2a22;--fg-3:#55443a;--line:rgba(31,21,17,.25);'),
  'glitch': ('rgba(10,5,4,.9)','#ff4a2e',2,'2px','-4px 0 0 #26f0ff, 4px 0 0 #ff2a1a',''),
  'comic':  ('#ffffff','#111111',3,'12px','5px 5px 0 #111','--fg:#111;--fg-2:#2a2a2a;--fg-3:#444;--line:rgba(17,17,17,.25);'),
+ 'stencil':('repeating-linear-gradient(135deg,#ff6a13 0 10px,#141414 10px 20px) top/100% 6px no-repeat, #141414','#ff6a13',3,'4px','0 14px 30px -12px rgba(0,0,0,.7)',''),
+ 'film':   ('#efe3c8','#6b5a3a',2,'12px','0 12px 30px -12px rgba(0,0,0,.6)','--fg:#2b2112;--fg-2:#4a3b22;--fg-3:#6b5a3a;--line:rgba(43,33,18,.25);'),
+ 'filmstrip':('#f2b119','#111111',6,'0px','0 -8px 24px rgba(0,0,0,.35)','--fg:#111;--fg-2:#2a2008;--fg-3:#3a2e0c;--line:rgba(17,17,17,.3);'),
+ 'lock':   ('rgba(255,255,255,.14)','rgba(255,255,255,.38)',1,'30px','0 18px 40px -16px rgba(0,0,0,.5)',''),
+ 'wallet': ('linear-gradient(135deg,#17323a,#0b1f24)','#e2c26b',2,'18px','0 14px 30px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.18)',''),
+ 'web':    ('rgba(16,18,46,.72)','rgba(200,210,255,.5)',1,'34px','0 0 30px rgba(150,170,255,.35)',''),
+ 'lens':   ('#0a0e0d','rgba(255,255,255,.22)',1,'0px','0 -12px 30px rgba(0,0,0,.5)',''),
+ 'picto':  ('#ffffff','#e4e0ff',2,'26px','0 14px 32px -12px rgba(124,92,255,.5)','--fg:#1a1d2b;--fg-2:#3a3f5c;--fg-3:#565c7e;--line:rgba(26,29,43,.16);'),
+ 'wall':   ('#14141b','#ffb43a',4,'10px','6px 6px 0 #ffb43a',''),
+ 'flap':   ('#ffd23f','#14120a',3,'4px','0 6px 0 #14120a','--fg:#14120a;--fg-2:#2c2610;--fg-3:#463c14;--line:rgba(20,18,10,.25);'),
 }
 out = ["""/*
  * Signature cards, one per vibe, for the places skins.css does not cover:

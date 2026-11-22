@@ -108,7 +108,10 @@ object WidgetPalettes {
         "neon" to "Neon", "chrome" to "Chrome", "dream" to "Dream", "crt" to "CRT", "sticker" to "Sticker",
         "chat" to "Chat", "paper" to "Paper", "journal" to "Journal", "doodle" to "Doodle", "dusk" to "Dusk Ridge", "arcade" to "Arcade", "noir" to "Noir", "sunset" to "Sunset",
         "blocks" to "Blocks", "stadium" to "Stadium", "cassette" to "Cassette", "trailer" to "Trailer",
-        "sketch" to "Sketchbook", "glitch" to "Glitch", "comic" to "Pop Comic"
+        "sketch" to "Sketchbook", "glitch" to "Glitch", "comic" to "Pop Comic",
+        "stencil" to "Stencil", "film" to "Film Reel", "filmstrip" to "Film Strip", "lock" to "Lock Screen", "wallet" to "Wallet",
+        "route" to "Route", "editor" to "Editor", "metro" to "Metro", "web" to "Web", "lens" to "Lens",
+        "picto" to "Picto", "wall" to "Drift Wall", "flap" to "Split-flap"
     )
 
     /** null for the default "Artwork" vibe (and unknown ids): the widget then uses the cover's colours. */
@@ -133,6 +136,19 @@ object WidgetPalettes {
         "sketch" -> p("#F4EAD0", "#E9DFB8", "#1F1511", "#D23A2A", true)
         "glitch" -> p("#1B0A07", "#0A0504", "#FFFFFF", "#FF4A2E")
         "comic" -> p("#FFF6C9", "#FFD400", "#111111", "#FF3B6B", true)
+        "stencil" -> p("#2A2A2A", "#121212", "#FFFFFF", "#FF6A13")
+        "film" -> p("#2A1D12", "#0E0804", "#F0E3C8", "#D9A441")
+        "filmstrip" -> p("#F2B119", "#D99A00", "#111111", "#111111", true)
+        "lock" -> p("#3A2A6B", "#1B1040", "#FFFFFF", "#FF8FD8")
+        "wallet" -> p("#0E3B2A", "#04140D", "#FFFFFF", "#3CFF9A")
+        "route" -> p("#0B1B3A", "#050C1E", "#FFFFFF", "#4DA3FF")
+        "editor" -> p("#1E1E1E", "#0F0F10", "#E6E6E6", "#3794FF")
+        "metro" -> p("#16161C", "#08080C", "#FFFFFF", "#FF3B5C")
+        "web" -> p("#14183A", "#07091F", "#EEF1FF", "#AAB8FF")
+        "lens" -> p("#0E2A26", "#050F0E", "#E8F5EF", "#FF3B30")
+        "picto" -> p("#FFFFFF", "#EDEBFF", "#1A1D2B", "#7C5CFF", true)
+        "wall" -> p("#1C1C26", "#0C0C12", "#FFFFFF", "#FFB43A")
+        "flap" -> p("#FFD23F", "#E8B800", "#14120A", "#7A5C00", true)
         else -> null
     }
 

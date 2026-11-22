@@ -1,0 +1,65 @@
+/* ==========================================================================
+   ANDROID LOOKS: what makes each look itself on the phone, tablet and foldable (data-platform='android').
+   Loaded at the end of the cascade (just before minsizes.css). Rules are scoped to the platform and to one look.
+   The dock plates themselves (colour, border, radius, shadow) are generated per look in cards.css; this file adds
+   the pieces they cannot say: the play button, the progress bar, the type of the action row, and the fixes that
+   every scene look needs on a narrow screen.
+   ========================================================================== */
+
+/* ---------------- every scene look on Android ---------------- */
+/* the video status pill sat over the header (scene.css puts it 6px from the top for the desktop window); on the phone it belongs
+   on the bottom edge of the video window */
+:root[data-platform='android'][data-arch='scene'] .mini--phone .vstat { top: calc(var(--at) + var(--ah) - 50px); }
+/* the dark scrim that makes lyrics readable over a full-screen video turned every light paper look (Journal, Doodle, Sketchbook,
+   Cassette, Pop Comic, Film Strip) into a grey band; the dark looks keep it (their lyrics need it over the cover colours) */
+:root[data-platform='android']:is([data-vibe='journal'], [data-vibe='doodle'], [data-vibe='sketch'], [data-vibe='cassette'], [data-vibe='comic'], [data-vibe='filmstrip'])[data-arch='scene'] .mini--phone .mini__lyrics::before { display: none; }
+/* the bottom edge of a look must never sit on the navigation row: it shrinks to a hairline at the very bottom of the screen; the top
+   and the sides keep the full effect */
+:root[data-platform='android'] .edge__c { bottom: 0 !important; height: 4px !important; overflow: hidden; }
+:root[data-platform='android'] .edge__c::before, :root[data-platform='android'] .edge__c::after { max-height: 4px; }
+
+/* ---------------- the play button, the progress bar and the action row, per look ---------------- */
+:root[data-platform='android'][data-vibe='none'] .phone__dock .playbtn { background: #2a2418 !important; color: #efe7d4 !important; }
+:root[data-platform='android'][data-vibe='neon'] .phone__dock .playbtn { background: transparent !important; color: #00e5ff !important; box-shadow: 0 0 0 2px #00e5ff, 0 0 18px #00e5ff, inset 0 0 12px rgba(0, 229, 255, 0.4) !important; }
+:root[data-platform='android'][data-vibe='neon'] .phone__dock .progress__fill { background: linear-gradient(90deg, #ff3bd9, #00e5ff); box-shadow: 0 0 8px #ff3bd9; }
+:root[data-platform='android'][data-vibe='chrome'] .phone__dock .playbtn { background: radial-gradient(circle at 35% 30%, #fff, #8b97c4 72%) !important; color: #14204a !important; box-shadow: 0 6px 14px rgba(20, 30, 90, 0.45), inset 0 -3px 6px rgba(20, 30, 90, 0.25) !important; }
+:root[data-platform='android'][data-vibe='dream'] .phone__dock .playbtn { background: #fff !important; color: #5b3aa8 !important; box-shadow: 0 0 28px rgba(255, 255, 255, 0.7) !important; }
+:root[data-platform='android'][data-vibe='crt'] .phone__dock .playbtn { background: transparent !important; color: #35ff7a !important; border-radius: 4px !important; box-shadow: 0 0 0 2px #35ff7a, 0 0 14px rgba(53, 255, 122, 0.5) !important; }
+:root[data-platform='android'][data-vibe='crt'] .phone__act span, :root[data-platform='android'][data-vibe='crt'] .phone__dock .progress__time { font-family: 'VT323', monospace; text-transform: uppercase; font-size: 12px; }
+:root[data-platform='android'][data-vibe='sticker'] .phone__dock .playbtn { background: #111 !important; color: #d7ff4f !important; box-shadow: 3px 4px 0 #ff3d9a !important; }
+:root[data-platform='android'][data-vibe='chat'] .phone__dock .playbtn { background: #2f6bff !important; color: #fff !important; box-shadow: 0 6px 16px rgba(47, 107, 255, 0.55) !important; }
+:root[data-platform='android'][data-vibe='noir'] .phone__dock .playbtn { background: transparent !important; color: #eee !important; box-shadow: 0 0 0 1.5px #eee !important; }
+:root[data-platform='android'][data-vibe='noir'] .phone__act span { font-family: 'Iowan Old Style', Georgia, serif; letter-spacing: 0.1em; text-transform: uppercase; }
+:root[data-platform='android'][data-vibe='sunset'] .phone__dock .playbtn { background: #fff3e0 !important; color: #5a2a3a !important; }
+:root[data-platform='android'][data-vibe='dusk'] .phone__dock .playbtn { background: #ffb86b !important; color: #1a1030 !important; box-shadow: 0 0 22px rgba(255, 184, 107, 0.55) !important; }
+:root[data-platform='android'][data-vibe='dusk'] .phone__dock .progress__fill { background: linear-gradient(90deg, #ffe2a8, #ff8f70); }
+:root[data-platform='android'][data-vibe='trailer'] .phone__dock .playbtn { background: transparent !important; color: #e9dfc4 !important; box-shadow: 0 0 0 1px #c9a24a !important; }
+:root[data-platform='android'][data-vibe='trailer'] .phone__act span { font-family: 'Iowan Old Style', Georgia, serif; font-style: italic; letter-spacing: 0.06em; }
+:root[data-platform='android'][data-vibe='glitch'] .phone__dock .playbtn { background: #fff !important; color: #0b0708 !important; box-shadow: -2px 0 0 #ff3b3b, 2px 0 0 #1ff0ff !important; }
+:root[data-platform='android'][data-vibe='stencil'] .phone__dock .playbtn { background: #ff6a13 !important; color: #111 !important; border-radius: 6px !important; }
+:root[data-platform='android'][data-vibe='stencil'] .phone__act span { font-family: 'Unbounded Variable', sans-serif; text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.04em; }
+:root[data-platform='android'][data-vibe='film'] .phone__dock .playbtn { background: #2b2112 !important; color: #efe3c8 !important; }
+:root[data-platform='android'][data-vibe='film'] .phone__act span { font-family: 'Fraunces Variable', Georgia, serif; font-style: italic; }
+:root[data-platform='android'][data-vibe='filmstrip'] .phone__dock .playbtn { background: #111 !important; color: #f2b119 !important; border-radius: 6px !important; }
+:root[data-platform='android'][data-vibe='filmstrip'] .phone__dock .progress__fill { background: #111; }
+:root[data-platform='android'][data-vibe='filmstrip'] .phone__dock .progress__rail { background: rgba(17, 17, 17, 0.25); }
+:root[data-platform='android'][data-vibe='lock'] .phone__dock .playbtn { background: #fff !important; color: #1a1030 !important; }
+:root[data-platform='android'][data-vibe='wallet'] .phone__dock .playbtn { background: #e2c26b !important; color: #0b1f24 !important; border-radius: 16px !important; }
+:root[data-platform='android'][data-vibe='wallet'] .phone__dock .progress__fill { background: linear-gradient(90deg, #e2c26b, #3cff9a); }
+:root[data-platform='android'][data-vibe='web'] .phone__dock .playbtn { background: radial-gradient(circle at 35% 30%, #fff, #aab8ff 75%) !important; color: #14183a !important; box-shadow: 0 0 22px rgba(170, 184, 255, 0.55) !important; }
+:root[data-platform='android'][data-vibe='lens'] .phone__dock .playbtn { background: #ff3b30 !important; color: #fff !important; box-shadow: 0 0 0 3px #0a0e0d, 0 0 0 5px #fff !important; }
+:root[data-platform='android'][data-vibe='lens'] .phone__dock .progress__fill { background: #ff3b30; }
+:root[data-platform='android'][data-vibe='lens'] .phone__act span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.04em; }
+:root[data-platform='android'][data-vibe='picto'] .phone__dock .playbtn { background: #ff7a59 !important; color: #fff !important; border-radius: 22px !important; box-shadow: 0 8px 18px rgba(255, 122, 89, 0.45) !important; }
+:root[data-platform='android'][data-vibe='picto'] .phone__dock .progress__fill { background: #7c5cff; }
+:root[data-platform='android'][data-vibe='picto'] .phone__act { background: #f3f0ff; border-radius: 16px; }
+:root[data-platform='android'][data-vibe='wall'] .phone__dock .playbtn { background: #ffb43a !important; color: #14141b !important; border-radius: 12px !important; }
+:root[data-platform='android'][data-vibe='wall'] .phone__dock .progress__fill { background: #4cd9e6; }
+:root[data-platform='android'][data-vibe='flap'] .phone__dock .playbtn { background: #14120a !important; color: #ffd23f !important; border-radius: 6px !important; }
+:root[data-platform='android'][data-vibe='flap'] .phone__dock .progress__fill { background: #14120a; }
+:root[data-platform='android'][data-vibe='flap'] .phone__dock .progress__rail { background: rgba(20, 18, 10, 0.2); }
+:root[data-platform='android'][data-vibe='flap'] .phone__act span { font-family: 'VT323', ui-monospace, monospace; font-size: 13px; text-transform: uppercase; }
+
+/* edge pieces that sat on the navigation row move up to the empty space beside the video window */
+:root[data-platform='android'][data-vibe='journal'] .edge__b { top: calc(var(--at, 90px) + 8px); bottom: auto; right: 2px; }
+:root[data-platform='android'][data-vibe='comic'] .edge__b::after { bottom: auto; top: calc(var(--at, 90px) + var(--ah, 200px) + 6px); right: 2vw; }
