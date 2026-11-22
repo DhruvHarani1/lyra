@@ -1,0 +1,16 @@
+/* SKETCH edge: construction lines + hatching.
+   Two long dashed graphite construction lines run along the top and left edges (the way a draughtsman rules a border); the top-left
+   and bottom-right corners are cross-hatched, and the hatching grows out of the corner as the line is sung: the triangle's leg is
+   3vw + progress * 9vw, so every lyric line shades a little more and starts again with the next. */
+:root[data-vibe='sketch'] .edge__a { top: 2.4vh; height: 1px; background: repeating-linear-gradient(90deg, rgba(35, 38, 43, 0.55) 0 2.4vh, transparent 2.4vh 3.2vh, rgba(35, 38, 43, 0.55) 3.2vh 3.6vh, transparent 3.6vh 4.4vh); }
+:root[data-vibe='sketch'] .edge__d { left: 1.6vw; width: 1px; background: repeating-linear-gradient(0deg, rgba(35, 38, 43, 0.55) 0 2.4vh, transparent 2.4vh 3.2vh, rgba(35, 38, 43, 0.55) 3.2vh 3.6vh, transparent 3.6vh 4.4vh); }
+:root[data-vibe='sketch'] .edge::before, :root[data-vibe='sketch'] .edge::after {
+  content: '';
+  position: absolute;
+  width: calc(3vw + var(--lp, 0) * 9vw);
+  height: calc(3vw + var(--lp, 0) * 9vw);
+  background: repeating-linear-gradient(45deg, rgba(35, 38, 43, 0.42) 0 1px, transparent 1px 0.9vh), repeating-linear-gradient(-45deg, rgba(35, 38, 43, 0.2) 0 1px, transparent 1px 1.3vh);
+  transition: width 0.25s linear, height 0.25s linear;
+}
+:root[data-vibe='sketch'] .edge::before { left: 0; top: 0; clip-path: polygon(0 0, 100% 0, 0 100%); }
+:root[data-vibe='sketch'] .edge::after { right: 0; bottom: 0; clip-path: polygon(100% 100%, 0 100%, 100% 0); }

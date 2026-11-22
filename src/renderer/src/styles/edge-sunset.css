@@ -1,0 +1,13 @@
+/* SUNSET edge: the horizon. A warm bar along the bottom that rises and glows as the line is sung, the hue drifting line by line;
+   a faint amber wash climbs the side edges. --lp --li from components/EdgeFx.tsx. */
+:root[data-vibe='sunset'] .edge__c {
+  height: 26vh;
+  background: linear-gradient(0deg, hsl(calc(22 + 12 * sin(var(--li, 0) * 0.8)) 100% 62% / 0.62), hsl(calc(14 + 12 * sin(var(--li, 0) * 0.8)) 100% 60% / 0.18) 48%, transparent);
+  transform-origin: 50% 100%;
+  transform: scaleY(calc(0.28 + var(--lp, 0) * 0.72));
+  transition: transform 0.22s linear;
+}
+:root[data-vibe='sunset'] .edge__c::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, transparent, #ffe9cf 20%, #ffd08a 50%, #ffe9cf 80%, transparent); box-shadow: 0 0 2.4vh 0.6vh rgba(255, 180, 110, 0.7); }
+:root[data-vibe='sunset'] .edge__b, :root[data-vibe='sunset'] .edge__d { width: 9vw; background: linear-gradient(90deg, hsl(22 100% 62% / calc(0.16 + var(--lv, 0) * 0.14)), transparent); }
+:root[data-vibe='sunset'] .edge__b { transform: scaleX(-1); }
+:root[data-vibe='sunset'] .edge__a { height: 5vh; background: linear-gradient(180deg, rgba(255, 200, 150, 0.14), transparent); }

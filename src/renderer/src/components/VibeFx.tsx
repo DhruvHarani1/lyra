@@ -95,6 +95,7 @@ function GoldenHour() {
       <i className="sunsetfx__ray sunsetfx__ray--a" />
       <i className="sunsetfx__ray sunsetfx__ray--b" />
       <i className="sunsetfx__ray sunsetfx__ray--c" />
+      <i className="sunsetfx__sun" />
       <div className="sunsetfx__hills" />
       {motes.map((m, i) => (
         <i key={i} className="sunsetfx__mote" style={{ left: `${m.left}%`, bottom: `${m.bottom}%`, width: m.size, height: m.size, animationDuration: `${m.dur}s`, animationDelay: `${m.delay}s` }} />
@@ -498,6 +499,15 @@ function StadiumFx() {
 function CassetteFx() {
   return (
     <div className="cassettefx">
+      <div className="cassettefx__plate" />
+      <i className="cassettefx__screw cassettefx__screw--a" />
+      <i className="cassettefx__screw cassettefx__screw--b" />
+      <i className="cassettefx__screw cassettefx__screw--c" />
+      <i className="cassettefx__screw cassettefx__screw--d" />
+      <div className="cassettefx__vu">
+        <div className="cassettefx__dial"><i className="cassettefx__needle" /></div>
+        <div className="cassettefx__dial cassettefx__dial--r"><i className="cassettefx__needle" /></div>
+      </div>
       <div className="cassettefx__wood" />
       <div className="cassettefx__light" />
       <SceneWindow>
@@ -516,6 +526,9 @@ function BlocksFx() {
       <i className="blocksfx__cloud blocksfx__cloud--a" />
       <i className="blocksfx__cloud blocksfx__cloud--b" />
       <i className="blocksfx__cloud blocksfx__cloud--c" />
+      <i className="blocksfx__sun" />
+      <i className="blocksfx__torch blocksfx__torch--l" />
+      <i className="blocksfx__torch blocksfx__torch--r" />
       <div className="blocksfx__ground" />
       <div className="blocksfx__leaves" />
       <SceneWindow />

@@ -1,0 +1,13 @@
+/* CASSETTE edge: magnetic tape running around the window ANTICLOCKWISE.
+   Bottom edge runs left to right, right edge runs bottom to top, top edge runs right to left, left edge runs top to bottom.
+   The tape is a dark ribbon with a sheen; its reel-hole dashes crawl at a constant speed and the ribbon glows amber while a line is
+   sung (--lv). Pure CSS: four background-position animations. */
+:root[data-vibe='cassette'] .edge > i { background-color: #2b1f14; box-shadow: 0 0 0 1px rgba(255, 190, 110, 0.18); opacity: calc(0.78 + var(--lv, 0) * 0.22); }
+:root[data-vibe='cassette'] .edge__c { height: 1.3vh; bottom: 0.2vh; background-image: repeating-linear-gradient(90deg, rgba(255, 200, 130, 0.32) 0 0.7vh, transparent 0.7vh 3vh); animation: ct-bottom 2.4s linear infinite; }
+:root[data-vibe='cassette'] .edge__b { width: 1.3vh; right: 0.2vw; background-image: repeating-linear-gradient(0deg, rgba(255, 200, 130, 0.32) 0 0.7vh, transparent 0.7vh 3vh); animation: ct-right 2.4s linear infinite; }
+:root[data-vibe='cassette'] .edge__a { height: 1.3vh; top: 0.2vh; background-image: repeating-linear-gradient(90deg, rgba(255, 200, 130, 0.32) 0 0.7vh, transparent 0.7vh 3vh); animation: ct-top 2.4s linear infinite; }
+:root[data-vibe='cassette'] .edge__d { width: 1.3vh; left: 0.2vw; background-image: repeating-linear-gradient(0deg, rgba(255, 200, 130, 0.32) 0 0.7vh, transparent 0.7vh 3vh); animation: ct-left 2.4s linear infinite; }
+@keyframes ct-bottom { to { background-position: 3vh 0; } }
+@keyframes ct-top { to { background-position: -3vh 0; } }
+@keyframes ct-right { to { background-position: 0 -3vh; } }
+@keyframes ct-left { to { background-position: 0 3vh; } }
