@@ -27,7 +27,7 @@ function sanitize(s: Settings): Settings {
     reducedMotion: (['system', 'on', 'off'] as const).includes(s.reducedMotion) ? s.reducedMotion : d.reducedMotion,
     source: s.source === 'api' ? 'api' : 'local',
     opacity: clamp(s.opacity, 0.4, 1),
-    lyricStyle: (['classic', 'zoom', 'kinetic', 'constellation', 'sticker', 'chat', 'type', 'diary', 'subtitle', 'chatlog', 'lowerthird', 'sign', 'liquid', 'pixel', 'bloom', 'title', 'ink', 'glitch', 'bubble', 'spray', 'intertitle', 'log', 'note', 'label', 'lockscreen', 'wallet', 'route', 'editor', 'metro', 'weave', 'picto', 'wall', 'flap'] as const).includes(s.lyricStyle) ? s.lyricStyle : d.lyricStyle,
+    lyricStyle: (['classic', 'zoom', 'kinetic', 'constellation', 'sticker', 'chat', 'type', 'diary', 'subtitle', 'chatlog', 'lowerthird', 'sign', 'liquid', 'pixel', 'bloom', 'title', 'ink', 'glitch', 'bubble', 'spray', 'intertitle', 'log', 'note', 'jot', 'label', 'lockscreen', 'wallet', 'route', 'editor', 'metro', 'weave', 'picto', 'wall', 'flap'] as const).includes(s.lyricStyle) ? s.lyricStyle : d.lyricStyle,
     vibe: (ALL_VIBES as readonly string[]).includes(s.vibe) ? s.vibe : d.vibe,
     vibeMode: (['fixed', 'cycle', 'smart'] as const).includes(s.vibeMode) ? s.vibeMode : d.vibeMode,
     songVibes: Object.fromEntries(Object.entries(s.songVibes && typeof s.songVibes === 'object' ? s.songVibes : {}).filter(([, v]) => (ALL_VIBES as readonly string[]).includes(v as string)).slice(-300)),

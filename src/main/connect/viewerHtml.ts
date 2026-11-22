@@ -16,7 +16,7 @@ html,body{height:100%;background:#0b0b10;color:#f4f2ee;font-family:system-ui,-ap
 :root{--accent:#ffd36b}
 :root[data-vibe=neon]{--accent:#ff4fd8}:root[data-vibe=sunset]{--accent:#ff8a4c}:root[data-vibe=noir]{--accent:#e8e8e8}
 :root[data-vibe=arcade]{--accent:#7dff6b}:root[data-vibe=dream]{--accent:#b9a2ff}:root[data-vibe=chrome]{--accent:#9fd0ff}
-:root[data-vibe=crt]{--accent:#58ff9a}:root[data-vibe=paper]{--accent:#c9743a}:root[data-vibe=stadium]{--accent:#ffe14d}
+:root[data-vibe=crt]{--accent:#58ff9a}:root[data-vibe=paper]{--accent:#c9743a}:root[data-vibe=journal]{--accent:#e0556d}:root[data-vibe=stadium]{--accent:#ffe14d}
 #bg{position:fixed;inset:0;background:#0b0b10 center/cover no-repeat;filter:blur(36px) saturate(1.3) brightness(.55);transform:scale(1.2);transition:background-image .6s}
 #vid{position:fixed;inset:0;width:100%;height:100%;border:0;opacity:0;transition:opacity .8s;pointer-events:none}
 #vid.on{opacity:.55}

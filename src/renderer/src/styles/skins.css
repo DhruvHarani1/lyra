@@ -58,6 +58,14 @@
 :root[data-vibe='chat'] .sidepanel h3, :root[data-vibe='chat'] .sidepanel .settings h4 { font-family: inherit; color: rgba(255,255,255,.8); }
 :root[data-vibe='chat'] .sidepanel .stabs button.is-on { background: #2f6bff; color: #ffffff; box-shadow: none; }
 
+:root[data-vibe='journal'] .sidepanel {
+  --panel: #fdf4e6; --fg: #22305c; --fg-2: #3a4678; --fg-3: #56608a; --line: rgba(34,48,92,.22); --line-2: rgba(34,48,92,.3); --accent: #e0556d; --glow: #e0556d; --glow-soft: transparent;
+  background: #fdf4e6; color: #22305c; border: 2px solid #22305c; border-radius: 12px; box-shadow: 6px 7px 0 rgba(224,85,109,.4);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+:root[data-vibe='journal'] .sidepanel .settings section { background: color-mix(in srgb, #22305c 6%, transparent); box-shadow: 0 0 0 1px rgba(34,48,92,.22); border-radius: 8px; }
+:root[data-vibe='journal'] .sidepanel h3, :root[data-vibe='journal'] .sidepanel .settings h4 { font-family: 'Caveat', cursive; color: #22305c; }
+:root[data-vibe='journal'] .sidepanel .stabs button.is-on { background: #22305c; color: #fdf4e6; box-shadow: none; }
 :root[data-vibe='paper'] .sidepanel {
   --panel: #fffaf0; --fg: #2d2a3a; --fg-2: #4a4658; --fg-3: #625d73; --line: rgba(60,90,160,.25); --line-2: rgba(60,90,160,.25); --accent: #e2554d; --glow: #e2554d; --glow-soft: transparent;
   background: #fffaf0; color: #2d2a3a; border: 3px solid #2d2a3a; border-radius: 14px; box-shadow: 8px 8px 0 rgba(45,42,58,.35);

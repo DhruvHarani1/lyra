@@ -1,0 +1,157 @@
+/* ==========================================================================
+   JOURNAL: a bright page of a paper diary (fullscreen: one file, layout mechanics are in scene.css).
+   Ruled cream paper with a rose margin and punched holes, the video as a polaroid taped to the page (washi tape, paper clip),
+   a pressed flower, doodles that draw themselves, a date stamp and a coffee ring; the song is handwritten in blue-black ink and
+   the line being sung gets a yellow highlighter sweep; the card is a yellow sticky note. Graphic: paper, ink and type only.
+   (The night-corner Diary is the dark paper look; Sketchbook is the pencil-and-photo one.)
+   ========================================================================== */
+:root[data-vibe='journal'] {
+  --rimc: #e0556d;
+  --jn-ink: #22305c;
+  --jn-rose: #e0556d;
+  --jn-hi: #ffd84a;
+  --jn-note: #fff0a6;
+  --sc-ww: min(33vw, 52vh);
+  --sc-wl: 9vw;
+  --sc-wt: 14vh;
+  --sc-wr: 0.4vh;
+  --sc-ll: calc(9vw + var(--sc-ww) + 7vw);
+  --sc-lt: 13vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 9vw - 7vw);
+  --sc-lb: 28vh;
+  --sc-lbs: 26vh;
+  --sc-cl: var(--sc-ll);
+  --sc-cb: 7vh;
+  --sc-ct: auto;
+  --sc-cw: min(40vw, 520px);
+  --sc-art-bg: repeating-linear-gradient(180deg, #fdf4e6 0 2.4vh, #cfdcf3 2.4vh calc(2.4vh + 1px));
+  --sc-art-fg: #22305c;
+  --sc-eq: #e0556d;
+}
+:root[data-vibe='journal'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(36vw, 58vh); }
+:root[data-vibe='journal'][data-rim='on']::after { display: none; }
+[data-vibe='journal'] .shell {
+  --accent: #e0556d;
+  --glow: rgba(224, 85, 109, 0.35);
+  --glow-soft: rgba(224, 85, 109, 0.16);
+  --font: 'Caveat', 'Nunito Variable', cursive;
+  --fg: #22305c;
+  --fg-2: rgba(34, 48, 92, 0.78);
+  --fg-3: rgba(34, 48, 92, 0.58);
+  --line: rgba(34, 48, 92, 0.16);
+  --line-2: rgba(34, 48, 92, 0.3);
+  --glass: rgba(253, 244, 230, 0.7);
+  --glass-2: rgba(253, 244, 230, 0.95);
+  --on-fg: #fdf4e6;
+  --word-dim: rgba(34, 48, 92, 0.34);
+  --bg-0: #f3e3cf;
+  color: var(--fg);
+}
+[data-vibe='journal'] .backdrop .backdrop__field { background: radial-gradient(110% 90% at 40% 30%, #fbefdd, #f1dcc3 80%); }
+:root[data-vibe='journal'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
+
+/* ---------------- the page ---------------- */
+.jfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.jfx__paper { position: absolute; inset: 0; opacity: 0.4; mix-blend-mode: multiply; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .3 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.jfx__rules { position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 5.4vh, rgba(70, 110, 190, 0.2) 5.4vh calc(5.4vh + 1px)); -webkit-mask: linear-gradient(180deg, transparent 8vh, #000 10vh); mask: linear-gradient(180deg, transparent 8vh, #000 10vh); }
+.jfx__margin { position: absolute; left: 5.4vw; top: 0; bottom: 0; width: 2px; background: rgba(224, 85, 109, 0.55); box-shadow: 0.5vh 0 0 rgba(224, 85, 109, 0.18); }
+.jfx__hole { position: absolute; left: 1.8vw; width: 2.4vh; height: 2.4vh; margin-top: -1.2vh; border-radius: 50%; background: #d6c3a8; box-shadow: inset 0.3vh 0.4vh 0.5vh rgba(60, 40, 20, 0.45), 0 0 0 1px rgba(60, 40, 20, 0.18); }
+.jfx__stamp { position: absolute; right: 6vw; top: 12vh; font: 700 2.2vh/1 'Unbounded Variable', 'Inter Variable', sans-serif; letter-spacing: 0.18em; color: var(--jn-rose); border: 2px solid currentColor; border-radius: 0.6vh; padding: 0.8vh 1.2vh; rotate: 4deg; opacity: 0.72; }
+.jfx__coffee { position: absolute; right: 6vw; bottom: 9vh; width: 13vh; height: 13vh; border-radius: 50%; box-shadow: inset 0 0 0 0.5vh rgba(120, 70, 30, 0.2), inset 0.4vh 0.5vh 1.4vh rgba(120, 70, 30, 0.12); background: radial-gradient(circle, transparent 62%, rgba(150, 90, 40, 0.07) 63%, transparent 72%); opacity: 0.8; }
+.jfx__doodle { position: absolute; fill: none; stroke: var(--jn-rose); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.jfx__doodle path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: jn-draw 10s ease-in-out infinite; }
+.jfx__doodle--heart { width: 7vh; height: 7vh; right: 10vw; top: 24vh; rotate: 10deg; }
+.jfx__doodle--star { width: 6vh; height: 6vh; right: 21vw; bottom: 17vh; rotate: -12deg; stroke: #e6a400; }
+.jfx__doodle--star path { animation-delay: 2.5s; }
+.jfx__doodle--squig { width: 14vh; height: 3.6vh; right: 8vw; top: 38vh; stroke: var(--jn-ink); opacity: 0.7; }
+.jfx__doodle--squig path { animation-delay: 5s; }
+@keyframes jn-draw { 0% { stroke-dashoffset: 1; } 30%, 70% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
+.jfx__flower { position: absolute; left: calc(var(--sc-wl) + var(--sc-ww) - 5vh); bottom: 6vh; width: 9vh; height: 13.5vh; rotate: 18deg; opacity: 0.9; filter: drop-shadow(0.3vh 0.4vh 0.3vh rgba(60, 40, 20, 0.25)); }
+.jfx__flower .stem { fill: none; stroke: #6f8a4a; stroke-width: 2.4; stroke-linecap: round; }
+.jfx__flower .leaf { fill: #8ba75f; }
+.jfx__flower .petal { fill: #f2a7b8; stroke: #d9788f; stroke-width: 1; }
+.jfx__flower .core { fill: #f6c344; }
+:root[data-calm] .jfx__doodle path { animation: none; stroke-dashoffset: 0; }
+:root[data-motion='off'] .jfx * { animation: none !important; stroke-dashoffset: 0 !important; }
+:root[data-perf='low'] .jfx__paper { display: none; }
+:root[data-vibe='journal'][data-mode='mini'] :is(.jfx__flower, .jfx__coffee, .jfx__doodle, .jfx__stamp) { display: none; }
+
+/* ---------------- the polaroid, taped on ---------------- */
+.jfx__polaroid, .jfx__caption, .jfx__tape, .jfx__clip, .jfx__corner { display: none; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) :is(.jfx__polaroid, .jfx__caption, .jfx__tape, .jfx__clip) { display: block; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .jfx__corner { display: block; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .jfx__polaroid {
+  position: absolute;
+  left: calc(var(--sc-wl) - 1.8vh);
+  top: calc(var(--sc-wt) - 1.8vh);
+  width: calc(var(--sc-ww) + 3.6vh);
+  height: calc(var(--sc-wh) + 3.6vh + 7vh);
+  background: #fffdf6;
+  box-shadow: 0.5vh 1.2vh 2.4vh rgba(70, 40, 20, 0.35), 0 0 0 1px rgba(70, 40, 20, 0.12);
+  clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, 1.8vh 1.8vh, calc(100% - 1.8vh) 1.8vh, calc(100% - 1.8vh) calc(1.8vh + var(--sc-wh)), 1.8vh calc(1.8vh + var(--sc-wh)), 1.8vh 1.8vh);
+  transition: width 0.7s, height 0.7s;
+}
+.jfx__caption { position: absolute; left: calc(var(--sc-wl) - 1.8vh); top: calc(var(--sc-wt) + var(--sc-wh) + 2vh); width: calc(var(--sc-ww) + 3.6vh); box-sizing: border-box; padding-inline: 2.4vh; text-align: center; font: 700 3.2vh/1.1 'Caveat', cursive; color: var(--jn-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jfx__tape { position: absolute; width: 13vh; height: 3.8vh; background: linear-gradient(90deg, rgba(255, 170, 190, 0.78), rgba(255, 196, 208, 0.66)); box-shadow: 0 0.3vh 0.6vh rgba(80, 40, 20, 0.2); clip-path: polygon(0 10%, 3% 0, 6% 12%, 9% 0, 100% 0, 97% 50%, 100% 100%, 8% 100%, 5% 88%, 2% 100%, 0 90%, 3% 50%); }
+.jfx__tape--l { left: calc(var(--sc-wl) - 5vh); top: calc(var(--sc-wt) - 2.4vh); rotate: -36deg; }
+.jfx__tape--r { left: calc(var(--sc-wl) + var(--sc-ww) - 6vh); top: calc(var(--sc-wt) - 2.2vh); rotate: 33deg; background: linear-gradient(90deg, rgba(150, 205, 190, 0.8), rgba(180, 225, 210, 0.66)); }
+.jfx__clip { position: absolute; left: calc(var(--sc-wl) + 12%); top: calc(var(--sc-wt) - 3.6vh); width: 2.4vh; height: 7vh; border: 0.5vh solid #9aa3b5; border-radius: 1.2vh; border-bottom-color: transparent; }
+.jfx__clip::after { content: ''; position: absolute; left: 0.4vh; top: 1.8vh; width: 0.9vh; height: 4vh; border: 0.4vh solid #b5bdcc; border-radius: 0.8vh; border-top-color: transparent; }
+.jfx__corner { position: absolute; right: 0; bottom: 0; width: 7vh; height: 7vh; background: linear-gradient(135deg, transparent 50%, #e8d3b4 50%, #f7ead4 100%); box-shadow: -0.4vh -0.4vh 0.8vh rgba(70, 40, 20, 0.18); }
+[data-vibe='journal'] .scenewin { box-shadow: inset 0 0 2vh rgba(60, 30, 10, 0.18); }
+.scenewin__art span { font: 700 3.2vh/1 'Caveat', cursive; letter-spacing: 0; text-transform: none; }
+
+/* ---------------- the card: a yellow sticky note ---------------- */
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  --fg: #22305c;
+  --fg-2: #3a4678;
+  --fg-3: #56608a;
+  flex-direction: row;
+  align-items: center;
+  gap: 2vh;
+  padding: 1.5vh 2vh 1.3vh 1.5vh !important;
+  border-radius: 0.4vh 0.4vh 0.4vh 2.6vh !important;
+  background: linear-gradient(180deg, #ffe97f 0 2.2vh, var(--jn-note) 2.2vh) !important;
+  border: 0 !important;
+  box-shadow: 0.4vh 1.1vh 2vh rgba(70, 40, 20, 0.3) !important;
+  rotate: 1.2deg;
+  color: #22305c;
+}
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 8.6vh !important; border-radius: 0.3vh !important; box-shadow: 0 0 0 0.5vh #fffdf6, 0 0.4vh 0.8vh rgba(70, 40, 20, 0.35); }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 700 3vh/1 'Caveat', cursive; letter-spacing: 0; color: #22305c; -webkit-text-fill-color: #22305c; background: none; text-shadow: none; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.4vh); font-weight: 700; color: #3a4678; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(34, 48, 92, 0.22); }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: var(--jn-rose); }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #22305c !important; color: #fffdf6 !important; box-shadow: none !important; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #22305c; }
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child,
+:root[data-vibe='journal']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
+
+/* ---------------- lyrics: handwritten in ink, highlighted as sung (stage 'jot') ---------------- */
+.stage--jot { display: flex; flex-direction: column; justify-content: center; }
+.sign--jot .sign__line { gap: 1.6vh; rotate: -1.2deg; animation: jn-in 0.55s ease-out 1; }
+@keyframes jn-in { from { opacity: 0; transform: translateY(1.2vh); } to { opacity: 1; transform: none; } }
+.sign--jot .sign__row { font-family: 'Caveat', cursive; font-weight: 700; font-size: min(6.2vw, 10.6vh); line-height: 1; letter-spacing: 0; gap: 0 0.22em; }
+.sign--jot .sign__word { position: relative; color: rgba(34, 48, 92, 0.3); transition: color 0.35s ease; }
+.sign--jot .sign__word.is-in { color: #22305c; }
+.sign--jot .sign__word.is-now { color: #141d40; background: linear-gradient(180deg, transparent 54%, rgba(255, 216, 74, 0.85) 54%, rgba(255, 216, 74, 0.85) 90%, transparent 90%); background-size: 0% 100%; background-repeat: no-repeat; animation: jn-hi 0.4s ease-out forwards; }
+@keyframes jn-hi { to { background-size: 100% 100%; } }
+.sign--jot .sign__next { font-family: 'Caveat', cursive; font-weight: 600; font-size: max(10.5px, min(3.4vw, 5.8vh)); letter-spacing: 0; color: rgba(34, 48, 92, 0.46); }
+.sign--jot .sign__refl { display: none; }
+:root[data-motion='off'] .sign--jot .sign__line { animation: none; }
+:root[data-motion='off'] .sign--jot .sign__word.is-now { animation: none; background-size: 100% 100%; }
+
+/* ---------------- other lyric states (same regions) ---------------- */
+[data-vibe='journal'] .lyrics__notice { align-self: flex-start; background: var(--jn-note); border: 0; border-radius: 0.4vh; color: #22305c; font-family: 'Caveat', cursive; font-size: 2.4vh; font-weight: 700; letter-spacing: 0; box-shadow: 0.3vh 0.5vh 0.8vh rgba(70, 40, 20, 0.25); }
+[data-vibe='journal'] .plain__stanza { font-family: 'Caveat', cursive; font-weight: 700; font-size: min(3.6vw, 6vh); line-height: 1.1; letter-spacing: 0; color: #22305c; text-shadow: none; }
+[data-vibe='journal'] .plain__stanza > span:nth-child(odd) { width: fit-content; background: linear-gradient(180deg, transparent 58%, rgba(255, 216, 74, 0.6) 58% 92%, transparent 92%); }
+[data-vibe='journal'] .lfb { align-items: flex-start; text-align: left; }
+[data-vibe='journal'] .lfb__poster { display: none; }
+[data-vibe='journal'] .lfb h3 { font-family: 'Caveat', cursive; font-weight: 700; text-transform: none; letter-spacing: 0; font-size: clamp(36px, 6vw, 88px); line-height: 0.95; color: #22305c; text-shadow: none; background: linear-gradient(180deg, transparent 60%, rgba(255, 216, 74, 0.8) 60% 92%, transparent 92%); }
+[data-vibe='journal'] .lfb p, [data-vibe='journal'] .lfb small { color: rgba(34, 48, 92, 0.85); font-family: 'Inter Variable', system-ui, sans-serif; }
+[data-vibe='journal'] .lfb__actions { justify-content: flex-start; }
+[data-vibe='journal'] .lfb__eq i { background: var(--jn-rose); box-shadow: none; }

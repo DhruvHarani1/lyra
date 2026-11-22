@@ -101,7 +101,7 @@ export function LyricsStage({ lines, active, mode }: StageProps) {
       {mode === 'subtitle' && <Subtitles lines={lines} active={active} />}
       {mode === 'chatlog' && <ChatLog lines={lines} active={active} />}
       {mode === 'lowerthird' && <LowerThird lines={lines} active={active} />}
-      {(mode === 'sign' || mode === 'liquid' || mode === 'pixel' || mode === 'title' || mode === 'ink' || mode === 'glitch' || mode === 'bubble' || mode === 'spray' || mode === 'intertitle' || mode === 'note' || mode === 'label' || mode === 'metro' || mode === 'weave' || mode === 'picto' || mode === 'wall' || mode === 'flap') && <Sign lines={lines} active={active} variant={mode} />}
+      {(mode === 'sign' || mode === 'liquid' || mode === 'pixel' || mode === 'title' || mode === 'ink' || mode === 'glitch' || mode === 'bubble' || mode === 'spray' || mode === 'intertitle' || mode === 'note' || mode === 'jot' || mode === 'label' || mode === 'metro' || mode === 'weave' || mode === 'picto' || mode === 'wall' || mode === 'flap') && <Sign lines={lines} active={active} variant={mode} />}
       {mode === 'bloom' && <Bloom lines={lines} active={active} />}
       {mode === 'log' && <TermLog lines={lines} active={active} />}
       {(mode === 'lockscreen' || mode === 'wallet' || mode === 'route' || mode === 'editor') && <Feed lines={lines} active={active} variant={mode} />}

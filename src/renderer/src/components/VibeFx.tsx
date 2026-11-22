@@ -345,6 +345,57 @@ function DiaryFx() {
   )
 }
 
+/**
+ * Journal, fullscreen: a page of a paper diary. Ruled lines and a rose margin with punched holes, a date stamp, the video as a
+ * polaroid taped to the page with washi tape and a paper clip, a pressed flower, a heart sticker, a coffee ring and doodles that
+ * draw themselves in and out. (The night-corner Diary is the other paper look; this one is bright, written by hand in blue-black ink
+ * with a yellow highlighter.)
+ */
+function JournalFx() {
+  const title = usePlayer((x) => x.snapshot?.track?.title ?? '')
+  const stamp = useMemo(() => {
+    const d = new Date()
+    return `${d.toLocaleDateString('en', { weekday: 'short' })} · ${d.getDate()} ${d.toLocaleDateString('en', { month: 'short' })}`.toUpperCase()
+  }, [])
+  return (
+    <div className="jfx">
+      <div className="jfx__paper" />
+      <div className="jfx__rules" />
+      <div className="jfx__margin" />
+      {[16, 50, 84].map((t) => (
+        <i key={t} className="jfx__hole" style={{ top: `${t}%` }} />
+      ))}
+      <div className="jfx__stamp">{stamp}</div>
+      <div className="jfx__coffee" />
+      <svg className="jfx__doodle jfx__doodle--heart" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 41 C8 29 5 17 14 11 C19 8 23 11 24 15 C25 11 29 8 34 11 C43 17 40 29 24 41 Z" />
+      </svg>
+      <svg className="jfx__doodle jfx__doodle--star" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 5 L29 19 L44 19 L32 28 L36 43 L24 34 L12 43 L16 28 L4 19 L19 19 Z" />
+      </svg>
+      <svg className="jfx__doodle jfx__doodle--squig" viewBox="0 0 120 30" aria-hidden="true">
+        <path d="M4 18 C14 4 22 4 30 18 S46 32 56 18 S74 4 84 18 S104 30 116 14" />
+      </svg>
+      <svg className="jfx__flower" viewBox="0 0 80 120" aria-hidden="true">
+        <path className="stem" d="M40 118 C38 88 44 66 40 40" />
+        <path className="leaf" d="M40 86 C26 84 18 74 16 62 C30 62 38 72 40 86 Z" />
+        <path className="leaf" d="M41 70 C54 66 62 56 62 44 C50 46 42 56 41 70 Z" />
+        {[0, 72, 144, 216, 288].map((a) => (
+          <ellipse key={a} className="petal" cx="40" cy="20" rx="8" ry="15" transform={`rotate(${a} 40 32)`} />
+        ))}
+        <circle className="core" cx="40" cy="32" r="6" />
+      </svg>
+      <SceneWindow />
+      <div className="jfx__polaroid" />
+      <div className="jfx__caption">{title}</div>
+      <i className="jfx__tape jfx__tape--l" />
+      <i className="jfx__tape jfx__tape--r" />
+      <i className="jfx__clip" />
+      <i className="jfx__corner" />
+    </div>
+  )
+}
+
 /** Cinema, fullscreen: a black-and-white screening. Venetian-blind light drifts, grain, a projector flicker, a beam with dust. */
 function NoirFx() {
   const dust = useMemo(() => Array.from({ length: 22 }, (_, i) => ({ left: 8 + ((i * 37 + 5) % 84), top: 30 + ((i * 19) % 62), dur: 8 + (i % 6) * 2, delay: -((i * 1.1) % 12) })), [])
@@ -580,6 +631,7 @@ export function VibeFx() {
       )}
       {vibe === 'noir' && <NoirFx />}
       {vibe === 'paper' && <DiaryFx />}
+      {vibe === 'journal' && <JournalFx />}
       {vibe === 'sketch' && <SketchFx />}
       {vibe === 'stencil' && <StencilFx />}
       {vibe === 'film' && <FilmFx />}
