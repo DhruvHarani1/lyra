@@ -463,6 +463,7 @@
 .vibecard--cassette .vibecard__sw { background: radial-gradient(circle at 30% 60%, #2a1a0e 0 12%, transparent 13%), radial-gradient(circle at 70% 60%, #2a1a0e 0 12%, transparent 13%), linear-gradient(#e9d9bd, #cdb893); }
 .vibecard--trailer .vibecard__sw { background: linear-gradient(180deg, #000 0 14%, transparent 14% 86%, #000 86%), radial-gradient(circle, #3a2c1c, #050404); box-shadow: inset 0 0 0 1px rgba(255,217,160,.25); }
 .vibecard--paper .vibecard__sw { background: repeating-linear-gradient(180deg, #fffbf1 0 9px, #b9c8ee 9px 10px); }
+.vibecard--doodle .vibecard__sw { background: radial-gradient(circle at 30% 40%, #ffd84a 0 22%, transparent 23%), radial-gradient(circle at 70% 60%, #ff8fb1 0 20%, transparent 21%), #fffdf4; }
 .vibecard--journal .vibecard__sw { background: repeating-linear-gradient(180deg, #fdf4e6 0 9px, #cfdcf3 9px 10px), linear-gradient(90deg, transparent 18%, #e0556d 18% 20%, transparent 20%); }
 .vibecard--arcade .vibecard__sw { background: linear-gradient(135deg, #14143a, #ff2d6f 60%, #ffe14d); image-rendering: pixelated; }
 .vibecard--noir .vibecard__sw { background: linear-gradient(180deg, #000 0 14%, #3a3a3a 14% 86%, #000 86%); }

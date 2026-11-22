@@ -155,3 +155,6 @@
 [data-vibe='journal'] .lfb p, [data-vibe='journal'] .lfb small { color: rgba(34, 48, 92, 0.85); font-family: 'Inter Variable', system-ui, sans-serif; }
 [data-vibe='journal'] .lfb__actions { justify-content: flex-start; }
 [data-vibe='journal'] .lfb__eq i { background: var(--jn-rose); box-shadow: none; }
+
+/* chrome text sits on paper: dark ink */
+[data-vibe="journal"] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(34, 48, 92, 0.62) !important; text-shadow: none !important; }

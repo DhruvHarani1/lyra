@@ -30,7 +30,7 @@ var LOOKS = {
   noir: 'subtitle', film: 'subtitle', filmstrip: 'subtitle', trailer: 'subtitle', stadium: 'subtitle',
   chat: 'chat', lock: 'chat', wallet: 'chat',
   sticker: 'sticker', comic: 'sticker', stencil: 'sticker',
-  paper: 'hand', journal: 'hand', sketch: 'hand', cassette: 'hand',
+  paper: 'hand', journal: 'hand', doodle: 'hand', sketch: 'hand', cassette: 'hand',
   arcade: 'pixel',
   glitch: 'glitch'
 }

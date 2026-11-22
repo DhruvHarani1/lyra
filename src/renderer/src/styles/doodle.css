@@ -1,0 +1,154 @@
+/* ==========================================================================
+   DOODLE: a kid's drawing page (fullscreen: one file, layout mechanics are in scene.css).
+   Off-white paper with a dot grid, fat black marker outlines and flat bright colour that sits a little off the lines. A sun, a
+   cloud, stars, a spiral and arrows draw themselves in and out. The video sits in a wobbly hand-drawn frame with a pink offset,
+   the song is marker lettering that bounces in, the word being sung gets a hand-drawn circle, the card is a speech bubble.
+   Graphic: marker, colour and type only. (Sketchbook is pencil and tape; Journal is a ruled diary page.)
+   ========================================================================== */
+:root[data-vibe='doodle'] {
+  --rimc: #ff5f7e;
+  --dd-ink: #14110f;
+  --dd-pink: #ff8fb1;
+  --dd-yellow: #ffd84a;
+  --dd-blue: #6ec5ff;
+  --dd-green: #8fe3a1;
+  --sc-ww: min(36vw, 56vh);
+  --sc-wl: calc(94vw - var(--sc-ww));
+  --sc-wt: 15vh;
+  --sc-wr: 3vh 0.8vh 3.4vh 1vh / 1vh 3vh 0.8vh 3.4vh;
+  --sc-ll: 7vw;
+  --sc-lt: 13vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 7vw - 6vw);
+  --sc-lb: 30vh;
+  --sc-lbs: 28vh;
+  --sc-cl: var(--sc-ll);
+  --sc-cb: 7vh;
+  --sc-ct: auto;
+  --sc-cw: min(42vw, 540px);
+  --sc-art-bg: radial-gradient(circle at 30% 35%, #ffd84a 0 18%, transparent 19%), radial-gradient(circle at 70% 65%, #ff8fb1 0 22%, transparent 23%), #fffdf4;
+  --sc-art-fg: #14110f;
+  --sc-eq: #ff5f7e;
+}
+:root[data-vibe='doodle'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(40vw, 62vh); }
+:root[data-vibe='doodle'][data-rim='on']::after { display: none; }
+[data-vibe='doodle'] .shell {
+  --accent: #ff5f7e;
+  --glow: rgba(255, 95, 126, 0.3);
+  --glow-soft: rgba(255, 95, 126, 0.14);
+  --font: 'Nunito Variable', 'Inter Variable', system-ui, sans-serif;
+  --fg: #14110f;
+  --fg-2: rgba(20, 17, 15, 0.78);
+  --fg-3: rgba(20, 17, 15, 0.6);
+  --line: rgba(20, 17, 15, 0.18);
+  --line-2: rgba(20, 17, 15, 0.32);
+  --glass: rgba(255, 253, 244, 0.8);
+  --glass-2: rgba(255, 253, 244, 0.96);
+  --on-fg: #fffdf4;
+  --word-dim: rgba(20, 17, 15, 0.3);
+  --bg-0: #fffdf4;
+  color: var(--fg);
+}
+[data-vibe='doodle'] .backdrop .backdrop__field { background: #fffdf4; }
+:root[data-vibe='doodle'] :is(.backdrop__img, .backdrop__blob, .backdrop__dim, .backdrop__grade, .backdrop__shade) { display: none !important; }
+
+/* ---------------- the page ---------------- */
+.dfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.dfx__dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(20, 17, 15, 0.2) 1.4px, transparent 1.6px); background-size: 3.6vh 3.6vh; }
+.dfx__d { position: absolute; fill: none; stroke: var(--dd-ink); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.dfx__d .fill { stroke: none; fill: var(--dd-yellow); transform: translate(3px, 3px); }
+.dfx__d path:not(.fill), .dfx__d circle:not(.fill) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: dd-draw 11s ease-in-out infinite; animation-delay: var(--d, 0s); }
+@keyframes dd-draw { 0% { stroke-dashoffset: 1; } 25%, 75% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
+.dfx__sun { width: 13vh; height: 13vh; left: 3.5vw; top: 4vh; --d: 0s; animation: dd-bob 6s ease-in-out infinite; }
+.dfx__cloud { width: 20vh; height: 11.4vh; left: 30vw; top: 4vh; --d: 1.2s; }
+.dfx__cloud .fill { fill: var(--dd-blue); }
+.dfx__star { width: 7vh; height: 7vh; }
+.dfx__star--a { left: 60vw; bottom: 7vh; rotate: 12deg; --d: 2.4s; }
+.dfx__star--b { left: 4vw; bottom: 16vh; rotate: -14deg; --d: 3.4s; }
+.dfx__star--b .fill { fill: var(--dd-pink); }
+.dfx__spiral { width: 9vh; height: 9vh; right: 3vw; bottom: 9vh; --d: 4.4s; stroke: #ff5f7e; }
+.dfx__arrow { width: 12vh; height: 7vh; left: calc(var(--sc-wl) - 14vh); top: calc(var(--sc-wt) + 3vh); --d: 5.2s; }
+.dfx__zig { width: 16vh; height: 3vh; left: calc(var(--sc-wl) + 2vh); top: calc(var(--sc-wt) + var(--sc-wh) + 6.6vh); --d: 6s; stroke: #2f8cff; }
+@keyframes dd-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(0.8vh) rotate(6deg); } }
+:root[data-calm] .dfx__d path, :root[data-calm] .dfx__d circle { animation: none; stroke-dashoffset: 0; }
+:root[data-calm] .dfx__sun { animation: none; }
+:root[data-motion='off'] .dfx * { animation: none !important; stroke-dashoffset: 0 !important; }
+:root[data-perf='low'] .dfx__dots { display: none; }
+:root[data-vibe='doodle'][data-mode='mini'] :is(.dfx__sun, .dfx__cloud, .dfx__star, .dfx__spiral, .dfx__zig) { display: none; }
+
+/* ---------------- the video: a wobbly frame with a pink offset ---------------- */
+.dfx__frame { display: none; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .dfx__frame {
+  display: block;
+  position: absolute;
+  left: calc(var(--sc-wl) - 0.9vh);
+  top: calc(var(--sc-wt) - 0.9vh);
+  width: calc(var(--sc-ww) + 1.8vh);
+  height: calc(var(--sc-wh) + 1.8vh);
+  box-sizing: border-box;
+  border: 0.8vh solid var(--dd-ink);
+  border-radius: 3.6vh 1.2vh 4vh 1.4vh / 1.4vh 3.6vh 1.2vh 4vh;
+  box-shadow: 1.6vh 1.8vh 0 var(--dd-pink);
+  transition: width 0.7s, height 0.7s;
+}
+[data-vibe='doodle'] .scenewin { box-shadow: none; }
+.scenewin__art span { font: 900 3vh/1 'Nunito Variable', sans-serif; letter-spacing: 0; text-transform: none; }
+
+/* ---------------- the card: a speech bubble ---------------- */
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  --fg: #14110f;
+  --fg-2: #3a332e;
+  --fg-3: #4a423c;
+  flex-direction: row;
+  align-items: center;
+  gap: 2vh;
+  padding: 1.4vh 2.2vh 1.4vh 1.4vh !important;
+  border-radius: 3vh 3.4vh 3vh 0.8vh !important;
+  background: #fff !important;
+  border: 0.55vh solid #14110f !important;
+  box-shadow: 0.9vh 1vh 0 var(--dd-yellow) !important;
+  color: #14110f;
+}
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::after { content: ''; position: absolute; left: 2.4vh; bottom: -2.6vh; width: 2.4vh; height: 2.6vh; background: #fff; border: 0.55vh solid #14110f; border-top: 0; border-right: 0; transform: skewX(-30deg); clip-path: polygon(0 0, 100% 0, 0 100%); }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { flex: none; width: 8.8vh !important; border-radius: 1.4vh !important; box-shadow: 0 0 0 0.4vh #14110f; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(70px, 1fr) auto; grid-template-areas: 'titles controls' 'progress progress'; align-items: center; column-gap: 1.2vw; row-gap: 0.8vh; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titlerow { grid-area: titles; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls { grid-area: controls; margin: 0; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__chrome > .progress { grid-area: progress; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 900 2.8vh/1.05 'Nunito Variable', sans-serif; letter-spacing: 0; color: #14110f; -webkit-text-fill-color: #14110f; background: none; text-shadow: none; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-size: max(10.5px, 1.4vh); font-weight: 800; color: #4a423c; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(20, 17, 15, 0.16); height: 0.9vh; border-radius: 1vh; box-shadow: 0 0 0 0.3vh #14110f; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #ff5f7e; height: 0.9vh; border-radius: 1vh; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #ff5f7e !important; color: #14110f !important; box-shadow: 0 0 0 0.4vh #14110f, 0.4vh 0.5vh 0 0.4vh #14110f !important; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .ibtn { color: #14110f; }
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:first-child,
+:root[data-vibe='doodle']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__controls .ibtn:last-child { display: none; }
+
+/* ---------------- lyrics: marker lettering that bounces in (stage 'scrawl') ---------------- */
+.stage--scrawl { display: flex; flex-direction: column; justify-content: center; }
+.sign--scrawl .sign__line { gap: 1.4vh; }
+.sign--scrawl .sign__row { font-family: 'Nunito Variable', sans-serif; font-weight: 900; font-size: min(5.8vw, 10vh); line-height: 1.04; letter-spacing: -0.01em; gap: 0 0.24em; }
+.sign--scrawl .sign__word { position: relative; display: inline-block; color: rgba(20, 17, 15, 0.26); transition: color 0.3s ease; }
+.sign--scrawl .sign__word:nth-child(2n) { rotate: 1.6deg; }
+.sign--scrawl .sign__word:nth-child(2n + 1) { rotate: -1.4deg; }
+.sign--scrawl .sign__word.is-in { color: var(--dd-ink); animation: dd-pop 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) 1; }
+@keyframes dd-pop { from { transform: translateY(1.2vh) scale(0.86); } to { transform: none; } }
+.sign--scrawl .sign__word.is-now::after { content: ''; position: absolute; inset: -0.08em -0.16em; border: 0.09em solid #ff5f7e; border-radius: 52% 48% 50% 46% / 58% 46% 54% 44%; rotate: -3deg; clip-path: inset(-10% 100% -10% 0); animation: dd-circle 0.5s ease-out forwards; }
+@keyframes dd-circle { to { clip-path: inset(-10% -10% -10% -10%); } }
+.sign--scrawl .sign__next { font-family: 'Nunito Variable', sans-serif; font-weight: 800; font-size: max(10.5px, min(3.2vw, 5.4vh)); letter-spacing: 0; color: rgba(20, 17, 15, 0.42); }
+.sign--scrawl .sign__refl { display: none; }
+:root[data-motion='off'] .sign--scrawl .sign__word, :root[data-motion='off'] .sign--scrawl .sign__word::after { animation: none; clip-path: none; }
+
+/* ---------------- other lyric states (same regions) ---------------- */
+[data-vibe='doodle'] .lyrics__notice { align-self: flex-start; background: var(--dd-yellow); border: 0.4vh solid #14110f; border-radius: 99px; color: #14110f; font-family: 'Nunito Variable', sans-serif; font-size: 2.2vh; font-weight: 800; letter-spacing: 0; box-shadow: 0.4vh 0.5vh 0 #14110f; }
+[data-vibe='doodle'] .plain__stanza { font-family: 'Nunito Variable', sans-serif; font-weight: 900; font-size: min(3.4vw, 5.6vh); line-height: 1.38; letter-spacing: 0; color: #14110f; text-shadow: none; }
+[data-vibe='doodle'] .plain__stanza > span:nth-child(3n + 1) { text-decoration: underline wavy #ff5f7e 0.18em; text-underline-offset: 0.2em; }
+[data-vibe='doodle'] .plain__stanza > span:nth-child(3n + 2) { text-decoration: underline wavy #2f8cff 0.18em; text-underline-offset: 0.2em; }
+[data-vibe='doodle'] .lfb { align-items: flex-start; text-align: left; }
+[data-vibe='doodle'] .lfb__poster { display: none; }
+[data-vibe='doodle'] .lfb h3 { font-family: 'Nunito Variable', sans-serif; font-weight: 900; text-transform: none; letter-spacing: -0.01em; font-size: clamp(36px, 6vw, 88px); line-height: 0.98; color: #14110f; text-shadow: none; text-decoration: underline wavy #ff5f7e 0.1em; text-underline-offset: 0.12em; }
+[data-vibe='doodle'] .lfb p, [data-vibe='doodle'] .lfb small { color: rgba(20, 17, 15, 0.85); font-family: 'Nunito Variable', sans-serif; }
+[data-vibe='doodle'] .lfb__actions { justify-content: flex-start; }
+[data-vibe='doodle'] .lfb__eq i { background: #ff5f7e; box-shadow: none; }
+
+/* chrome text sits on paper: dark ink */
+[data-vibe="doodle"] :is(.full__device, .lyrics__footer, .lyrics__footer *) { color: rgba(20, 17, 15, 0.62) !important; text-shadow: none !important; }

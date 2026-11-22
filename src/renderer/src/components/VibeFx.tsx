@@ -396,6 +396,49 @@ function JournalFx() {
   )
 }
 
+/**
+ * Doodle, fullscreen: a kid's drawing page. Off-white paper with a dot grid, fat black marker outlines, flat bright colour shapes
+ * (sun, cloud, stars, spiral, arrows) that draw themselves in and out, the video in a wobbly hand-drawn frame with a colour offset
+ * and arrows pointing at it. Words are marker lettering; the one being sung gets a hand-drawn circle.
+ */
+function DoodleFx() {
+  return (
+    <div className="dfx">
+      <div className="dfx__dots" />
+      <div className="dfx__frame" />
+      <svg className="dfx__d dfx__sun" viewBox="0 0 100 100" aria-hidden="true">
+        <circle className="fill" cx="50" cy="50" r="22" />
+        <circle cx="50" cy="50" r="22" />
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((a) => (
+          <path key={a} d="M50 14 L50 24" transform={`rotate(${a} 50 50)`} />
+        ))}
+      </svg>
+      <svg className="dfx__d dfx__cloud" viewBox="0 0 140 80" aria-hidden="true">
+        <path className="fill" d="M30 64 C10 64 8 40 28 38 C26 18 54 12 62 30 C72 14 100 20 98 40 C122 38 126 64 104 64 Z" />
+        <path d="M30 64 C10 64 8 40 28 38 C26 18 54 12 62 30 C72 14 100 20 98 40 C122 38 126 64 104 64 Z" />
+      </svg>
+      <svg className="dfx__d dfx__star dfx__star--a" viewBox="0 0 48 48" aria-hidden="true">
+        <path className="fill" d="M24 4 L29 18 L44 18 L32 27 L37 42 L24 33 L11 42 L16 27 L4 18 L19 18 Z" />
+        <path d="M24 4 L29 18 L44 18 L32 27 L37 42 L24 33 L11 42 L16 27 L4 18 L19 18 Z" />
+      </svg>
+      <svg className="dfx__d dfx__star dfx__star--b" viewBox="0 0 48 48" aria-hidden="true">
+        <path className="fill" d="M24 4 L29 18 L44 18 L32 27 L37 42 L24 33 L11 42 L16 27 L4 18 L19 18 Z" />
+        <path d="M24 4 L29 18 L44 18 L32 27 L37 42 L24 33 L11 42 L16 27 L4 18 L19 18 Z" />
+      </svg>
+      <svg className="dfx__d dfx__spiral" viewBox="0 0 80 80" aria-hidden="true">
+        <path d="M40 40 C40 34 48 34 48 42 C48 54 30 54 30 40 C30 24 56 24 58 44 C60 66 26 68 22 42 C18 16 62 8 68 44" />
+      </svg>
+      <svg className="dfx__d dfx__arrow" viewBox="0 0 120 70" aria-hidden="true">
+        <path d="M6 54 C30 60 70 50 100 20" />
+        <path d="M82 18 L102 18 L98 40" />
+      </svg>
+      <svg className="dfx__d dfx__zig" viewBox="0 0 160 30" aria-hidden="true">
+        <path d="M4 22 L24 6 L44 22 L64 6 L84 22 L104 6 L124 22 L144 6 L156 16" />
+      </svg>
+    </div>
+  )
+}
+
 /** Cinema, fullscreen: a black-and-white screening. Venetian-blind light drifts, grain, a projector flicker, a beam with dust. */
 function NoirFx() {
   const dust = useMemo(() => Array.from({ length: 22 }, (_, i) => ({ left: 8 + ((i * 37 + 5) % 84), top: 30 + ((i * 19) % 62), dur: 8 + (i % 6) * 2, delay: -((i * 1.1) % 12) })), [])
@@ -632,6 +675,7 @@ export function VibeFx() {
       {vibe === 'noir' && <NoirFx />}
       {vibe === 'paper' && <DiaryFx />}
       {vibe === 'journal' && <JournalFx />}
+      {vibe === 'doodle' && <DoodleFx />}
       {vibe === 'sketch' && <SketchFx />}
       {vibe === 'stencil' && <StencilFx />}
       {vibe === 'film' && <FilmFx />}

@@ -13,6 +13,7 @@
 :root[data-vibe='sticker'] { --st-font: 'Unbounded Variable', sans-serif; --st-r: 26px; --st-ink: #fff; --st-w: 2px; }
 :root[data-vibe='chat'] { --st-r: 28px; --st-ink: #fff; }
 :root[data-vibe='paper'] { --st-font: 'Caveat', cursive; --st-r: 14px; --st-ink: #fffaf0; }
+:root[data-vibe='doodle'] { --st-font: 'Nunito Variable', sans-serif; --st-r: 16px; --st-ink: #14110f; --st-w: 3px; }
 :root[data-vibe='journal'] { --st-font: 'Caveat', cursive; --st-r: 12px; --st-ink: #fdf4e6; --st-w: 2px; }
 :root[data-vibe='arcade'] { --st-font: 'Press Start 2P', monospace; --st-r: 0px; --st-ink: #06061a; --st-w: 2px; }
 :root[data-vibe='noir'] { --st-font: 'Iowan Old Style', Georgia, serif; --st-r: 4px; --st-ink: #000; }

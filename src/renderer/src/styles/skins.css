@@ -58,6 +58,13 @@
 :root[data-vibe='chat'] .sidepanel h3, :root[data-vibe='chat'] .sidepanel .settings h4 { font-family: inherit; color: rgba(255,255,255,.8); }
 :root[data-vibe='chat'] .sidepanel .stabs button.is-on { background: #2f6bff; color: #ffffff; box-shadow: none; }
 
+:root[data-vibe='doodle'] .sidepanel {
+  --panel: #fffdf4; --fg: #14110f; --fg-2: #3a332e; --fg-3: #4a423c; --line: rgba(20,17,15,.22); --line-2: rgba(20,17,15,.3); --accent: #ff5f7e; --glow: #ff5f7e; --glow-soft: transparent;
+  background: #fffdf4; color: #14110f; border: 3px solid #14110f; border-radius: 18px; box-shadow: 6px 7px 0 #ff8fb1;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+:root[data-vibe='doodle'] .sidepanel .settings section { background: color-mix(in srgb, #14110f 5%, transparent); box-shadow: 0 0 0 2px rgba(20,17,15,.3); border-radius: 10px; }
+:root[data-vibe='doodle'] .sidepanel .stabs button.is-on { background: #14110f; color: #fffdf4; box-shadow: none; }
 :root[data-vibe='journal'] .sidepanel {
   --panel: #fdf4e6; --fg: #22305c; --fg-2: #3a4678; --fg-3: #56608a; --line: rgba(34,48,92,.22); --line-2: rgba(34,48,92,.3); --accent: #e0556d; --glow: #e0556d; --glow-soft: transparent;
   background: #fdf4e6; color: #22305c; border: 2px solid #22305c; border-radius: 12px; box-shadow: 6px 7px 0 rgba(224,85,109,.4);
