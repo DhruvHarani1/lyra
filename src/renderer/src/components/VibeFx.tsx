@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { getPosition, usePlayer } from '@/store/player'
 import { useEffectiveVibe } from '@/hooks/useVibe'
+import { FlapFx, LensFx, PictoFx, WallFx } from './fx/FourFx'
 
 const PALM = 'M50 300 C48 220 52 150 60 90 C40 100 18 96 0 80 C24 78 44 82 58 74 C52 52 36 40 14 36 C40 30 62 44 66 66 C74 46 92 34 112 34 C96 44 82 58 76 80 C96 84 116 82 140 70 C120 92 94 98 70 98 C62 150 58 220 62 300 Z'
 
@@ -577,15 +578,10 @@ function NewLookFx({ vibe }: { vibe: string }) {
           <path d={web} />
         </svg>
       )}
-      {vibe === 'lens' && <i className="nvfx__lens" />}
-      {vibe === 'picto' && <div className="nvfx__plus" />}
-      {vibe === 'wall' && <div className="nvfx__panels" />}
-      {vibe === 'flap' && (
-        <div className="nvfx__board">
-          <span>Departures</span>
-          <span>LY 208 · gate 4</span>
-        </div>
-      )}
+      {vibe === 'lens' && <LensFx />}
+      {vibe === 'picto' && <PictoFx />}
+      {vibe === 'wall' && <WallFx />}
+      {vibe === 'flap' && <FlapFx />}
       <SceneWindow />
     </div>
   )

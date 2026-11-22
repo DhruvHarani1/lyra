@@ -1,0 +1,4 @@
+/* EDGE · SPLIT-FLAP: the flap tiles along the bottom are DOM in the look's Fx (components/fx/FourFx.tsx FlapFx, styled in flap.css) because
+   they need 40 tiles; here only the board's side rails: two thin yellow marker rails that grow with the line. */
+:root[data-vibe='flap'] .edge__d, :root[data-vibe='flap'] .edge__b { top: 18vh; bottom: 9vh; width: 0.3vh; background: linear-gradient(180deg, #ffd23f calc(var(--lp, 0) * 100%), rgba(255, 210, 63, 0.14) 0); }
+:root[data-vibe='flap'] .edge__d { left: 1vw; } :root[data-vibe='flap'] .edge__b { right: 1vw; }

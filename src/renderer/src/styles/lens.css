@@ -1,0 +1,101 @@
+/* ==========================================================================
+   LENS: a camera viewfinder (fullscreen: layout mechanics are in scene.css; shared row card in looks2.css).
+   The video is a big centred frame with focus brackets, a hunting focus square, REC + timecode and an exposure scale whose marker
+   follows the line being sung; the words are a rack-focus under it (sharp line, soft neighbours); the card is a pill control strip.
+   Teal glass on near-black. Edge: an iris that opens and closes with the singing, and a rotating lens-flare ring (edge-lens.css).
+   ========================================================================== */
+:root[data-vibe='lens'] {
+  --nv-radius: 9vh;
+  --nv-shadow: inset 0 0 0 1px rgba(127, 227, 212, 0.4), 0 0 0 0.5vh rgba(4, 16, 15, 0.8), 0 2vh 5vh rgba(0, 0, 0, 0.6);
+  --sc-ww: min(46vw, 70vh);
+  --sc-wl: calc((100vw - var(--sc-ww)) / 2);
+  --sc-wt: 9vh;
+  --sc-wr: 1.2vh;
+  --sc-ll: 10vw;
+  --sc-lw: 80vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 5vh);
+  --sc-lb: 17vh;
+  --sc-lbs: 17vh;
+  --sc-cw: min(56vw, 600px);
+  --sc-cl: calc(50vw - var(--sc-cw) / 2);
+  --sc-cb: 3.4vh;
+  --sc-ct: auto;
+}
+:root[data-vibe='lens'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(50vw, 76vh); }
+[data-vibe='lens'] .scenewin { box-shadow: inset 0 0 0 1px rgba(127, 227, 212, 0.5), 0 0 6vh rgba(127, 227, 212, 0.14), 0 2vh 5vh rgba(0, 0, 0, 0.6); }
+:root[data-vibe='lens'][data-rim='on']::after { display: none; }
+.lnfx { position: absolute; inset: 0; pointer-events: none; }
+.lnfx__hud { display: none; }
+:root[data-vibe='lens']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .lnfx__hud {
+  display: block;
+  position: absolute;
+  left: calc(var(--sc-wl) - 2.4vh);
+  top: calc(var(--sc-wt) - 2.4vh);
+  width: calc(var(--sc-ww) + 4.8vh);
+  height: calc(var(--sc-wh) + 4.8vh);
+  font: 600 max(10.5px, 1.35vh) / 1 'Cascadia Code', Consolas, monospace;
+  letter-spacing: 0.1em;
+  color: rgba(191, 255, 244, 0.85);
+  transition: width 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.lnfx__br { position: absolute; width: 3.4vh; height: 3.4vh; border: 0 solid #7fe3d4; opacity: 0.9; }
+.lnfx__br--tl { left: 0; top: 0; border-width: 2px 0 0 2px; }
+.lnfx__br--tr { right: 0; top: 0; border-width: 2px 2px 0 0; }
+.lnfx__br--bl { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.lnfx__br--br { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+.lnfx__rec { position: absolute; left: 3.2vh; top: 3.4vh; display: flex; align-items: center; gap: 0.8vh; text-shadow: 0 0 6px rgba(0, 0, 0, 0.7); }
+.lnfx__rec i { width: 1.1vh; height: 1.1vh; border-radius: 50%; background: #ff4d4d; box-shadow: 0 0 1.2vh #ff4d4d; animation: ln-rec 1.4s steps(1) infinite; }
+.lnfx__rec b { font-weight: 600; opacity: 0.8; }
+@keyframes ln-rec { 50% { opacity: 0.15; } }
+.lnfx__spec { position: absolute; right: 3.2vh; top: 3.4vh; display: flex; align-items: center; gap: 1.2vh; text-shadow: 0 0 6px rgba(0, 0, 0, 0.7); }
+.lnfx__bat { display: block; width: 3vh; height: 1.4vh; border: 1px solid currentColor; border-radius: 0.3vh; padding: 1px; box-sizing: border-box; }
+.lnfx__bat i { display: block; height: 100%; width: 70%; background: #7fe3d4; border-radius: 0.1vh; }
+/* the focus square hunts for a moment, then locks (and breathes) */
+.lnfx__af { position: absolute; left: 50%; top: 50%; width: 7.6vh; height: 7.6vh; translate: -50% -50%; animation: ln-af 6s ease-in-out infinite; }
+.lnfx__af i { position: absolute; width: 1.6vh; height: 1.6vh; border: 0 solid #9dffc8; }
+.lnfx__af i:nth-child(1) { left: 0; top: 0; border-width: 2px 0 0 2px; }
+.lnfx__af i:nth-child(2) { right: 0; top: 0; border-width: 2px 2px 0 0; }
+.lnfx__af i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 2px 2px; }
+.lnfx__af i:nth-child(4) { right: 0; bottom: 0; border-width: 0 2px 2px 0; }
+@keyframes ln-af { 0%, 12% { scale: 1.5; opacity: 0.4; } 20% { scale: 0.92; opacity: 1; } 28%, 100% { scale: 1; opacity: 0.85; } }
+.lnfx__grid { position: absolute; left: 2.4vh; top: 2.4vh; right: 2.4vh; bottom: 2.4vh; }
+.lnfx__grid i { position: absolute; background: rgba(255, 255, 255, 0.16); }
+.lnfx__grid i:nth-child(1) { left: 33.33%; top: 0; bottom: 0; width: 1px; }
+.lnfx__grid i:nth-child(2) { left: 66.66%; top: 0; bottom: 0; width: 1px; }
+.lnfx__grid i:nth-child(3) { top: 33.33%; left: 0; right: 0; height: 1px; }
+.lnfx__grid i:nth-child(4) { top: 66.66%; left: 0; right: 0; height: 1px; }
+/* exposure scale under the frame: the marker is the progress through the current line */
+.lnfx__ev { position: absolute; left: 14%; right: 14%; bottom: -4.2vh; height: 3vh; font-size: max(9.5px, 1.1vh); opacity: 0.9; }
+.lnfx__ticks { display: flex; justify-content: space-between; align-items: flex-end; height: 1.2vh; }
+.lnfx__ticks i { width: 1px; height: 55%; background: rgba(191, 255, 244, 0.55); }
+.lnfx__ticks i.is-big { height: 100%; background: #7fe3d4; }
+.lnfx__mark { position: absolute; top: 1.2vh; left: calc(var(--lp, 0) * 100%); width: 0; height: 0; margin-left: -0.6vh; border: 0.6vh solid transparent; border-top: 0; border-bottom: 1vh solid #ffb454; filter: drop-shadow(0 0 0.6vh #ffb454); transition: left 0.12s linear; }
+.lnfx__ev span { position: absolute; top: 2.4vh; translate: -50% 0; }
+.lnfx__ev span:nth-of-type(1) { left: 0; } .lnfx__ev span:nth-of-type(2) { left: 50%; } .lnfx__ev span:nth-of-type(3) { left: 100%; }
+.lnfx__exp { position: absolute; left: 3.2vh; bottom: 3vh; display: flex; gap: 1.8vh; text-shadow: 0 0 6px rgba(0, 0, 0, 0.7); }
+.lnfx__exp span:last-child { color: #9dffc8; }
+:root[data-vibe='lens'][data-mode='mini'] :is(.lnfx__ev, .lnfx__exp, .lnfx__rec, .lnfx__spec, .lnfx__grid) { display: none; }
+:root[data-motion='off'] .lnfx * { animation: none !important; }
+:root[data-calm] .lnfx * { animation-play-state: paused !important; }
+
+/* the card: a pill control strip */
+:root[data-vibe='lens']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { padding: 1vh 2.6vh 1vh 1.2vh !important; }
+:root[data-vibe='lens']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 8vh !important; border-radius: 50% !important; box-shadow: 0 0 0 0.35vh #7fe3d4, 0 0 2vh rgba(127, 227, 212, 0.4); }
+:root[data-vibe='lens']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { letter-spacing: -0.02em; }
+:root[data-vibe='lens']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: #7fe3d4; box-shadow: 0 0 1vh #7fe3d4; }
+:root[data-vibe='lens']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #7fe3d4 !important; color: #05201d !important; box-shadow: 0 0 0 0.4vh rgba(127, 227, 212, 0.3), 0 0 2.4vh rgba(127, 227, 212, 0.5) !important; }
+/* the words: a rack focus */
+[data-vibe='lens'] .bloom__line { font-size: min(4.2vw, 7.6vh); }
+[data-vibe='lens'] .bloom__side { filter: blur(2.2px); }
+[data-vibe='lens'] .lyrics__notice { align-self: center; background: rgba(8, 28, 30, 0.8); border: 1px solid rgba(127, 227, 212, 0.4); color: #bffff4; border-radius: 99px; }
+[data-vibe='lens'] .plain__stanza { text-align: center; color: #e8fffb; text-shadow: 0 0 1.6vh rgba(127, 227, 212, 0.35); }
+[data-vibe='lens'] .lfb { align-items: center; text-align: center; }
+[data-vibe='lens'] .lfb__actions { justify-content: center; }
+[data-vibe='lens'] .lfb h3 { color: #e8fffb; text-shadow: 0 0 2vh rgba(127, 227, 212, 0.45); }
+[data-vibe='lens'] .lfb__eq i { background: #7fe3d4; box-shadow: none; }
+/* settings: dark teal glass, round controls */
+:root[data-vibe='lens'] .sidepanel { --panel: #07201f; --fg: #e8fffb; --fg-2: #bfe9e2; --fg-3: #8fc7be; --line: rgba(127,227,212,.2); --line-2: rgba(127,227,212,.34); --accent: #7fe3d4; --glow: #7fe3d4; --glow-soft: rgba(127,227,212,.14);
+  background: radial-gradient(120% 60% at 50% 0%, rgba(127,227,212,.16), transparent 60%), rgba(5, 24, 23, 0.92); color: #e8fffb; border: 1px solid rgba(127,227,212,.4); border-radius: 34px; box-shadow: 0 0 0 0.6vh rgba(4,16,15,.7), 0 3vh 8vh rgba(0,0,0,.6), inset 0 0 6vh rgba(127,227,212,.08); }
+:root[data-vibe='lens'] .sidepanel .settings section { background: rgba(127,227,212,.05); box-shadow: inset 0 0 0 1px rgba(127,227,212,.18); border-radius: 22px; }
+:root[data-vibe='lens'] .sidepanel .stabs button.is-on { background: #7fe3d4; color: #05201d; box-shadow: 0 0 2vh rgba(127,227,212,.4); }
+:root[data-vibe='lens'] .sidepanel h3 { letter-spacing: 0.02em; }
