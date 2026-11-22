@@ -1,0 +1,11 @@
+/* WALLET edge: a card shine travelling along the top (left to right) and the bottom (right to left), a "paid" ripple that
+   leaves the bottom-right corner and widens over every line (driven by --lp, so it restarts with each new line). */
+:root[data-vibe='wallet'] .edge__a, :root[data-vibe='wallet'] .edge__c { height: 2px; background: linear-gradient(90deg, transparent, #b8ffd9 48%, #fff 50%, #b8ffd9 52%, transparent) 0 0 / 38% 100% no-repeat, rgba(53, 224, 138, 0.28); box-shadow: 0 0 1.6vh rgba(53, 224, 138, 0.45); animation: wl-shine 4.4s cubic-bezier(0.5, 0, 0.3, 1) infinite; }
+:root[data-vibe='wallet'] .edge__c { animation-direction: reverse; animation-delay: -2.2s; }
+@keyframes wl-shine { from { background-position: -60% 0; } to { background-position: 160% 0; } }
+:root[data-vibe='wallet'] .edge__b, :root[data-vibe='wallet'] .edge__d { width: 1px; background: linear-gradient(180deg, transparent, rgba(53, 224, 138, 0.35) 30%, rgba(53, 224, 138, 0.35) 70%, transparent); }
+:root[data-vibe='wallet'] .edge__b::after { content: ''; position: fixed; right: -26vh; bottom: -26vh; width: 52vh; height: 52vh; border-radius: 50%; border: 0.4vh solid #35e08a; box-shadow: 0 0 3vh rgba(53, 224, 138, 0.6), inset 0 0 3vh rgba(53, 224, 138, 0.35); transform: scale(var(--lp, 0)); opacity: calc((1 - var(--lp, 0)) * var(--lv, 0) * 0.9); }
+:root[data-vibe='wallet'] .edge__d::after { content: ''; position: fixed; left: -26vh; top: -26vh; width: 52vh; height: 52vh; border-radius: 50%; border: 0.3vh solid rgba(184, 255, 217, 0.8); transform: scale(calc(var(--lp, 0) * 0.7)); opacity: calc((1 - var(--lp, 0)) * var(--lv, 0) * 0.5); }
+
+/* the settings panel (z 21) and its scrim sit over the edge */
+:root[data-vibe='wallet']:has(.sidepanel) .edge { z-index: 19; }

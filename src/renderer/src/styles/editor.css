@@ -1,0 +1,80 @@
+/* ==========================================================================
+   EDITOR: an IDE (fullscreen: one file, layout mechanics are in scene.css).
+   Title bar, tabs and breadcrumb on top, the lyrics typed as code with a caret and line numbers, the video in a "Preview" pane on
+   the right, the player as the blue status bar at the bottom.
+   Edge (edge-editor.css): the activity bar on the left (a badge pings on each line), the minimap on the right with a slider that
+   follows the current line, the thin progress bar under the tabs that fills with the line.
+   ========================================================================== */
+:root[data-vibe='editor'] {
+  --rimc: #3b9eff;
+  --nv-bg: #007acc;
+  --nv-shadow: none;
+  --sc-ww: min(30vw, 46vh);
+  --sc-wl: calc(100vw - 9vh - var(--sc-ww) - 1.4vw);
+  --sc-wt: 15.5vh;
+  --sc-wr: 0.6vh;
+  --sc-cl: 0px;
+  --sc-cb: 0px;
+  --sc-ct: auto;
+  --sc-cw: 100vw;
+  --sc-ll: calc(5vh + 8vh);
+  --sc-lt: 13vh;
+  --sc-lw: calc(100vw - 9vh - var(--sc-ww) - 1.4vw - 13vh - 3.4vw);
+  --sc-lb: 14vh;
+  --sc-lbs: 14vh;
+}
+:root[data-vibe='editor'][data-rim='on']::after { display: none; }
+[data-vibe='editor'] .backdrop .backdrop__field { background: #1e1e1e; }
+[data-vibe='editor'] .scenewin { box-shadow: 0 0 0 1px #3c3c3c, 0 1.6vh 4vh rgba(0, 0, 0, 0.5); }
+
+.edfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.edfx__title { position: absolute; left: 0; right: 0; top: 0; height: 4.2vh; background: #181818; box-shadow: 0 1px 0 #2b2b2b; display: flex; align-items: center; justify-content: center; font: 500 1.5vh/1 'Inter Variable', system-ui, sans-serif; color: #9d9d9d; }
+.edfx__title i { position: absolute; top: 1.35vh; width: 1.5vh; height: 1.5vh; border-radius: 50%; background: #ff5f57; left: 1.6vh; }
+.edfx__title i:nth-child(2) { left: 4vh; background: #febc2e; }
+.edfx__title i:nth-child(3) { left: 6.4vh; background: #28c840; }
+.edfx__tabs { position: absolute; left: 5vh; right: 9vh; top: 4.2vh; height: 4.4vh; background: #252526; display: flex; font: 500 1.5vh/1 'Cascadia Code', Consolas, monospace; color: #8b8b8b; }
+.edfx__tabs span { display: flex; align-items: center; padding: 0 2.2vh; border-right: 1px solid #1e1e1e; }
+.edfx__tabs .is-on { background: #1e1e1e; color: #e8e8e8; box-shadow: inset 0 0.25vh 0 #007acc; }
+.edfx__crumb { position: absolute; left: 5vh; right: 9vh; top: 8.6vh; height: 3vh; display: flex; align-items: center; padding-left: 2.2vh; background: #1e1e1e; font: 500 1.3vh/1 'Inter Variable', sans-serif; color: #858585; letter-spacing: 0.02em; }
+.edfx__pane { position: absolute; left: calc(var(--sc-wl) - 1.4vh); width: calc(var(--sc-ww) + 2.8vh); top: 8.6vh; bottom: 7.4vh; border-left: 1px solid #333; transition: width 0.7s; }
+.edfx__pane span { position: absolute; left: 1.4vh; top: 3.4vh; font: 600 1.3vh/1 'Inter Variable', sans-serif; letter-spacing: 0.06em; color: #a8a8a8; text-transform: uppercase; }
+.edfx__pane b { color: #3b9eff; margin-right: 0.6vh; }
+:root[data-vibe='editor']:not(:is([data-mode='full'], [data-mode='mini'])) .edfx > :not(.scenewin) { display: none; }
+:root[data-platform='android'][data-vibe='editor'] .edfx > :not(.scenewin) { display: none; }
+@media (max-aspect-ratio: 1/1) { .edfx__pane, .edfx__crumb { display: none; } }
+
+/* ---------------- the status bar (the player) ---------------- */
+:root[data-vibe='editor']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side { height: auto !important; min-height: 7.4vh; padding: 0.6vh 3vw 0.6vh 6vh !important; border-top: 1px solid rgba(255, 255, 255, 0.25) !important; }
+:root[data-vibe='editor']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .artwork { width: 5.2vh !important; border-radius: 0.4vh !important; }
+:root[data-vibe='editor']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 600 1.9vh/1.1 'Cascadia Code', Consolas, monospace; letter-spacing: 0; }
+:root[data-vibe='editor']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-family: 'Cascadia Code', Consolas, monospace; font-size: max(10.5px, 1.3vh); }
+
+/* ---------------- lyrics: code (stage 'editor', a feed) ---------------- */
+.feed--editor { gap: 0; justify-content: flex-start; padding-left: 6.4vh; }
+.feed--editor .feed__row::before { left: -6.4vh; width: 4.6vh; }
+.feed--editor .feed__row.is-current::before { color: #c6c6c6; }
+.feed--editor .feed__row.is-current { background: rgba(255, 255, 255, 0.045); box-shadow: inset 0 1px 0 #2d2d2d, inset 0 -1px 0 #2d2d2d; }
+
+:root[data-vibe='editor'] .plain__stanza, :root[data-vibe='editor'] .lfb h3, :root[data-vibe='editor'] .lfb p, :root[data-vibe='editor'] .lfb small, :root[data-vibe='editor'] .lyrics__notice { font-family: 'Cascadia Code', Consolas, monospace; }
+:root[data-vibe='editor'] .plain__stanza { color: #ce9178; font-weight: 500; letter-spacing: 0; }
+:root[data-vibe='editor'] .plain__stanza > span::before { content: '// '; color: #6a9955; }
+:root[data-vibe='editor'] .lfb h3 { color: #569cd6; font-weight: 600; letter-spacing: 0; text-transform: none; }
+:root[data-vibe='editor'] .lfb h3::before { content: 'function '; color: #c586c0; }
+:root[data-vibe='editor'] .lfb h3::after { content: '()'; color: #d4d4d4; }
+
+/* ---------------- settings + picker swatch ---------------- */
+:root[data-vibe='editor'] .sidepanel {
+  --panel: #252526; --fg: #d4d4d4; --fg-2: #b4b4b4; --fg-3: #8e8e8e; --line: rgba(255,255,255,.1); --line-2: rgba(255,255,255,.18); --accent: #3b9eff; --glow: #3b9eff; --glow-soft: transparent;
+  background: #252526; color: #d4d4d4; border: 1px solid #3c3c3c; border-radius: 6px; box-shadow: 0 24px 60px rgba(0,0,0,.7);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+:root[data-vibe='editor'] .sidepanel .settings section { background: #1e1e1e; box-shadow: 0 0 0 1px #3c3c3c; border-radius: 3px; }
+:root[data-vibe='editor'] .sidepanel h3, :root[data-vibe='editor'] .sidepanel .settings h4 { font-family: 'Cascadia Code', Consolas, monospace; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: #bbbbbb; }
+:root[data-vibe='editor'] .sidepanel .stabs button.is-on { background: #007acc; color: #fff; box-shadow: none; border-radius: 2px; }
+.vibecard--editor .vibecard__sw { background: linear-gradient(90deg, #333 0 12%, transparent 12%), linear-gradient(180deg, #1e1e1e 0 78%, #007acc 78%); }
+
+/* ---------------- Android: an editor sheet, status-bar dock ---------------- */
+:root[data-platform='android'][data-vibe='editor'] .mini--phone .phone__dock { background: #007acc; border-radius: 0; box-shadow: none; --fg: #fff; }
+
+/* a small window and a phone: the file is the whole screen, the preview is the video window */
+@media (max-aspect-ratio: 1/1) { :root[data-vibe='editor'] :is(.edfx__title, .edfx__tabs) { display: none; } }

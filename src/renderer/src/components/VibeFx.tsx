@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { getPosition, usePlayer } from '@/store/player'
 import { useEffectiveVibe } from '@/hooks/useVibe'
+import { EditorFx, MetroFx, RouteFx, WalletFx, WebFx } from '@/components/fx/Looks25'
 
 const PALM = 'M50 300 C48 220 52 150 60 90 C40 100 18 96 0 80 C24 78 44 82 58 74 C52 52 36 40 14 36 C40 30 62 44 66 66 C74 46 92 34 112 34 C96 44 82 58 76 80 C96 84 116 82 140 70 C120 92 94 98 70 98 C62 150 58 220 62 300 Z'
 
@@ -537,7 +538,7 @@ function BlocksFx() {
 }
 
 /** The ten looks inspired by the phone-screen / motion-scene styles: shared shell, each one adds its own few pieces. */
-const NEW_LOOKS = ['lock', 'wallet', 'route', 'editor', 'metro', 'web', 'lens', 'picto', 'wall', 'flap']
+const NEW_LOOKS = ['lock', 'lens', 'picto', 'wall', 'flap'] // wallet, route, editor, metro and web draw their own scene (components/fx/Looks25.tsx)
 function NewLookFx({ vibe }: { vibe: string }) {
   const [now, setNow] = useState(() => new Date())
   useEffect(() => {
@@ -723,6 +724,11 @@ export function VibeFx() {
       {vibe === 'sticker' && <StickerFx />}
       {vibe === 'chat' && <DmFx />}
       {NEW_LOOKS.includes(vibe) && <NewLookFx vibe={vibe} />}
+      {vibe === 'wallet' && <WalletFx />}
+      {vibe === 'route' && <RouteFx />}
+      {vibe === 'editor' && <EditorFx />}
+      {vibe === 'metro' && <MetroFx />}
+      {vibe === 'web' && <WebFx />}
     </div>
   )
 }

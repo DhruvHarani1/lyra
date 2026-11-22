@@ -1,0 +1,97 @@
+/* ==========================================================================
+   WALLET: a payments app (fullscreen: one file, layout mechanics are in scene.css).
+   A stack of cards on the left: two cards peek out from behind the video card (the video IS the front card: chip, contactless
+   waves, a slow specular sheen), the player is a metal card under it. On the right a running "lines paid" balance heads the
+   activity; each line is a payment that clears (a thin line under it fills while it is sung).
+   Edge (edge-wallet.css): a card shine travels along the top and bottom, a "paid" ripple leaves the corner on every line.
+   ========================================================================== */
+:root[data-vibe='wallet'] {
+  --rimc: #35e08a;
+  --nv-bg: linear-gradient(140deg, #1f9a68 0%, #0d5a3c 52%, #07291c 100%);
+  --nv-shadow: inset 0 0 0 1px rgba(190, 255, 225, 0.4), inset 0 1.2vh 2vh rgba(255, 255, 255, 0.08), 0 2.4vh 5vh rgba(0, 0, 0, 0.55);
+  --nv-radius: 2.6vh;
+  --nv-fg2: #b9f0d2;
+  --sc-ww: min(31vw, 47vh);
+  --sc-wh: calc(var(--sc-ww) * 0.63);
+  --sc-wl: 6vw;
+  --sc-wt: 22vh;
+  --sc-wr: 2.6vh;
+  --sc-cl: 6vw;
+  --sc-cb: 5.5vh;
+  --sc-ct: auto;
+  --sc-cw: calc(var(--sc-ww) + 7vh);
+  --sc-ll: calc(12vw + var(--sc-ww));
+  --sc-lt: 31vh;
+  --sc-lw: calc(94vw - var(--sc-ww) - 12vw);
+  --sc-lb: 8vh;
+  --sc-lbs: 8vh;
+}
+:root[data-vibe='wallet'][data-rim='on']::after { display: none; }
+[data-vibe='wallet'] .backdrop .backdrop__field {
+  background:
+    radial-gradient(60% 55% at 14% 8%, rgba(53, 224, 138, 0.26), transparent 70%),
+    repeating-radial-gradient(circle at 92% 110%, transparent 0 2.2vh, rgba(53, 224, 138, 0.05) 2.2vh calc(2.2vh + 1px)),
+    #05100a;
+}
+[data-vibe='wallet'] .scenewin { box-shadow: inset 0 0 0 1px rgba(210, 255, 230, 0.55), 0 3vh 6vh rgba(0, 0, 0, 0.6); }
+
+/* ---------------- the stack of cards ---------------- */
+.wlfx { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.wlfx__card { position: absolute; box-sizing: border-box; padding: 1.2vh 2vh; display: flex; justify-content: space-between; align-items: flex-start; font: 700 1.25vh/1 'Inter Variable', sans-serif; letter-spacing: 0.2em; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), 0 -0.6vh 1.6vh rgba(0, 0, 0, 0.4); }
+.wlfx__card span { letter-spacing: 0.08em; font-variant-numeric: tabular-nums; opacity: 0.85; }
+.wlfx__card--a { left: calc(var(--sc-wl) + 3vh); width: calc(var(--sc-ww) - 6vh); top: calc(var(--sc-wt) - 6.8vh); height: 6.8vh; border-radius: 2vh 2vh 0 0; background: linear-gradient(135deg, #e6c27a, #8e6a2a 60%, #4a3512); color: #2a1c06; }
+.wlfx__card--b { left: calc(var(--sc-wl) + 1.5vh); width: calc(var(--sc-ww) - 3vh); top: calc(var(--sc-wt) - 3.4vh); height: 3.4vh; border-radius: 2.3vh 2.3vh 0 0; background: linear-gradient(135deg, #3b4350, #181c24 70%); color: #d5dbe6; }
+.wlfx__chip { position: absolute; left: 2vh; bottom: 2vh; width: 4.6vh; height: 3.4vh; border-radius: 0.7vh; background: linear-gradient(135deg, #f1d68e, #b88d3a); box-shadow: 0 0 0 1px rgba(60, 40, 0, 0.45), 0 0.4vh 0.8vh rgba(0, 0, 0, 0.45); }
+.wlfx__chip::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 32%, rgba(80, 55, 10, 0.5) 32% 34%, transparent 34% 66%, rgba(80, 55, 10, 0.5) 66% 68%, transparent 68%), linear-gradient(0deg, transparent 46%, rgba(80, 55, 10, 0.5) 46% 54%, transparent 54%); }
+.wlfx__waves { position: absolute; right: 2.4vh; bottom: 2vh; width: 3.4vh; height: 3.4vh; opacity: 0.9; background:
+    radial-gradient(circle at 0 50%, transparent 0 0.7vh, rgba(255,255,255,.9) 0.7vh 0.95vh, transparent 0.95vh) ,
+    radial-gradient(circle at 0 50%, transparent 0 1.5vh, rgba(255,255,255,.75) 1.5vh 1.75vh, transparent 1.75vh),
+    radial-gradient(circle at 0 50%, transparent 0 2.3vh, rgba(255,255,255,.6) 2.3vh 2.55vh, transparent 2.55vh); -webkit-mask: linear-gradient(90deg, #000, #000); filter: drop-shadow(0 0 0.5vh rgba(0, 0, 0, 0.5)); }
+.wlfx__sheen { position: absolute; left: var(--sc-wl); top: var(--sc-wt); width: var(--sc-ww); height: var(--sc-wh); border-radius: var(--sc-wr); background: linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, 0.2) 50%, transparent 62%) 0 0 / 260% 100% no-repeat; animation: wl-sheen 7s ease-in-out infinite; mix-blend-mode: screen; transition: width 0.7s, height 0.7s; }
+@keyframes wl-sheen { 0%, 35% { background-position: 130% 0; } 85%, 100% { background-position: -30% 0; } }
+.wlfx__head { position: absolute; left: var(--sc-ll); top: 8vh; right: 6vw; color: #eafff3; }
+.wlfx__head small { display: block; font: 700 1.5vh/1 'Inter Variable', sans-serif; letter-spacing: 0.24em; color: #6fd9a2; }
+.wlfx__count { display: inline-block; margin-top: 1.2vh; font: 800 11vh/1 'Inter Variable', sans-serif; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; background: linear-gradient(180deg, #ffffff, #8be8b8); -webkit-background-clip: text; background-clip: text; color: transparent; counter-set: paid calc(var(--li, 0) + 1); }
+.wlfx__count::before { content: counter(paid); }
+.wlfx__head span { margin-left: 1.6vh; font: 600 2.4vh/1 'Inter Variable', sans-serif; color: #8fc7a8; }
+:root[data-motion='off'] .wlfx * { animation: none !important; }
+:root[data-calm] .wlfx * { animation-play-state: paused; }
+:root[data-vibe='wallet']:not(:is([data-mode='full'], [data-mode='mini'])) .wlfx > :not(.scenewin) { display: none; }
+:root[data-platform='android'][data-vibe='wallet'] .wlfx > * { display: none; }
+@media (max-aspect-ratio: 1/1) { .wlfx__card, .wlfx__head { display: none; } }
+
+/* ---------------- the card: metal, under the video card ---------------- */
+:root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__titles h1 { font: 800 2.3vh/1.1 'Inter Variable', sans-serif; letter-spacing: -0.02em; color: #fff; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35); }
+:root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__artist { font-weight: 600; color: #c9f5de; }
+:root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .playbtn { background: #ecfff5 !important; color: #06301f !important; box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.45) !important; }
+:root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__rail { background: rgba(0, 0, 0, 0.35); height: 0.6vh; border-radius: 1vh; }
+:root[data-vibe='wallet']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side .progress__fill { background: linear-gradient(90deg, #b8ffd9, #fff); height: 0.6vh; border-radius: 1vh; }
+
+/* ---------------- lyrics: payments that clear (stage 'wallet', a feed) ---------------- */
+.feed--wallet { gap: 0; }
+.feed--wallet .feed__row { position: relative; display: flex; align-items: center; gap: 2.2vh; padding: 1.7vh 1.2vh 1.7vh 0.4vh; border-radius: 0; background: transparent; box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.09); color: rgba(233, 255, 243, 0.78); opacity: calc(1 - var(--age) * 0.16); }
+.feed--wallet .feed__row::before { content: '\2197'; display: grid; place-items: center; flex: none; width: 5.2vh; height: 5.2vh; border-radius: 32%; background: linear-gradient(145deg, rgba(53, 224, 138, 0.22), rgba(53, 224, 138, 0.06)); box-shadow: inset 0 0 0 1px rgba(53, 224, 138, 0.4); color: #35e08a; font: 800 2.6vh/1 'Inter Variable', sans-serif; }
+.feed--wallet .feed__row.is-current { background: linear-gradient(90deg, rgba(53, 224, 138, 0.16), transparent 78%); color: #fff; box-shadow: none; border-radius: 2vh; padding-left: 1.2vh; }
+.feed--wallet .feed__row.is-current::before { background: linear-gradient(145deg, #35e08a, #17a566); color: #04200f; box-shadow: 0 0 2.4vh rgba(53, 224, 138, 0.55); }
+.feed--wallet .feed__row.is-current::after { content: ''; position: absolute; left: 1.2vh; bottom: 0; height: 0.35vh; width: calc((100% - 1.2vh) * var(--lp, 0)); border-radius: 1vh; background: linear-gradient(90deg, #35e08a, #b8ffd9); box-shadow: 0 0 1.2vh rgba(53, 224, 138, 0.8); }
+.feed--wallet .feed__txt { font: 700 min(1.95vw, 3.5vh)/1.2 'Inter Variable', sans-serif; letter-spacing: -0.02em; }
+.feed--wallet .feed__amt { font: 800 max(11px, min(1.8vw, 3.1vh))/1 'Inter Variable', sans-serif; color: #35e08a; padding: 0.7vh 1.3vh; border-radius: 99px; background: rgba(53, 224, 138, 0.12); box-shadow: inset 0 0 0 1px rgba(53, 224, 138, 0.3); }
+.feed--wallet .feed__amt::after { content: ''; }
+:root[data-vibe='wallet'] :is(.plain__stanza) { font-weight: 700; color: #eafff3; line-height: 1.34; }
+:root[data-vibe='wallet'] .lfb h3 { color: #eafff3; }
+:root[data-vibe='wallet'] .lfb__eq i { background: #35e08a; }
+
+/* ---------------- settings sheet + the picker swatch ---------------- */
+:root[data-vibe='wallet'] .sidepanel {
+  --panel: #07160f; --fg: #eafff3; --fg-2: rgba(234,255,243,.8); --fg-3: rgba(234,255,243,.6); --line: rgba(53,224,138,.22); --line-2: rgba(53,224,138,.34); --accent: #35e08a; --glow: #35e08a; --glow-soft: transparent;
+  background: linear-gradient(170deg, #0d2a1b, #07160f 40%); color: #eafff3; border: 1px solid rgba(53,224,138,.35); border-radius: 26px; box-shadow: 0 30px 70px -20px rgba(0,0,0,.8), inset 0 1px 0 rgba(190,255,225,.2);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+:root[data-vibe='wallet'] .sidepanel .settings section { background: rgba(53,224,138,.06); box-shadow: 0 0 0 1px rgba(53,224,138,.2); border-radius: 16px; }
+:root[data-vibe='wallet'] .sidepanel h3, :root[data-vibe='wallet'] .sidepanel .settings h4 { font-family: 'Inter Variable', sans-serif; letter-spacing: .12em; color: #6fd9a2; }
+:root[data-vibe='wallet'] .sidepanel .stabs button.is-on { background: linear-gradient(135deg, #35e08a, #17a566); color: #04200f; box-shadow: none; }
+.vibecard--wallet .vibecard__sw { background: linear-gradient(135deg, #e6c27a 0 22%, transparent 22%), linear-gradient(135deg, #3b4350 0 44%, transparent 44%), linear-gradient(140deg, #1f9a68, #07291c); }
+
+/* ---------------- Android: the dock is the metal card, the lyric rows are payments ---------------- */
+:root[data-platform='android'][data-vibe='wallet'] .mini--phone .phone__dock { background: linear-gradient(140deg, #1f9a68 0%, #0d5a3c 55%, #07291c 100%); border-radius: 28px 28px 0 0; box-shadow: inset 0 1px 0 rgba(190, 255, 225, 0.4), 0 -14px 40px rgba(0, 0, 0, 0.5); }
+:root[data-platform='android'][data-vibe='wallet'] .mini--phone .mini__progress { --accent: #fff; }
