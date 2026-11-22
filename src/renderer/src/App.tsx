@@ -4,6 +4,7 @@ import { vibeInfo } from '@shared/vibes'
 import { useEffectiveVibe } from '@/hooks/useVibe'
 import { Backdrop } from '@/components/Backdrop'
 import { VibeFx } from '@/components/VibeFx'
+import { EdgeFx } from '@/components/EdgeFx'
 import { isImportError } from '@shared/lrc'
 import { cycleVibe, useVibeConductor } from '@/hooks/useVibe'
 import { usePrefetchNext } from '@/hooks/usePrefetchNext'
@@ -256,6 +257,7 @@ export default function App() {
         <motion.div className="shell" style={{ x: shell.x, y: shell.y, width: shell.width, height: shell.height }}>
           <Backdrop rich={mode === 'full'} animated={mode === 'full' || (mode === 'mini' && (settings.backgroundInMini || sceneLook))} />
           <VibeFx />
+          <EdgeFx />
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={mode === 'minimal' || mode === 'compact' ? 'widget' : mode}

@@ -1,0 +1,16 @@
+/* ==========================================================================
+   EDGE: the window edge, one per look (see components/EdgeFx.tsx for the variables --lp --li --lt --ts --lv).
+   .edge is a fixed frame over the window; .edge__a/.b/.c/.d are its top, right, bottom and left sides. The generic rim light
+   (polish.css, ::after) is the fallback for looks that have no edge of their own; a look with its own edge hides it.
+   Each look's edge lives in its own file (edge-<look>.css) so looks never share an edge.
+   ========================================================================== */
+.edge { position: fixed; inset: 0; z-index: 61; pointer-events: none; display: none; }
+.edge > i { position: absolute; display: block; }
+.edge__a { left: 0; right: 0; top: 0; height: 0; }
+.edge__c { left: 0; right: 0; bottom: 0; height: 0; }
+.edge__b { top: 0; bottom: 0; right: 0; width: 0; }
+.edge__d { top: 0; bottom: 0; left: 0; width: 0; }
+:root[data-rim='on'] .edge { display: block; }
+:root[data-platform='tv'] .edge { display: none; }
+:root[data-motion='off'] .edge * { animation: none !important; }
+:root[data-calm] .edge * { animation-play-state: paused !important; }
