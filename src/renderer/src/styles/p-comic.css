@@ -1,0 +1,36 @@
+/* ==========================================================================
+   POP COMIC, premium pass: a comic PAGE with a tall hero panel.
+   The video is a tall portrait panel down the left side (cropped like a splash panel), the song is a big speech bubble on the
+   right, the card is a caption box under it, and the page itself is edged with halftone bands that swell as each line is sung and
+   POW / ZAP bursts that pop in turn on every new line (edge-comic.css). (Was: landscape panel top right.)
+   ========================================================================== */
+:root[data-vibe='comic'] {
+  --sc-ww: min(29vw, 46vh);
+  --sc-wh: 76vh;
+  --sc-wl: 6vw;
+  --sc-wt: 11vh;
+  --sc-wr: 0.4vh;
+  --sc-cl: calc(6vw + min(29vw, 46vh) + 5vw);
+  --sc-cr: auto;
+  --sc-cb: 6vh;
+  --sc-ct: auto;
+  --sc-cw: min(46vw, 600px);
+  --sc-ll: calc(6vw + min(29vw, 46vh) + 5vw);
+  --sc-lt: 12vh;
+  --sc-lw: calc(100vw - 6vw - min(29vw, 46vh) - 5vw - 6vw);
+  --sc-lb: 30vh;
+  --sc-lbs: 28vh;
+}
+:root[data-vibe='comic'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(29vw, 46vh); --sc-ll: calc(6vw + min(29vw, 46vh) + 5vw); }
+/* the page's own bursts give way to the synced ones on the edge */
+:root[data-vibe='comic'] .comicfx__pow { display: none !important; }
+/* speed lines behind the hero panel: a radial fan that stops at the panel */
+.comicfx__rays { background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.34) 0deg 5deg, transparent 5deg 12deg); animation-duration: 140s; }
+:root[data-vibe='comic'] .comicfx__caption { left: calc(var(--sc-wl) - 1vh); top: calc(var(--sc-wt) + var(--sc-wh) - 5vh); transform: rotate(-3deg); transform-origin: left bottom; background: var(--cm-pink); color: #fff; text-shadow: 0.2vh 0.2vh 0 #111; }
+/* the hero panel: panel border + a lower-right "tear" notch drawn as a white wedge */
+[data-vibe='comic'] .scenewin { box-shadow: 0 0 0 1vh var(--cm-ink), 0 0 0 1.7vh #fff, 0 0 0 2.2vh var(--cm-ink), 2vh 2.2vh 0 2.2vh rgba(17, 17, 17, 0.9); }
+/* settings: an issue cover */
+:root[data-vibe='comic'] .sidepanel { border: 0.4vh solid #111; box-shadow: 1vh 1.1vh 0 #111; }
+:root[data-vibe='comic'] .sidepanel h3, :root[data-vibe='comic'] .sidepanel .settings h4 { text-transform: uppercase; letter-spacing: -0.01em; font-weight: 900; background: #ffd400; display: inline-block; padding: 0.2em 0.5em; border: 2px solid #111; color: #111; transform: rotate(-1.5deg); }
+/* phone: a dotted page with a black-bordered dock */
+:root[data-platform='android'][data-vibe='comic'] .mini--phone { background-image: radial-gradient(rgba(255, 59, 107, 0.35) 1.6px, transparent 2.2px); background-size: 14px 14px; }

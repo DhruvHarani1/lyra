@@ -1,0 +1,15 @@
+/* POP COMIC edge: halftone bands run along the top (pink) and bottom (cyan) of the page; the dots swell while the line is sung
+   (--lp). On every new line a starburst pops: POW! top right on even lines, ZAP! bottom right on odd lines (--lt), each one
+   springing in with an overshoot while the other shrinks away. */
+:root[data-vibe='comic'] .edge__a,
+:root[data-vibe='comic'] .edge__c { height: 9vh; -webkit-mask: linear-gradient(180deg, #000, transparent); mask: linear-gradient(180deg, #000, transparent); }
+:root[data-vibe='comic'] .edge__a { background: radial-gradient(circle, #ff3b6b 0 34%, transparent 36%) 0 0 / calc(1.1vh + var(--lp, 0) * 1.5vh) calc(1.1vh + var(--lp, 0) * 1.5vh); opacity: 0.75; }
+:root[data-vibe='comic'] .edge__c { background: radial-gradient(circle, #27b6ff 0 34%, transparent 36%) 0.6vh 0.6vh / calc(1.1vh + var(--lp, 0) * 1.5vh) calc(1.1vh + var(--lp, 0) * 1.5vh); -webkit-mask: linear-gradient(0deg, #000, transparent); mask: linear-gradient(0deg, #000, transparent); opacity: 0.7; }
+:root[data-vibe='comic'] .edge__b::before,
+:root[data-vibe='comic'] .edge__b::after { position: absolute; display: grid; place-items: center; width: 17vh; height: 17vh; font: 900 3.4vh/1 'Unbounded Variable', sans-serif; letter-spacing: -0.04em; color: #fff; text-shadow: 0.25vh 0.25vh 0 #111;
+  clip-path: polygon(50% 0, 61% 18%, 82% 8%, 80% 30%, 100% 38%, 84% 55%, 98% 76%, 76% 76%, 70% 100%, 52% 84%, 32% 98%, 28% 76%, 4% 80%, 18% 56%, 0 38%, 22% 30%, 20% 8%, 40% 18%);
+  transition: scale 0.28s cubic-bezier(0.3, 1.9, 0.5, 1), opacity 0.2s, rotate 0.28s; }
+:root[data-vibe='comic'] .edge__b::before { content: 'POW!'; right: 3.5vw; top: 4.5vh; background: #ff3b6b; opacity: calc(1 - var(--lt, 0)); scale: calc(1 - var(--lt, 0) * 0.7); rotate: calc(var(--lt, 0) * 14deg - 6deg); }
+:root[data-vibe='comic'] .edge__b::after { content: 'ZAP!'; right: 3.5vw; bottom: 5.5vh; background: #27b6ff; color: #111; text-shadow: 0.25vh 0.25vh 0 #fff; opacity: var(--lt, 0); scale: calc(0.3 + var(--lt, 0) * 0.7); rotate: calc(6deg - var(--lt, 0) * 8deg); }
+:root[data-vibe='comic'][data-mode='mini'] .edge__b::before, :root[data-vibe='comic'][data-mode='mini'] .edge__b::after { width: 9vh; height: 9vh; font-size: 1.8vh; }
+:root[data-platform='android'][data-vibe='comic'] .edge__b::before, :root[data-platform='android'][data-vibe='comic'] .edge__b::after { width: 80px; height: 80px; font-size: 14px; }

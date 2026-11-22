@@ -1,0 +1,59 @@
+/* ==========================================================================
+   GLITCH, premium pass: a broadcast monitor in the middle of a dead channel.
+   The video is a wide centred monitor with a REC / channel HUD and crop brackets; vertical channel labels run up both sides;
+   the song is set big under the monitor, flush left, and the player card is the VHS on-screen display on the right.
+   (Was: monitor top left, words right.) The edge is in edge-glitch.css.
+   ========================================================================== */
+:root[data-vibe='glitch'] {
+  --sc-ww: min(54vw, 86vh);
+  --sc-wl: calc((100vw - var(--sc-ww)) / 2);
+  --sc-wt: 6.5vh;
+  --sc-wr: 0.3vh;
+  --sc-cl: auto;
+  --sc-cr: 4vw;
+  --sc-cb: 4.5vh;
+  --sc-ct: auto;
+  --sc-cw: min(37vw, 540px);
+  --sc-ll: 5vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 4.5vh);
+  --sc-lw: calc(100vw - 5vw - min(37vw, 540px) - 4vw - 3vw);
+  --sc-lb: 4vh;
+  --sc-lbs: 4vh;
+}
+:root[data-vibe='glitch'][data-bg-media]:has(.full[data-arch='scene'] .full__lyrics .lfb) { --sc-ww: min(54vw, 86vh); --sc-ll: 5vw; }
+.glitchfx__edge { display: none; }
+/* HUD on the monitor: crop brackets, REC, channel */
+.glitchfx__glass {
+  background:
+    linear-gradient(#fff, #fff) 1.6vh 1.6vh / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) 1.6vh 1.6vh / 2px 3.4vh no-repeat,
+    linear-gradient(#fff, #fff) calc(100% - 1.6vh) 1.6vh / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) calc(100% - 1.6vh) 1.6vh / 2px 3.4vh no-repeat,
+    linear-gradient(#fff, #fff) 1.6vh calc(100% - 1.6vh) / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) 1.6vh calc(100% - 1.6vh) / 2px 3.4vh no-repeat,
+    linear-gradient(#fff, #fff) calc(100% - 1.6vh) calc(100% - 1.6vh) / 3.4vh 2px no-repeat, linear-gradient(#fff, #fff) calc(100% - 1.6vh) calc(100% - 1.6vh) / 2px 3.4vh no-repeat,
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 4px),
+    radial-gradient(120% 120% at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.55));
+}
+.glitchfx__glass::before { content: '● REC'; position: absolute; left: 3.4vh; top: 3vh; font: 3.2vh/1 'VT323', monospace; letter-spacing: 0.08em; color: #fff; text-shadow: -2px 0 #ff2a1a, 2px 0 #26f0ff; animation: gl-rec 1.4s steps(1) infinite; }
+.glitchfx__glass::after { content: 'CH 03  ·  SP  ·  L' counter(gl-l, decimal-leading-zero); counter-reset: gl-l var(--li, 0); position: absolute; right: 3.4vh; top: 3vh; font: 3vh/1 'VT323', monospace; letter-spacing: 0.08em; color: #fff; text-shadow: -2px 0 #ff2a1a, 2px 0 #26f0ff; }
+@keyframes gl-rec { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+/* channel labels up the sides */
+.glitchfx::before, .glitchfx::after { position: absolute; top: 50%; font: 2.6vh/1 'VT323', monospace; letter-spacing: 0.4em; color: rgba(255, 255, 255, 0.34); writing-mode: vertical-rl; white-space: nowrap; }
+.glitchfx::before { content: 'SIGNAL LOST ▪ NO CARRIER'; left: 2vw; transform: translateY(-50%) rotate(180deg); text-shadow: 2px 0 rgba(255, 42, 26, 0.5); }
+.glitchfx::after { content: 'AUTO TRACKING ▪ CH 03'; right: 2vw; transform: translateY(-50%); text-shadow: -2px 0 rgba(38, 240, 255, 0.5); }
+/* the song: big, flush left under the monitor, split into red and cyan */
+.sign--glitch .sign__row { font-size: min(4.6vw, 7.6vh); line-height: 1.04; }
+.sign--glitch .sign__word.is-in { text-shadow: -0.05em 0 0 var(--gl-red), 0.05em 0 0 var(--gl-cyan); }
+.sign--glitch .sign__word.is-now { color: #fff; background: linear-gradient(180deg, transparent 0 46%, rgba(255, 42, 26, 0.35) 46% 54%, transparent 54%); animation: gl-in 0.5s steps(1) 1, gl-jit 1.7s steps(1) 0.5s infinite; }
+/* the card: the VHS on-screen display, a taller block on the right */
+:root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side {
+  background: rgba(8, 3, 3, 0.94) !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 74, 46, 0.7), inset 0 0 0 5px #0a0504, inset 0 0 0 6px rgba(38, 240, 255, 0.4), -0.7vh 0 0 rgba(255, 42, 26, 0.3), 0.7vh 0 0 rgba(38, 240, 255, 0.28) !important;
+}
+:root[data-vibe='glitch']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .full.full[data-arch='scene'] .full__side::before { content: '▶ PLAY  SP'; }
+/* settings: a channel menu */
+:root[data-vibe='glitch'] .sidepanel { background: #0d0504; border: 0; border-radius: 0; box-shadow: inset 0 0 0 2px rgba(255, 74, 46, 0.7), -4px 0 0 rgba(255, 42, 26, 0.25), 4px 0 0 rgba(38, 240, 255, 0.22); }
+:root[data-vibe='glitch'] .sidepanel h3, :root[data-vibe='glitch'] .sidepanel .settings h4 { font-family: 'VT323', monospace; font-size: 20px; letter-spacing: 0.12em; text-transform: uppercase; text-shadow: -1.5px 0 #ff2a1a, 1.5px 0 #26f0ff; }
+:root[data-vibe='glitch'] .sidepanel .settings section { border-radius: 0; }
+/* the phone: scanlines over the whole screen, a bleeding dock */
+:root[data-platform='android'][data-vibe='glitch'] .mini--phone { background-image: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0 2px, transparent 2px 4px); }
+:root[data-platform='android'] .glitchfx::before, :root[data-platform='android'] .glitchfx::after, :root[data-mode='mini'] .glitchfx::before, :root[data-mode='mini'] .glitchfx::after { display: none; }
+:root[data-platform='android'][data-vibe='glitch'] .edge__d, :root[data-platform='android'][data-vibe='glitch'] .edge__b { width: 2.4vw; }
