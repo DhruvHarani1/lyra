@@ -10,20 +10,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="site.css" />
+  <link rel="stylesheet" href="pages.css" />
 </head>
-<body>
-  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="grain" aria-hidden="true"></div>
+<body class="pgx">
+  <a class="skip" href="#log">Skip to the release notes</a>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="grain" aria-hidden="true"></div><div class="spot" id="spot" aria-hidden="true"></div>
   <header class="nv">
     <a class="brand" href="./"><img src="assets/icon.png" alt="" width="26" height="26" /> Lyra</a>
-    <nav><a href="./#looks">20 looks</a><a href="./#states">Every state</a><a href="./#demo">Try it</a><a href="vibes">Gallery</a><a href="whats-new" aria-current="page">What’s new</a></nav>
+    <nav><a href="./#looks">Looks</a><a href="./#states">Every state</a><a href="./#demo">Try it</a><a href="vibes">Gallery</a><a href="whats-new" aria-current="page">What’s new</a></nav>
     <a class="btn btn--sm btn--acc" href="./#download">Download</a>
   </header>
-  <main class="pg">
-    <p class="mono">Release notes</p>
-    <h1 style="margin-top:18px">What’s <em>new.</em></h1>
-    <p class="lead" style="margin-top:22px">Windows and Android releases share a story. Full notes for every release are on <a href="https://github.com/DhruvHarani1/lyra/releases" style="text-decoration:underline">GitHub</a>.</p>
-    <div class="log">
-      <article class="rel"><div><h3>0.23</h3><small>Windows 0.23 · Android 0.9</small></div><ul>
+  <main class="pg" id="main">
+    <section class="wn__hero rv">
+      <p class="mono">Release notes</p>
+      <h1>What’s <em>new.</em></h1>
+      <p class="lead" style="margin-top:22px">Windows and Android releases share a story. Full notes for every release are on <a href="https://github.com/DhruvHarani1/lyra/releases" style="text-decoration:underline">GitHub</a>.</p>
+      <nav class="wn__jump" aria-label="Jump to a release"><a href="#v0-23">0.23</a><a href="#v0-22">0.22</a><a href="#v0-21">0.21</a><a href="#v0-20">0.20</a><a href="#v0-19">0.19</a><a href="#v0-18">0.18</a></nav>
+    </section>
+    <div class="log" id="log">
+      <article class="rel rv" id="v0-23"><div><h3>0.23</h3><small>Windows 0.23 · Android 0.9</small></div><ul>
         <li><b>30 looks, each its own screen.</b> Every look now has its own video window, lyric style, player card and edge effect, in every state (video, no video, synced, plain, nothing playing). Ten new looks: Lock Screen, Wallet, Route, Editor, Metro, Web, Lens, Picto, Drift Wall and Split-flap.</li>
         <li><b>The cover wears the look.</b> Doodles and a picture treatment per look on the player card, and on the share card too.</li>
         <li><b>Lyra Connect.</b> Pair devices with a QR code and share the song clock, lyrics, video, look and your choices. Remote control, follow-me and party mode.</li>
@@ -35,37 +40,38 @@
         <li><b>OBS overlay.</b> A transparent lyrics page for streamers, served by Lyra Connect with its own view-only link you can revoke.</li>
         <li><b>Android:</b> all looks on phone and tablet, eight widgets with their own looks, a better notification, a lock-screen card and an always-on lyrics screen, car mode for passengers, and an in-app updater.</li>
       </ul></article>
-      <article class="rel"><div><h3>0.22</h3><small>Windows 0.22 · Android 0.8</small></div><ul>
+      <article class="rel rv" id="v0-22"><div><h3>0.22</h3><small>Windows 0.22 · Android 0.8</small></div><ul>
         <li><b>A card for every look.</b> The player card, the mini player and the phone dock each wear the look, in all 20.</li>
         <li><b>Stencil and Film Reel.</b> Two more motion-graphics looks: spray-paint words on concrete, and sepia film with light leaks.</li>
         <li><b>Android widget in your look’s colours</b>, and an Android queue so the next song can be prepared in advance where the player shares one.</li>
         <li><b>Optional start gate</b> (off by default): hold a song for at most a second and a half while lyrics and video are still loading.</li>
         <li>An automated check that the video pauses and resumes with the music within 300 ms.</li>
       </ul></article>
-      <article class="rel"><div><h3>0.21</h3><small>Windows 0.21 · Android 0.7</small></div><ul>
+      <article class="rel rv" id="v0-21"><div><h3>0.21</h3><small>Windows 0.21 · Android 0.7</small></div><ul>
         <li><b>Sketchbook, Glitch and Pop Comic.</b> Motion-graphics looks built on a new lyric style: one giant word at a time thrown at the camera.</li>
         <li><b>Every look has its own screens</b> for words without timing, no lyrics found, and a video playing behind.</li>
         <li><b>Next-song preload</b> on Windows with Spotify: lyrics, video and the Apple preview clip are ready before the song starts.</li>
         <li>The phone’s YouTube video now pauses with the music.</li>
         <li>Fixes: Terminal panes no longer overlap when a video plays; Diary is readable over dark video; covers keep thin frames in small docks.</li>
       </ul></article>
-      <article class="rel"><div><h3>0.20</h3><small>Windows 0.20 · Android 0.6</small></div><ul>
+      <article class="rel rv" id="v0-20"><div><h3>0.20</h3><small>Windows 0.20 · Android 0.6</small></div><ul>
         <li><b>The look is designed, not configured.</b> Layout, typeface, size, spacing and animation controls are gone from Settings; each look decides.</li>
         <li><b>A share card, a Settings panel and an animated cover frame</b> for every look.</li>
         <li><b>Apple preview clips cached on disk</b> so they stop stuttering; videos that failed once are remembered for that song.</li>
         <li>Synced lyrics always win over plain ones, and plain ones are re-checked for a synced version.</li>
       </ul></article>
-      <article class="rel"><div><h3>0.19</h3><small>Windows 0.19 · Android 0.5</small></div><ul>
+      <article class="rel rv" id="v0-19"><div><h3>0.19</h3><small>Windows 0.19 · Android 0.5</small></div><ul>
         <li><b>Per-look layouts:</b> dock, floating pill, subtitle bar, chat column, terminal panes.</li>
         <li><b>Android tablet and foldable</b> two-pane layout, and a live <b>home-screen widget</b>.</li>
         <li>Simpler Settings in six plain tabs, and automated screenshot tests of every look on every size.</li>
       </ul></article>
-      <article class="rel"><div><h3>0.18</h3><small>Windows 0.18 · Android 0.4</small></div><ul>
+      <article class="rel rv" id="v0-18"><div><h3>0.18</h3><small>Windows 0.18 · Android 0.4</small></div><ul>
         <li><b>Vibes arrive:</b> Neon, Chrome, Dream, Terminal, Stickers, DM, Diary, Arcade, Cinema, Sunset Drive, Blocks, Stadium, Cassette and Trailer.</li>
         <li>Cycle looks with <kbd>V</kbd>, or let Lyra choose by the song. A resilient lyrics and video engine with retries and a memory of your choices.</li>
       </ul></article>
     </div>
   </main>
-  <footer class="ft"><div class="ft__fine"><span>© Lyra · MIT licence</span><span><a href="./" style="display:inline">Home</a></span></div></footer>
+  <footer class="ft"><div class="ft__fine"><span>© Lyra · MIT licence</span><span><a href="./" style="display:inline">Home</a> · <a href="vibes" style="display:inline">Gallery</a> · <a href="https://github.com/DhruvHarani1/lyra" style="display:inline">GitHub</a></span></div></footer>
+  <script src="pages.js" defer></script>
 </body>
 </html>
