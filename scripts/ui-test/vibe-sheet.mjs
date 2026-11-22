@@ -9,7 +9,7 @@ const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/
 const vibe = args.vibe ?? 'neon'
 const out = args.out ?? join(process.cwd(), 'ui-test-out', 'sheets')
 mkdirSync(out, { recursive: true })
-const PORT = 5197
+const PORT = Number(process.env.UI_PORT ?? 5197)
 const BASE = `http://localhost:${PORT}`
 const up = () => fetch(BASE).then((r) => r.ok).catch(() => false)
 let server
