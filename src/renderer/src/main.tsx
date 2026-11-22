@@ -62,6 +62,12 @@ import { useSettings } from './store/settings'
 import { usePlayer } from './store/player'
 import { useUi } from './store/ui'
 import { useBgState } from './store/bgState'
+import './styles/p-glitch.css'
+import './styles/edge-glitch.css'
+import './styles/p-comic.css'
+import './styles/edge-comic.css'
+import './styles/p-stencil.css'
+import './styles/edge-stencil.css'
 import './styles/minsizes.css'
 
 // Let CSS honour the in-app settings: reduced motion, rim light and the vibe in effect (a cycled / smart vibe is

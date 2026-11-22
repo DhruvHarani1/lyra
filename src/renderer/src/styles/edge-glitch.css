@@ -1,0 +1,20 @@
+/* GLITCH edge: the picture tears. Red bleeds in on the left and cyan on the right and both jolt sideways in steps on every new
+   line (--lt flips, a stepped transition does the jolt); a tracking bar sweeps top to bottom while the line is sung (--lp);
+   along the bottom a torn RGB line fills with the line's progress. */
+:root[data-vibe='glitch'] .edge__d,
+:root[data-vibe='glitch'] .edge__b { width: 5.2vw; opacity: calc(0.5 + var(--lv, 0) * 0.4); transition: transform 0.42s steps(5), opacity 0.3s steps(2); }
+:root[data-vibe='glitch'] .edge__d { background: linear-gradient(90deg, rgba(255, 42, 26, 0.6), transparent); transform: translateX(calc(var(--lt, 0) * -1vw)); }
+:root[data-vibe='glitch'] .edge__b { background: linear-gradient(270deg, rgba(38, 240, 255, 0.5), transparent); transform: translateX(calc(var(--lt, 0) * 1vw)); }
+:root[data-vibe='glitch'] .edge__d::after,
+:root[data-vibe='glitch'] .edge__b::after { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; }
+:root[data-vibe='glitch'] .edge__d::after { left: 0; background: #ff2a1a; box-shadow: 0.5vw 0 0 rgba(38, 240, 255, 0.5); }
+:root[data-vibe='glitch'] .edge__b::after { right: 0; background: #26f0ff; box-shadow: -0.5vw 0 0 rgba(255, 42, 26, 0.5); }
+/* the tracking bar */
+:root[data-vibe='glitch'] .edge__a { height: 3.4vh; top: calc(var(--lp, 0) * 96%); transition: top 0.08s linear, transform 0.4s steps(4); transform: translateX(calc(var(--lt, 0) * 2.4vw - 1.2vw)); opacity: calc(var(--lv, 0) * 0.85); mix-blend-mode: screen;
+  background: linear-gradient(90deg, rgba(255, 42, 26, 0) 0%, rgba(255, 42, 26, 0.34) 22%, rgba(255, 255, 255, 0.16) 50%, rgba(38, 240, 255, 0.34) 78%, rgba(38, 240, 255, 0) 100%); }
+:root[data-vibe='glitch'] .edge__a::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: repeating-linear-gradient(90deg, #fff 0 1.4vw, transparent 1.4vw 2.2vw); opacity: 0.55; }
+/* the torn line along the bottom */
+:root[data-vibe='glitch'] .edge__c { height: 0.55vh; width: calc(var(--lp, 0) * 100%); background: linear-gradient(90deg, #ff2a1a, #fff 50%, #26f0ff); transition: width 0.08s linear; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+:root[data-vibe='glitch'] .edge__c::after { content: ''; position: absolute; left: 0.6vw; right: -0.6vw; top: -0.55vh; height: 0.4vh; background: rgba(38, 240, 255, 0.55); }
+:root[data-vibe='glitch'] .edge__c::before { content: ''; position: absolute; left: -0.6vw; right: 0.6vw; top: 0.55vh; height: 0.4vh; background: rgba(255, 42, 26, 0.55); }
+:root[data-vibe='glitch'][data-mode='mini']:not([data-platform='android']) .edge__a { height: 2.2vh; }

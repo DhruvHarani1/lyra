@@ -1,0 +1,11 @@
+/* STENCIL edge: spray paint runs down from the top of the wall. Two sets of drips (long ones every 15vw, short ones between)
+   lengthen as the line is sung (--lp) and start again on the next line. Along the bottom a strip of orange/black street tape
+   slides one step on every new line (--li). */
+:root[data-vibe='stencil'] .edge__a { height: calc(1vh + var(--lp, 0) * 12vh); transition: height 0.1s linear, opacity 0.4s; opacity: calc(0.4 + var(--lv, 0) * 0.55);
+  background: repeating-linear-gradient(90deg, transparent 0 calc(7.5vw - 0.35vh), #ff6a00 calc(7.5vw - 0.35vh) calc(7.5vw + 0.35vh), transparent calc(7.5vw + 0.35vh) 15vw); }
+:root[data-vibe='stencil'] .edge__a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -0.7vh; height: 1.4vh; background: radial-gradient(circle 0.7vh at calc(7.5vw) 50%, #ff6a00 0 92%, transparent 100%) 0 0 / 15vw 1.4vh repeat-x; }
+:root[data-vibe='stencil'] .edge__a::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 56%;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(2.5vw - 0.28vh), #ff8a3a calc(2.5vw - 0.28vh) calc(2.5vw + 0.28vh), transparent calc(2.5vw + 0.28vh) 15vw); background-position: 5.6vw 0; }
+:root[data-vibe='stencil'] .edge__c { height: 1.5vh; background: repeating-linear-gradient(-45deg, #ff6a00 0 2vh, #161412 2vh 4vh); background-position: calc(var(--li, 0) * 4vh) 0; transition: background-position 0.5s cubic-bezier(0.3, 1.4, 0.5, 1); box-shadow: 0 -0.3vh 0 rgba(0, 0, 0, 0.5); opacity: 0.92; }
+:root[data-vibe='stencil'][data-mode='mini'] .edge__c { height: 1vh; }
+:root[data-platform='android'][data-vibe='stencil'] .edge__a { height: calc(6px + var(--lp, 0) * 70px); }
