@@ -1,0 +1,19 @@
+/* Doodle edge: a scribbled marker border drawn around the whole page. It re-draws itself ANTICLOCKWISE (mirrored conic mask) as
+   each line is sung (--lp: 0 -> 1 -> the whole frame), in a new hue for every line (--li); a second thinner scribble trails behind it. */
+:root[data-vibe='doodle'] .edge__a, :root[data-vibe='doodle'] .edge__b { inset: 0.8vh; width: auto; height: auto; top: 0.8vh; left: 0.8vh; right: 0.8vh; bottom: 0.8vh; scale: -1 1; border-style: solid; }
+:root[data-vibe='doodle'] .edge__a {
+  border-width: 1vh;
+  border-color: hsl(calc(var(--li) * 67 + 340) 95% 60%);
+  border-radius: 3.4vh 1.2vh 3.8vh 1.4vh / 1.4vh 3.4vh 1.2vh 3.8vh;
+  -webkit-mask: conic-gradient(#000 calc(var(--lp) * 360deg), transparent 0);
+  mask: conic-gradient(#000 calc(var(--lp) * 360deg), transparent 0);
+}
+:root[data-vibe='doodle'] .edge__b {
+  border-width: 0.45vh;
+  border-color: hsl(calc(var(--li) * 67 + 140) 90% 55%);
+  border-radius: 1.6vh 3.6vh 1.2vh 3.4vh / 3.4vh 1.4vh 3.8vh 1.2vh;
+  rotate: 0.4deg;
+  -webkit-mask: conic-gradient(#000 calc(var(--lp) * 360deg - 36deg), transparent 0);
+  mask: conic-gradient(#000 calc(var(--lp) * 360deg - 36deg), transparent 0);
+}
+:root[data-vibe='doodle'] .edge__c, :root[data-vibe='doodle'] .edge__d { display: none; }

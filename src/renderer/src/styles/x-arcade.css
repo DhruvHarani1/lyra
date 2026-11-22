@@ -1,0 +1,41 @@
+/* ==========================================================================
+   ARCADE, premium pass: the cabinet seen from the front. A dark cabinet body stands in the middle of the room with pink and cyan
+   side-art stripes; the CRT is centred in a thick plastic bezel with a curved-glass reflection; the song is spelled in pixel type
+   under the screen; the card is the PLAYER 1 panel beside the screen, inside the cabinet. The window edge is an
+   LED chase running clockwise around the whole window, faster while a line is sung.
+   Settings: a pixel menu, every section is a framed box with stepped corners. Phone: the dock is the PLAYER 1 panel.
+   ========================================================================== */
+:root[data-vibe='arcade'] {
+  --sc-ww: min(34vw, 54vh);
+  --sc-wl: 20.5vw;
+  --sc-wt: 11vh;
+  --sc-wr: 1.2vh;
+  --sc-ll: 20.5vw;
+  --sc-lt: calc(var(--sc-wt) + var(--sc-wh) + 6vh);
+  --sc-lw: 38vw;
+  --sc-lb: 12vh;
+  --sc-lbs: 12vh;
+  --sc-cr: 19.5vw;
+  --sc-ct: calc(var(--sc-wt));
+  --sc-cw: clamp(200px, 19vw, 280px);
+}
+:root[data-vibe='arcade']:has(.full[data-arch='scene'] .full__lyrics :is(.plain__stanza, .lfb)) { --sc-ww: min(30vw, 46vh); }
+/* the cabinet body: a dark column with side-art stripes */
+.arcadefx::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 16vw; right: 16vw; pointer-events: none;
+  background: linear-gradient(90deg, #ff2d6f 0 0.7vw, #3df2ff 0.7vw 1.4vw, #ffe14d 1.4vw 1.8vw, #0e0e34 1.8vw calc(100% - 1.8vw), #ffe14d calc(100% - 1.8vw) calc(100% - 1.4vw), #3df2ff calc(100% - 1.4vw) calc(100% - 0.7vw), #ff2d6f calc(100% - 0.7vw));
+  clip-path: polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, calc(var(--sc-wl) - 16vw) var(--sc-wt), calc(var(--sc-wl) - 16vw + var(--sc-ww)) var(--sc-wt), calc(var(--sc-wl) - 16vw + var(--sc-ww)) calc(var(--sc-wt) + var(--sc-wh)), calc(var(--sc-wl) - 16vw) calc(var(--sc-wt) + var(--sc-wh)), calc(var(--sc-wl) - 16vw) var(--sc-wt));
+}
+/* the bezel and the glass */
+[data-vibe='arcade'] .scenewin { box-shadow: 0 0 0 1.2vh #05051a, 0 0 0 2.2vh #3a3a8a, 0 0 0 2.6vh #0a0a2a, 0 0 0 3.6vh #1d1d5a, 0 0 6vh rgba(61, 242, 255, 0.25); }
+:root[data-vibe='arcade']:is([data-mode='full'], [data-mode='mini']):not([data-platform='android']) .scenewin::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(125deg, rgba(255, 255, 255, 0.18), transparent 32%), radial-gradient(120% 120% at 50% 50%, transparent 62%, rgba(0, 0, 0, 0.5));
+}
+/* settings: a pixel menu */
+:root[data-vibe='arcade'] .sidepanel { --panel: #0a0a2a; --accent: #ffe14d; --fg: #fff; border-radius: 0; border: 0; box-shadow: 0 0 0 4px #3df2ff, 0 0 0 8px #0a0a2a, 0 0 0 10px #ff2d6f, 0 0 60px rgba(61, 242, 255, 0.3); background: #0a0a2a; }
+:root[data-vibe='arcade'] .sidepanel .settings section { border-radius: 0; background: #12123a; box-shadow: 0 0 0 2px #3df2ff, 4px 4px 0 2px #ff2d6f; }
+:root[data-vibe='arcade'] .sidepanel h3 { color: #ffe14d; text-shadow: 3px 3px 0 #ff2d6f; }
+:root[data-vibe='arcade'] .sidepanel .stabs button.is-on { background: #ffe14d; color: #0a0a2a; border-radius: 0; }
+/* phone: the PLAYER 1 panel */
+:root[data-platform='android'][data-vibe='arcade'] .phone__dock { background: #0a0a2a !important; border-radius: 0 !important; box-shadow: 0 0 0 3px #3df2ff, 0 0 0 6px #0a0a2a, 0 0 0 8px #ff2d6f; margin: 8px; }
+:root[data-platform='android'][data-vibe='arcade'] .phone__bar { background: linear-gradient(180deg, rgba(61, 242, 255, 0.16), transparent); }
