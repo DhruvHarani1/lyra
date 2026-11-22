@@ -15,12 +15,12 @@ mkdirSync(OUT, { recursive: true })
 
 const src = readFileSync(join(root, 'src/shared/vibes.ts'), 'utf8')
 const vibes = [...src.matchAll(/\{ id: '(\w+)', layout: '\w+', style: '\w+', name: '([^']+)', tag: '([^']+)'/g)].map((m) => ({ id: m[1], name: m[2], tag: m[3] }))
-const LIGHT = new Set(['sticker', 'paper', 'cassette', 'sketch', 'comic', 'chrome'])
+const LIGHT = new Set(['sticker', 'cassette', 'sketch', 'comic', 'chrome', 'journal', 'doodle'])
 const only = args.only ? String(args.only).split(',') : null
 const list = only ? vibes.filter((v) => only.includes(v.id)) : vibes
 if (!vibes.length) throw new Error('no vibes parsed')
 
-const settle = 2500
+const settle = 6500
 const jobs = []
 const shot = (file, vibe, q, w, h, scale, quality) => jobs.push({ kind: 'page', file, vibe, q, w, h, scale, quality })
 for (const v of list) {
@@ -45,8 +45,8 @@ const runOne = async (j) => {
       const s = encodeURIComponent(JSON.stringify({ vibe: j.vibe, performance: 'smooth' }))
       await p.goto(`${BASE}/?paused=1&t=43500&${j.q}&s=${s}`)
       await p.evaluate(() => document.fonts.ready)
-      // a paused clip shows its first frame: jump to a nicer one
-      await p.evaluate(() => document.querySelectorAll('video').forEach((v) => { v.currentTime = 3 }))
+      // wait until every clip has a decoded frame (a slow machine otherwise shows an empty video window)
+      await p.evaluate(() => Promise.all([...document.querySelectorAll('video')].map((v) => (v.readyState >= 3 ? 1 : new Promise((r) => { v.addEventListener('canplay', r, { once: true }); setTimeout(r, 8000) })))))
       await p.waitForTimeout(settle)
       await p.screenshot({ path: join(OUT, j.file), type: 'jpeg', quality: j.quality })
     } else {
@@ -81,7 +81,7 @@ const pool = async () => {
     if (finished % 10 === 0) console.log(`${finished}/${jobs.length}`)
   }
 }
-await Promise.all([pool(), pool(), pool(), pool()])
+await Promise.all([pool(), pool(), pool()])
 
 // the contact sheet of all vibes (full screen, five columns)
 if (!only) {

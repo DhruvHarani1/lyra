@@ -18,9 +18,9 @@ const EXTRA = [
   { id: 'doodle', name: 'Doodle', tag: 'Fat marker, bright shapes, scribbles that draw themselves', layout: 'scene', stage: 'scrawl', acc: '#ff5f7e', light: true },
 ]
 const VIBES = [...BASE_VIBES, ...EXTRA.filter((x) => !BASE_VIBES.some((b) => b.id === x.id))]
-// looks that only have a full-screen screenshot (no phone / mini / no-video shots); the Diary was redesigned, so its old extra shots are retired
-const FULL_ONLY = new Set(['paper', ...EXTRA.map((x) => x.id)])
-const HAS_CARD = new Set(BASE_VIBES.map((v) => v.id))
+// looks that only have a full-screen screenshot (no phone / mini / no-video shots)
+const FULL_ONLY = new Set(EXTRA.map((x) => x.id))
+const HAS_CARD = new Set(BASE_VIBES.map((v) => v.id).filter((id) => !FULL_ONLY.has(id)))
 const shot = (name) => `assets/shots/${name}.jpg`
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
@@ -272,7 +272,7 @@ const HERO = VIBES.filter((v) => v.id !== 'none' && !FULL_ONLY.has(v.id))
 /* ---------- rails ---------- */
 {
   const cards = VIBES.filter((v) => HAS_CARD.has(v.id))
-  const sets = VIBES.filter((v) => HAS_CARD.has(v.id) && v.id !== 'paper')
+  const sets = VIBES.filter((v) => HAS_CARD.has(v.id))
   const item = (kind, v) => `<figure class="rail__item" style="--glow:${v.acc}"><img loading="lazy" decoding="async" src="${shot(`${kind}-${v.id}`)}" alt="${kind === 'card' ? 'Share card' : 'Settings panel'}, ${v.name} look" /><figcaption>${v.name}</figcaption></figure>`
   $('#rail-cards').innerHTML = cards.map((v) => item('card', v)).join('')
   $('#rail-settings').innerHTML = sets.map((v) => item('settings', v)).join('')
