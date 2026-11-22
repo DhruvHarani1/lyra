@@ -37,6 +37,19 @@
   .top .st { color: rgba(245,245,247,.65); }
   .play { position: fixed; z-index: 4; left: 50%; bottom: 3vh; transform: translateX(-50%); font-size: 12px; color: rgba(245,245,247,.55); text-align: center; padding: 0 20px; }
   @media (max-width: 520px) { .top .st { display: none; } }
+  /* polish: safe areas for notched phones, a readable footer line, a glowing current line, keyboard focus, calmer motion */
+  .top { top: max(12px, env(safe-area-inset-top)); max-width: calc(100vw - 24px); }
+  .dot { top: max(14px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); }
+  main { padding-left: max(5vw, env(safe-area-inset-left)); padding-right: max(5vw, env(safe-area-inset-right)); }
+  .play { bottom: max(3vh, env(safe-area-inset-bottom)); color: rgba(245,245,247,.74); text-shadow: 0 1px 12px rgba(0,0,0,.7); max-width: 92vw; }
+  .msg { text-shadow: 0 2px 24px rgba(0,0,0,.6); }
+  .art { transition: transform .8s var(--ease), box-shadow .8s; }
+  .bar b { box-shadow: 0 0 14px rgba(255,255,255,.55); transition: transform .5s linear; }
+  .ln.on { text-shadow: 0 0 44px rgba(255,255,255,.22); }
+  .top a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .top a { transition: transform .3s var(--ease); }
+  .top a:hover { transform: translateY(-1px); }
+  @media (prefers-reduced-motion: reduce) { .col, .ln, .bg, .art, .bar b, .top a { transition: none !important; } }
 </style>
 </head>
 <body>
@@ -46,8 +59,8 @@
   <div class="meta"><div class="art" id="art"></div><div><div class="t" id="t"></div><div class="ar" id="ar"></div></div><div class="bar"><b id="bar"></b></div></div>
   <div class="lyrics" id="box"><div class="col" id="col"></div></div>
 </main>
-<div class="msg" id="msg">Waiting for Lyra…</div>
-<div class="dot off" id="dot" title="connection"></div>
+<div class="msg" id="msg" role="status" aria-live="polite">Waiting for Lyra…</div>
+<div class="dot off" id="dot" title="connection" role="img" aria-label="Connection status"></div>
 <div class="play" id="play">Lyrics only. Play the same song on your own device to listen along.</div>
 <script src="assets/peerjs.min.js"></script>
 <script>
@@ -187,7 +200,7 @@
   addEventListener('resize', () => { idx = -2 })
   join(); frame()
   // keep the screen awake on TVs / phones
-  try { navigator.wakeLock && navigator.wakeLock.request('screen') } catch {}
+  try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {}) } catch {}
 })()
 </script>
 </body>
