@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { CommandResult, ConnectionStatus, PlaybackSnapshot, PlayerCommand, QueueItem, RecentItem } from '@shared/types'
 import { estimatePositionMs, type ClockAnchor } from '@core/clock'
 import { useUi } from './ui'
+import { runSongTransition } from '@/lib/songTransition'
 
 interface PlayerStore {
   snapshot: PlaybackSnapshot | null
@@ -45,8 +46,10 @@ export const usePlayer = create<PlayerStore>((set, get) => ({
     api.spotify.onStatus((status) => set({ status }))
     api.spotify.onPlayback((snapshot) => {
       const prevId = get().snapshot?.track?.id
-      set({ snapshot })
-      if (snapshot.track?.id !== prevId) {
+      const changed = snapshot.track?.id !== prevId
+      if (changed && prevId && snapshot.track && snapshot.isPlaying) runSongTransition(() => set({ snapshot, liked: null, queue: null }))
+      else set({ snapshot })
+      if (changed) {
         set({ liked: null, queue: null })
         const id = snapshot.track?.id
         if (id) void api.player.isLiked(id).then((v) => get().snapshot?.track?.id === id && set({ liked: v }))

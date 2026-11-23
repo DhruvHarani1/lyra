@@ -7,6 +7,7 @@ import { isImportError } from '@shared/lrc'
 import { cycleVibe, useVibeConductor } from '@/hooks/useVibe'
 import { usePrefetchNext } from '@/hooks/usePrefetchNext'
 import { useStartGate } from '@/hooks/useStartGate'
+import { useVolumeFade } from '@/hooks/useVolumeFade'
 import { CarMode, CarOffer } from '@/components/CarMode'
 import { useCar } from '@/store/car'
 import { CompactWidget } from '@/components/CompactWidget'
@@ -213,6 +214,7 @@ export default function App() {
   const [faded, setFaded] = useState(false)
   useThemeVars()
   useVibeConductor()
+  useVolumeFade()
   usePrefetchNext()
   useStartGate()
   useHotkeys()

@@ -1,0 +1,65 @@
+/* ==========================================================================
+   SONG TRANSITIONS: the effect that plays when the song changes (lib/songTransition.ts sets html[data-xfx] while it runs).
+   The browser keeps the old screen as ::view-transition-old(root) and the new one as ::view-transition-new(root); each effect
+   below animates the pair. Smooth on purpose: 0.9 s, a long ease-out, no flashing, and nothing moves further than a few percent.
+   ========================================================================== */
+:root { --xfx-ms: 0.9s; --xfx-ease: cubic-bezier(0.22, 0.8, 0.2, 1); }
+::view-transition-group(root) { animation-duration: var(--xfx-ms); animation-timing-function: var(--xfx-ease); }
+::view-transition-image-pair(root) { isolation: isolate; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--xfx-ms); animation-timing-function: var(--xfx-ease); animation-fill-mode: both; mix-blend-mode: normal; }
+
+/* fade: a plain cross-dissolve */
+:root[data-xfx='fade']::view-transition-old(root) { animation-name: xfx-out; }
+:root[data-xfx='fade']::view-transition-new(root) { animation-name: xfx-in; }
+@keyframes xfx-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes xfx-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* dissolve: the old screen blurs away while the new one comes into focus */
+:root[data-xfx='dissolve']::view-transition-old(root) { animation-name: xfx-dis-out; }
+:root[data-xfx='dissolve']::view-transition-new(root) { animation-name: xfx-dis-in; }
+@keyframes xfx-dis-out { from { opacity: 1; filter: blur(0); } to { opacity: 0; filter: blur(14px); } }
+@keyframes xfx-dis-in { from { opacity: 0; filter: blur(14px); } to { opacity: 1; filter: blur(0); } }
+
+/* slide-left / slide-right: the new screen drifts in from the side while the old one drifts out */
+:root[data-xfx='slide-left']::view-transition-old(root) { animation-name: xfx-sl-out; }
+:root[data-xfx='slide-left']::view-transition-new(root) { animation-name: xfx-sl-in; }
+:root[data-xfx='slide-right']::view-transition-old(root) { animation-name: xfx-sr-out; }
+:root[data-xfx='slide-right']::view-transition-new(root) { animation-name: xfx-sr-in; }
+@keyframes xfx-sl-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-6%); } }
+@keyframes xfx-sl-in { from { opacity: 0; transform: translateX(6%); } to { opacity: 1; transform: none; } }
+@keyframes xfx-sr-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(6%); } }
+@keyframes xfx-sr-in { from { opacity: 0; transform: translateX(-6%); } to { opacity: 1; transform: none; } }
+
+/* rise: the new screen lifts up into place */
+:root[data-xfx='rise']::view-transition-old(root) { animation-name: xfx-rise-out; }
+:root[data-xfx='rise']::view-transition-new(root) { animation-name: xfx-rise-in; }
+@keyframes xfx-rise-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-4%); } }
+@keyframes xfx-rise-in { from { opacity: 0; transform: translateY(6%); } to { opacity: 1; transform: none; } }
+
+/* zoom-in: the old screen swells past you, the new one settles in. zoom-out is the reverse */
+:root[data-xfx='zoom-in']::view-transition-old(root) { animation-name: xfx-zi-out; }
+:root[data-xfx='zoom-in']::view-transition-new(root) { animation-name: xfx-zi-in; }
+:root[data-xfx='zoom-out']::view-transition-old(root) { animation-name: xfx-zo-out; }
+:root[data-xfx='zoom-out']::view-transition-new(root) { animation-name: xfx-zo-in; }
+@keyframes xfx-zi-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(1.07); } }
+@keyframes xfx-zi-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes xfx-zo-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(0.93); } }
+@keyframes xfx-zo-in { from { opacity: 0; transform: scale(1.07); } to { opacity: 1; transform: none; } }
+
+/* iris: the new screen opens from the centre like a lens */
+:root[data-xfx='iris']::view-transition-old(root) { animation-name: xfx-hold; }
+:root[data-xfx='iris']::view-transition-new(root) { animation-name: xfx-iris; }
+@keyframes xfx-hold { from, to { opacity: 1; } }
+@keyframes xfx-iris { from { clip-path: circle(0% at 50% 50%); } to { clip-path: circle(150% at 50% 50%); } }
+
+/* wipe: the new screen is drawn down over the old one */
+:root[data-xfx='wipe']::view-transition-old(root) { animation-name: xfx-hold; }
+:root[data-xfx='wipe']::view-transition-new(root) { animation-name: xfx-wipe; }
+@keyframes xfx-wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* split: the new screen opens outwards from the middle line */
+:root[data-xfx='split']::view-transition-old(root) { animation-name: xfx-hold; }
+:root[data-xfx='split']::view-transition-new(root) { animation-name: xfx-split; }
+@keyframes xfx-split { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.01s; } }

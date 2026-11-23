@@ -843,6 +843,12 @@ export function SettingsPanel() {
             ]}
           />
         </Row>
+        <Row label="Song change effects" hint="A different smooth effect each time the song changes">
+          <Toggle label="Song change effects" checked={s.smoothSongChange} onChange={up('smoothSongChange')} />
+        </Row>
+        <Row label="Fade volume between songs" hint="Eases the volume out at the end of a song and back in on the next. Only where Lyra can set your volume">
+          <Toggle label="Fade volume between songs" checked={s.volumeFade} onChange={up('volumeFade')} />
+        </Row>
         <More label="Advanced">
         <Row label="Effects" hint="Light saves battery and graphics power: no live blur, no endless motion">
           <Segmented

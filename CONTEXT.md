@@ -1,6 +1,6 @@
 # Lyra: context for the next session
 
-Read this first. It says what Lyra is, how the repo works, how to test and release, what has been done, what the owner (Dhruv) asked for next, and the rules we work by. Everything here is current as of **2026-11-23** (Windows 0.24.1, Android 0.10.1, 34 looks).
+Read this first. It says what Lyra is, how the repo works, how to test and release, what has been done, what the owner (Dhruv) asked for next, and the rules we work by. Everything here is current as of **2026-11-23** (Windows 0.26.0, Android 0.12.0, 34 looks).
 
 ## 1. What Lyra is
 A free, open-source, account-free lyrics companion. It shows word-by-word synced lyrics over the music video of what you play, on **Windows** (Electron) and **Android** (a Kotlin shell around the same React UI in a WebView). Sources of what is playing: Windows media controls (Spotify desktop app), the Spotify Web API, the Android media session, or a built-in demo.
@@ -70,6 +70,8 @@ Tag pushes and `git push --force` are blocked in the cloud environment; use the 
 | 0.23.0 | 0.9.0 | 2026-11-22 | 30 looks each with its own screen, video window, card and edge; Lyra Connect (pairing, roles, follow-me, party, remote control); smarter picks and persistent cache; karaoke and recording work; OBS overlay; Android TV screen; eight widgets, lock-screen card, always-on screen, car mode, in-app updater; Settings redesign with search; website redesign (PR #82) |
 | 0.24.0 | 0.10.0 | 2026-11-22 | 33 looks (Journal, Doodle added), per-look edges moving with the song, Editor shows real code, Journal pens, DM as a real chat (PR #84) |
 | 0.24.1 | 0.10.1 | 2026-11-22 | Dusk Ridge (34th look), mini player composition per look, Android looks (docks, play buttons, progress bars), new website screenshots (PR #85) |
+| 0.25.0 | 0.11.0 | 2026-11-23 | Wallet fixed, Lyra Connect hardening, TV pairing client, lighter edges, one CSS file per look, WebP website shots (made by another session) |
+| 0.26.0 | 0.12.0 | 2026-11-23 | song-change effects (10 view-transition effects, a different one each time) and an optional volume fade between songs (`docs/song-transitions.md`) |
 Earlier: 0.18 vibes, 0.19 per-look layouts and tablet, 0.20 fixed look and clip cache, 0.21 per-look states and prefetch. Android 0.4 to 0.10 ran in step.
 
 **What exists now:** 34 looks with designed screens for synced / unsynced / no lyrics / video on Windows full screen, mini player, and the Android phone and tablet; Lyra Connect (docs above); synced-first lyrics engine with persistent caches, remembered manual choices, karaoke screen with count-in and word fill, lyric-video export (Windows), share cards per look, Hindi / Punjabi romanization (offline), Android widgets / notification / lock-screen card / always-on / car / TV / updater, the website, UI tests in CI (`test:ui:quick`, `test:ui:states`, `test:settings`, `test:video`).

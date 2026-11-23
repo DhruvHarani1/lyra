@@ -40,6 +40,7 @@ import './styles/states.css'
 import './styles/cards.css'
 import './styles/scene.css'
 import './styles/edge.css'
+import './styles/song-transition.css'
 import './styles/dusk.css'
 import './styles/edge-dusk.css'
 import './styles/none.css'
@@ -142,6 +143,7 @@ const applyLook = (): void => {
   root.dataset.vibe = vibe
   root.dataset.arch = 'scene'
   root.dataset.rim = st.rimLight ? 'on' : 'off'
+  root.dataset.smooth = st.smoothSongChange ? 'on' : 'off'
   root.dataset.mode = useUi.getState().mode
   root.dataset.perf = st.performance === 'light' || (st.performance === 'auto' && weakDevice()) ? 'low' : 'high'
   syncCalm()

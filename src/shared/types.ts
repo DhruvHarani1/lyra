@@ -277,6 +277,10 @@ export interface Settings {
   /** Windows source only: control the system volume (loads a helper some antivirus tools flag). */
   systemVolume: boolean
   trackNotifications: boolean
+  /** An effect (fade, dissolve, slide, zoom, iris, wipe, split...) plays when the song changes, a different one each time. */
+  smoothSongChange: boolean
+  /** Fade the volume down at the end of a song and up at the start of the next (only where Lyra can set the volume). */
+  volumeFade: boolean
   /** TV & party mode: serve a read-only lyrics page to other devices on the same network. */
   /** Devices: let paired phones, tablets, TVs and PCs on the local network follow and control Lyra (off by default). */
   connectEnabled: boolean
@@ -347,6 +351,8 @@ export const DEFAULT_SETTINGS: Settings = {
   onboarded: false,
   systemVolume: false,
   trackNotifications: false,
+  smoothSongChange: true,
+  volumeFade: false,
   connectEnabled: false,
   theme: 'adaptive',
   lyricFont: 'sans',

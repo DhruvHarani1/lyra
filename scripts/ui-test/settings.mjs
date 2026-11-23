@@ -52,6 +52,10 @@ const more = async (p) => { for (let i = 0; i < 12 && (await p.locator('details.
   check('Look: Performance Smooth', (await root$(p, 'perf')) === 'high')
   await p.locator('[aria-label="Reduce motion"] button', { hasText: 'On' }).click(); await p.waitForTimeout(150)
   check('Look: Reduce motion On', (await root$(p, 'motion')) === 'off')
+  const sx = p.locator('[aria-label="Song change effects"]')
+  check('Look: "Song change effects" is on by default and switches off', (await sx.getAttribute('aria-checked')) === 'true' && (await sx.click(), await p.waitForTimeout(150), (await root$(p, 'smooth')) === 'off'))
+  const vf = p.locator('[aria-label="Fade volume between songs"]')
+  check('Look: "Fade volume between songs" is off by default and flips', (await vf.getAttribute('aria-checked')) === 'false' && (await vf.click(), await p.waitForTimeout(150), (await vf.getAttribute('aria-checked')) === 'true'))
   await p.close()
 }
 
