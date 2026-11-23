@@ -28,8 +28,13 @@ export function registerBackgroundScheme(): void {
   protocol.registerSchemesAsPrivileged([{ scheme: BG_SCHEME, privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true, corsEnabled: true } }])
 }
 
-const CLIP_MAX_FILES = 60
-const CLIP_MAX_BYTES = 8 * 1024 * 1024
+const CLIP_MAX_FILES = 80
+/** Apple's HD preview clips are about 20 MB (1920w, 30 s); the old 8 MB cap threw every one of them away after downloading it. */
+const CLIP_MAX_BYTES = 64 * 1024 * 1024
+/** The whole clip folder stays under this (oldest clips go first). */
+const CLIP_CACHE_BYTES = 500 * 1024 * 1024
+/** How long a request for a clip waits for it to finish saving before it falls back to streaming it straight from Apple. */
+const CLIP_WAIT_MS = 25_000
 
 class BackgroundService {
   /** Apple preview clips already (being) saved on disk: playing from a local file never stutters and loops for free */
@@ -51,10 +56,22 @@ class BackgroundService {
     if (!job) {
       job = (async () => {
         try {
-          const res = await net.fetch(target)
-          if (!res.ok) return null
+          let res = await net.fetch(target, { signal: AbortSignal.timeout(90_000) })
+          if (res.status === 429 || res.status === 503) {
+            // Apple's CDN rate-limits (it answers with Retry-After): wait that long once and ask again
+            const wait = Math.min(10, Math.max(1, Number(res.headers.get('retry-after')) || 3))
+            await new Promise((r) => setTimeout(r, wait * 1000))
+            res = await net.fetch(target, { signal: AbortSignal.timeout(90_000) })
+          }
+          if (!res.ok) {
+            log.warn('clip download refused', String(res.status))
+            return null
+          }
           const buf = Buffer.from(await res.arrayBuffer())
-          if (buf.length < 10_000 || buf.length > CLIP_MAX_BYTES) return null
+          if (buf.length < 10_000 || buf.length > CLIP_MAX_BYTES) {
+            log.warn('clip not saved (size)', String(buf.length))
+            return null
+          }
           const tmp = `${file}.part`
           writeFileSync(tmp, buf)
           renameSync(tmp, file)
@@ -75,9 +92,16 @@ class BackgroundService {
     try {
       const files = readdirSync(this.clipDir)
         .filter((f) => f.endsWith('.mp4'))
-        .map((f) => ({ f, t: statSync(join(this.clipDir, f)).mtimeMs }))
+        .map((f) => {
+          const st = statSync(join(this.clipDir, f))
+          return { f, t: st.mtimeMs, size: st.size }
+        })
         .sort((a, b) => b.t - a.t)
-      for (const x of files.slice(CLIP_MAX_FILES)) rmSync(join(this.clipDir, x.f), { force: true })
+      let total = 0
+      files.forEach((x, i) => {
+        total += x.size
+        if (i >= CLIP_MAX_FILES || total > CLIP_CACHE_BYTES) rmSync(join(this.clipDir, x.f), { force: true })
+      })
     } catch {
       /* cache housekeeping is best effort */
     }
@@ -134,8 +158,9 @@ class BackgroundService {
         if (u.hostname === 'preview') {
           const target = Buffer.from(name, 'base64url').toString('utf8')
           if (!HOST_RE.test(target)) return new Response('forbidden', { status: 403 })
-          // from disk when the clip is saved (or about to be: wait a few seconds for the download rather than stream a stuttering copy)
-          const local = existsSync(this.clipFile(target)) ? this.clipFile(target) : await Promise.race([this.warmClip(target), new Promise<null>((r) => setTimeout(() => r(null), 4000))])
+          // from disk when the clip is saved (or about to be). An HD clip is ~20 MB: wait for the one download that is already running
+          // (a second parallel stream of the same file doubled the traffic and made slow connections worse); stream only if it failed
+          const local = existsSync(this.clipFile(target)) ? this.clipFile(target) : await Promise.race([this.warmClip(target), new Promise<null>((r) => setTimeout(() => r(null), CLIP_WAIT_MS))])
           if (local) return cors(await net.fetch(pathToFileURL(local).toString(), { headers: range(req) }))
           return cors(await net.fetch(target, { headers: range(req) }))
         }
