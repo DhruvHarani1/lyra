@@ -3,6 +3,7 @@
 //   stdout: one JSON object per line (state changes + a slow heartbeat)
 //   stdin : toggle | play | pause | next | prev | seek:<ms> | volume:<0-100>
 //   args  : --app <substring>   only follow sessions whose app id contains this (default "Spotify")
+//           --any-player        follow the current session, or the first playing session
 //           --volume            also read/control the Windows master volume
 //
 // Event driven: no polling loop, so it sits at ~0% CPU while idle. Builds with the csc.exe that ships
@@ -22,6 +23,7 @@ using Windows.Storage.Streams;
 static class Program
 {
     static string appFilter = "Spotify";
+    static bool anyPlayer;
     static bool volumeEnabled;
     static GlobalSystemMediaTransportControlsSessionManager manager;
     static GlobalSystemMediaTransportControlsSession session;
@@ -42,6 +44,7 @@ static class Program
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == "--app" && i + 1 < args.Length) appFilter = args[++i];
+            else if (args[i] == "--any-player") anyPlayer = true;
             else if (args[i] == "--volume") volumeEnabled = true;
         }
 
@@ -64,6 +67,15 @@ static class Program
 
     static GlobalSystemMediaTransportControlsSession Find()
     {
+        if (anyPlayer)
+        {
+            var current = manager.GetCurrentSession();
+            if (current != null) return current;
+            foreach (var candidate in manager.GetSessions())
+                if (candidate.GetPlaybackInfo().PlaybackStatus == GlobalSystemMediaTransportControlsSessionPlaybackStatus.Playing)
+                    return candidate;
+            return null;
+        }
         foreach (var s in manager.GetSessions())
             if (s.SourceAppUserModelId.IndexOf(appFilter, StringComparison.OrdinalIgnoreCase) >= 0) return s;
         return null;

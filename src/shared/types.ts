@@ -276,6 +276,8 @@ export interface Settings {
   onboarded: boolean
   /** Windows source only: control the system volume (loads a helper some antivirus tools flag). */
   systemVolume: boolean
+  /** Windows source only: follow the current SMTC player instead of Spotify only. */
+  followAnyPlayer: boolean
   trackNotifications: boolean
   /** An effect (fade, dissolve, slide, zoom, iris, wipe, split...) plays when the song changes, a different one each time. */
   smoothSongChange: boolean
@@ -350,6 +352,7 @@ export const DEFAULT_SETTINGS: Settings = {
   shortcuts: {},
   onboarded: false,
   systemVolume: false,
+  followAnyPlayer: false,
   trackNotifications: false,
   smoothSongChange: true,
   volumeFade: false,

@@ -27,12 +27,13 @@ interface Msg {
   playing?: boolean
   thumb?: string
   volume?: number
+  commandResult?: { id: number; ok: boolean; error?: string }
 }
 
 const UNSUPPORTED = (what: string): CommandResult => ({
   ok: false,
   reason: 'unsupported',
-  error: `${what} isn’t exposed by Windows media controls. Use the Spotify app or your system volume.`
+  error: `${what} isn’t exposed by Windows media controls. Use your media player or system volume.`
 })
 
 /**
@@ -51,6 +52,15 @@ export class SmtcSource extends PlaybackSource {
   private yearRequested = new Set<string>()
   private failures = 0
   private lastErr = ''
+  private commandResponses = false
+  private nextCommandId = 0
+  private pendingCommands = new Map<number, { resolve: (result: CommandResult) => void; timeout: NodeJS.Timeout }>()
+
+  private statusMessage(): string {
+    return settings.get().followAnyPlayer
+      ? 'Current Windows media player · Windows media controls'
+      : 'Spotify desktop app · Windows media controls'
+  }
 
   start(): void {
     if (process.platform !== 'win32') {
@@ -58,7 +68,7 @@ export class SmtcSource extends PlaybackSource {
       return
     }
     this.stopped = false
-    this.setStatus({ state: 'local', message: 'Spotify desktop app · Windows media controls' })
+    this.setStatus({ state: 'local', message: this.statusMessage() })
     this.spawn()
   }
 
@@ -72,28 +82,35 @@ export class SmtcSource extends PlaybackSource {
     this.stopped = true
     if (this.restartTimer) clearTimeout(this.restartTimer)
     this.restartTimer = null
+    for (const [id, pending] of this.pendingCommands) {
+      clearTimeout(pending.timeout)
+      pending.resolve({ ok: false, reason: 'offline', error: 'Windows media bridge stopped before confirming the command.' })
+      this.pendingCommands.delete(id)
+    }
     this.proc?.kill()
     this.proc = null
   }
 
   private spawn(): void {
-    const withVolume = settings.get().systemVolume
-    const helper = this.helperPath()
+    const { systemVolume: withVolume, followAnyPlayer } = settings.get()
+    // The committed native helper may predate --any-player. Use the PowerShell bridge until it is rebuilt.
+    const helper = followAnyPlayer ? null : this.helperPath()
     let proc: ChildProcessWithoutNullStreams
     if (helper) {
       // Preferred: tiny event-driven native helper (resources/lyra-media.exe), ~0% CPU while idle.
       proc = spawn(helper, withVolume ? ['--volume'] : [], { windowsHide: true })
     } else {
-      log.warn('lyra-media.exe missing; falling back to the PowerShell bridge')
+      log.warn(followAnyPlayer ? 'Follow other players uses the PowerShell bridge' : 'lyra-media.exe missing; falling back to the PowerShell bridge')
       const dir = join(app.getPath('userData'), 'bridge')
       mkdirSync(dir, { recursive: true })
       const file = join(dir, 'smtc.ps1')
-      writeFileSync(file, '﻿' + smtcScript(withVolume), 'utf8')
+      writeFileSync(file, '﻿' + smtcScript(withVolume, followAnyPlayer), 'utf8')
       proc = spawn('powershell.exe', ['-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', file], {
         windowsHide: true
       })
     }
     this.proc = proc
+    this.commandResponses = !helper
     createInterface({ input: proc.stdout }).on('line', (l) => this.onLine(l))
     proc.stderr.on('data', (d: Buffer) => {
       this.lastErr = d.toString().trim().slice(0, 400)
@@ -112,6 +129,11 @@ export class SmtcSource extends PlaybackSource {
     // a restart replaces this.proc; the old process's late exit must not tear down the new one
     if (from && from !== this.proc) return
     this.proc = null
+    for (const [id, pending] of this.pendingCommands) {
+      clearTimeout(pending.timeout)
+      pending.resolve({ ok: false, reason: 'offline', error: 'Windows media bridge stopped before confirming the command.' })
+      this.pendingCommands.delete(id)
+    }
     if (this.stopped) return
     this.failures++
     log.warn(why)
@@ -126,16 +148,29 @@ export class SmtcSource extends PlaybackSource {
     } catch {
       return
     }
+    if (m.commandResult) {
+      const pending = this.pendingCommands.get(m.commandResult.id)
+      if (pending) {
+        clearTimeout(pending.timeout)
+        this.pendingCommands.delete(m.commandResult.id)
+        pending.resolve(
+          m.commandResult.ok
+            ? { ok: true }
+            : { ok: false, reason: 'unsupported', error: m.commandResult.error ?? 'The Windows media player rejected this command.' }
+        )
+      }
+      return
+    }
     if (m.ready) {
       this.failures = 0
-      this.setStatus({ state: 'local', message: 'Spotify desktop app · Windows media controls' })
+      this.setStatus({ state: 'local', message: this.statusMessage() })
       return
     }
     if (m.error) {
       log.warn('bridge error', m.error)
       return
     }
-    if (this.status.state !== 'local') this.setStatus({ state: 'local', message: 'Spotify desktop app · Windows media controls' })
+    if (this.status.state !== 'local') this.setStatus({ state: 'local', message: this.statusMessage() })
 
     const now = Date.now()
     let snap: PlaybackSnapshot
@@ -143,7 +178,7 @@ export class SmtcSource extends PlaybackSource {
       sampledAt: now,
       device: {
         id: null,
-        name: 'Spotify · Windows',
+        name: settings.get().followAnyPlayer ? 'Windows media player' : 'Spotify · Windows',
         type: 'Computer',
         volumePercent: m.volume ?? null,
         supportsVolume: m.volume !== undefined
@@ -153,7 +188,10 @@ export class SmtcSource extends PlaybackSource {
     }
     if (!m.found) {
       snap = { ...base, track: null, isPlaying: false, positionMs: 0, isAdOrUnknown: false }
-    } else if (!m.title || m.title === 'Advertisement' || m.title === 'Spotify' || m.artist === 'Spotify') {
+    } else if (
+      !m.title ||
+      (/spotify/i.test(m.app ?? '') && (m.title === 'Advertisement' || m.title === 'Spotify' || m.artist === 'Spotify'))
+    ) {
       snap = { ...base, track: null, isPlaying: !!m.playing, positionMs: 0, isAdOrUnknown: true }
     } else {
       const dur = m.durationMs ?? 0
@@ -208,30 +246,61 @@ export class SmtcSource extends PlaybackSource {
     return Math.abs(predicted - n.positionMs) > 400
   }
 
+  private sendCommand(command: string, values: Record<string, number> = {}): Promise<CommandResult> {
+    const proc = this.proc
+    if (!proc) return Promise.resolve({ ok: false, reason: 'offline', error: 'Windows media bridge isn’t running.' })
+
+    if (!this.commandResponses) {
+      try {
+        proc.stdin.write(`${command}\n`)
+        return Promise.resolve({ ok: true })
+      } catch (error) {
+        return Promise.resolve({ ok: false, reason: 'offline', error: error instanceof Error ? error.message : String(error) })
+      }
+    }
+
+    const id = ++this.nextCommandId
+    return new Promise((resolve) => {
+      const timeout = setTimeout(() => {
+        this.pendingCommands.delete(id)
+        resolve({ ok: false, reason: 'unknown', error: 'The Windows media bridge did not confirm the command.' })
+      }, 2500)
+      this.pendingCommands.set(id, { resolve, timeout })
+      try {
+        proc.stdin.write(JSON.stringify({ id, command, ...values }) + '\n', (error) => {
+          if (!error) return
+          const pending = this.pendingCommands.get(id)
+          if (!pending) return
+          clearTimeout(pending.timeout)
+          this.pendingCommands.delete(id)
+          resolve({ ok: false, reason: 'offline', error: error.message })
+        })
+      } catch (error) {
+        clearTimeout(timeout)
+        this.pendingCommands.delete(id)
+        resolve({ ok: false, reason: 'offline', error: error instanceof Error ? error.message : String(error) })
+      }
+    })
+  }
+
   async command(cmd: PlayerCommand): Promise<CommandResult> {
     if (!this.proc) return { ok: false, reason: 'offline', error: 'Windows media bridge isn’t running.' }
     if (!this.snapshot?.track && cmd.type !== 'toggle' && cmd.type !== 'play') {
-      return { ok: false, reason: 'no-device', error: 'Spotify isn’t playing anything.' }
+      return { ok: false, reason: 'no-device', error: 'No supported media player is playing anything.' }
     }
     switch (cmd.type) {
       case 'play':
       case 'pause':
       case 'toggle':
-        this.proc.stdin.write(`${cmd.type}\n`)
-        return { ok: true }
+        return this.sendCommand(cmd.type)
       case 'next':
-        this.proc.stdin.write('next\n')
-        return { ok: true }
+        return this.sendCommand('next')
       case 'previous':
-        this.proc.stdin.write('prev\n')
-        return { ok: true }
+        return this.sendCommand('prev')
       case 'seek':
-        this.proc.stdin.write(`seek:${Math.max(0, Math.round(cmd.positionMs))}\n`)
-        return { ok: true }
+        return this.sendCommand('seek', { positionMs: Math.max(0, Math.round(cmd.positionMs)) })
       case 'volume':
-        this.proc.stdin.write(`volume:${Math.min(100, Math.max(0, Math.round(cmd.percent)))}
-`)
-        return { ok: true }
+        return this.sendCommand('volume', { percent: Math.min(100, Math.max(0, Math.round(cmd.percent))) })
       case 'shuffle':
         return UNSUPPORTED('Shuffle')
       case 'repeat':

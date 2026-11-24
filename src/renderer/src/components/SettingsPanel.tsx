@@ -917,7 +917,9 @@ export function SettingsPanel() {
           label="Status"
           hint={
             status?.state === 'local'
-              ? 'Reads the Spotify app via Windows media controls. No queue; likes are saved locally.'
+              ? s.followAnyPlayer
+                ? 'Reads the current Windows media session. Available controls depend on the player.'
+                : 'Reads the Spotify app via Windows media controls. No queue; likes are saved locally.'
               : status?.controlsLimited
                 ? 'Free accounts can’t be remote-controlled — display only'
                 : undefined
@@ -979,6 +981,9 @@ export function SettingsPanel() {
         <More label="Advanced">
         <Row label={t('Control system volume')} hint={t('Windows source. Loads a helper that some antivirus tools flag')}>
           <Toggle label={t('Control system volume')} checked={s.systemVolume} onChange={up('systemVolume')} />
+        </Row>
+        <Row label={t('Follow other players')} hint={t('Windows source. Follows the current media session, including Apple Music and browsers.')}>
+          <Toggle label={t('Follow other players')} checked={s.followAnyPlayer} onChange={up('followAnyPlayer')} />
         </Row>
         <ShortcutEditor />
         <More label="All keys inside Lyra">

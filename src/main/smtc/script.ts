@@ -61,8 +61,9 @@ public static class SysVol {
 /**
  * `withVolume` adds a runtime-compiled Core Audio helper. Some antivirus engines flag that pattern, so it is opt-in.
  */
-export function smtcScript(withVolume: boolean): string {
+export function smtcScript(withVolume: boolean, followAnyPlayer = false): string {
   const volumeBlock = withVolume ? VOLUME_BLOCK : '$hasVol = $false'
+  const anyPlayer = followAnyPlayer ? '$true' : '$false'
   return String.raw`
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
@@ -74,6 +75,7 @@ $null = [Windows.Storage.Streams.IRandomAccessStreamWithContentType,Windows.Stor
 $null = [Windows.Media.Control.GlobalSystemMediaTransportControlsSessionMediaProperties,Windows.Media.Control,ContentType=WindowsRuntime]
 
 ${volumeBlock}
+$followAnyPlayer = ${anyPlayer}
 
 $opName = 'IAsyncOperation' + [char]96 + '1'
 $asTask = ([System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {
@@ -98,6 +100,14 @@ $streamType = [Windows.Storage.Streams.IRandomAccessStreamWithContentType]
 $mgr = Await ($mgrType::RequestAsync()) $mgrType
 
 function Get-Session {
+  if ($followAnyPlayer) {
+    $current = $mgr.GetCurrentSession()
+    if ($current) { return $current }
+    foreach ($candidate in $mgr.GetSessions()) {
+      if ([int]($candidate.GetPlaybackInfo().PlaybackStatus) -eq 4) { return $candidate }
+    }
+    return $null
+  }
   foreach ($s in $mgr.GetSessions()) {
     if ($s.SourceAppUserModelId -match 'Spotify') { return $s }
   }
@@ -133,17 +143,30 @@ while ($true) {
     $line = $null
     while ($queue.TryDequeue([ref]$line)) {
       if ($line -eq '__eof') { exit }
+      $request = $line | ConvertFrom-Json
+      $commandOk = $false
+      $commandError = 'No Windows media session is available.'
       if ($s) {
-        switch -regex ($line) {
-          '^toggle$' { [void](Await $s.TryTogglePlayPauseAsync() ([bool])) }
-          '^play$'   { [void](Await $s.TryPlayAsync() ([bool])) }
-          '^pause$'  { [void](Await $s.TryPauseAsync() ([bool])) }
-          '^next$'   { [void](Await $s.TrySkipNextAsync() ([bool])) }
-          '^prev$'   { [void](Await $s.TrySkipPreviousAsync() ([bool])) }
-          '^volume:(\d+)$' { if ($hasVol) { [void][SysVol]::Set([float]([int]$Matches[1] / 100)) } }
-          '^seek:(\d+)$' { [void](Await $s.TryChangePlaybackPositionAsync([int64]([int64]$Matches[1] * 10000)) ([bool])) }
+        $commandError = $null
+        try {
+          switch ([string]$request.command) {
+            'toggle' { $commandOk = (Await $s.TryTogglePlayPauseAsync() ([bool])) -eq $true }
+            'play'   { $commandOk = (Await $s.TryPlayAsync() ([bool])) -eq $true }
+            'pause'  { $commandOk = (Await $s.TryPauseAsync() ([bool])) -eq $true }
+            'next'   { $commandOk = (Await $s.TrySkipNextAsync() ([bool])) -eq $true }
+            'prev'   { $commandOk = (Await $s.TrySkipPreviousAsync() ([bool])) -eq $true }
+            'seek'   { $commandOk = (Await $s.TryChangePlaybackPositionAsync([int64]([int64]$request.positionMs * 10000)) ([bool])) -eq $true }
+            'volume' {
+              if ($hasVol) { $commandOk = [SysVol]::Set([float]([int]$request.percent / 100)) }
+              else { $commandError = 'System volume control is unavailable.' }
+            }
+            default { $commandError = 'Unsupported media command.' }
+          }
+        } catch {
+          $commandError = $_.Exception.Message
         }
       }
+      Emit @{ commandResult = @{ id = [int]$request.id; ok = [bool]$commandOk; error = $commandError } }
     }
 
     if (-not $s) {
@@ -152,8 +175,13 @@ while ($true) {
       $p = Await $s.TryGetMediaPropertiesAsync() $propType
       $tl = $s.GetTimelineProperties()
       $pb = $s.GetPlaybackInfo()
-      $key = "$($p.Title)|$($p.Artist)|$($p.AlbumTitle)"
-      if ($key -ne $lastKey) { $lastKey = $key; $thumb = $null; $thumbTries = 0 }
+      $key = "$($s.SourceAppUserModelId)|$($p.Title)|$($p.Artist)|$($p.AlbumTitle)"
+      if ($key -ne $lastKey) {
+        $lastKey = $key
+        $thumb = $null
+        $thumbTries = 0
+        $thumbSentKey = ''
+      }
 
       if (-not $thumb -and $thumbTries -lt 20 -and $p.Thumbnail) {
         $thumbTries++

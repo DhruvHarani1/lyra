@@ -50,7 +50,7 @@ Word-by-word synced lyrics over the music video of what you play. For Windows an
 | **Windows 10/11** | Download `Lyra-Setup-x.y.z.exe` from the [latest release](https://github.com/DhruvHarani1/lyra/releases/latest), or `winget install DhruvHarani1.Lyra` once it is listed. Windows may show a SmartScreen notice because the app is not code-signed yet: choose *More info → Run anyway*. |
 | **Android 8+** | Download `Lyra-Android-x.y.z.apk` from the [Android releases](https://github.com/DhruvHarani1/lyra/releases?q=android) and open it. Grant *Notification access* so Lyra can see what is playing. F-Droid / IzzyOnDroid listings are being prepared. |
 
-Lyra reads the **Spotify desktop app** on Windows (through Windows media controls) and any media app on Android. Lyrics come from the free [LRCLIB](https://lrclib.net) database.
+Lyra reads the **Spotify desktop app** on Windows by default (through Windows media controls). Turn on *Settings → Startup & keys → Advanced → Follow other players* to follow the current Windows media session instead, including Apple Music and supported browsers. Android reads media sessions from any media app. Lyrics come from the free [LRCLIB](https://lrclib.net) database.
 
 ## Help it grow
 
@@ -80,7 +80,7 @@ Play a song in Spotify — the widget shows it. Click the widget to expand; full
 | Spotify API (optional) | your own Spotify Developer app (Client ID) | everything above + volume, queue, likes, devices | **Premium** for any control; Dev Mode needs a Premium app owner and your account under *User Management* |
 | Demo | nothing | simulated playback with sample lyrics | — |
 
-How the default works: a tiny native helper (`resources/lyra-media.exe`, ~14 KB, C#) subscribes to the Windows System Media Transport Controls events and streams JSON to the app (`src/main/smtc`, `native/lyra-media`). It is event-driven (≈0% CPU idle) and only follows a session whose app id contains "Spotify". Rebuild it with `npm run build:helper` (needs the Windows SDK; the built exe is committed). If the exe is missing the app falls back to a PowerShell bridge. Volume (opt-in: *Settings → System → Control system volume*) is the Windows master volume via Core Audio. Release year is looked up once per song on MusicBrainz and cached. Favorites are stored locally in `favorites.json`.
+How the default works: a tiny native helper (`resources/lyra-media.exe`, ~14 KB, C#) subscribes to the Windows System Media Transport Controls events and streams JSON to the app (`src/main/smtc`, `native/lyra-media`). It is event-driven (≈0% CPU idle) and only follows a session whose app id contains "Spotify". The opt-in *Follow other players* setting uses the current Windows media session, falling back to the first playing session; metadata and controls depend on what each player exposes. Rebuild it with `npm run build:helper` (needs the Windows SDK; the built exe is committed). If the exe is missing the app falls back to a PowerShell bridge. Volume (opt-in: *Settings → System → Control system volume*) is the Windows master volume via Core Audio. Release year is looked up once per song on MusicBrainz and cached. Favorites are stored locally in `favorites.json`.
 
 ### Optional: Spotify API setup (on hold — implemented but not yet tested against a real account)
 1. https://developer.spotify.com/dashboard → *Create app* (Web API).
