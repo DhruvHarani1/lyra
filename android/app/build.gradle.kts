@@ -86,5 +86,5 @@ dependencies {
     implementation("androidx.work:work-runtime:2.10.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.json:json:20240303") // the android.jar stubs of org.json do nothing in unit tests
+    testImplementation("org.json:json:20260814") // the android.jar stubs of org.json do nothing in unit tests
 }
